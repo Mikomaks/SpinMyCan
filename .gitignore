@@ -1,0 +1,11 @@
+.DS_Store
+build/
+*.xcuserstate
+xcuserdata/
+DerivedData/
+*.swp
+.claude/
+canlogs/
+MySpin/video_tt.mjpg
+MySpin/video_tt.mjpg.part
+video/
