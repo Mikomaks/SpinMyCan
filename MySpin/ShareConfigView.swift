@@ -176,7 +176,7 @@ struct ShareConfigView: View {
                 .disabled(!hasSongs)
 
                 Section {
-                    Toggle("Podpis @mikomaks_", isOn: $options.watermark)
+                    Toggle("Podpis SpinMyCan @mikomaks_", isOn: $options.watermark)
                 }
             }
             }

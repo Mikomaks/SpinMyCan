@@ -13,6 +13,7 @@
 import UIKit
 import AuthenticationServices
 import CryptoKit
+import Security
 import Combine
 
 final class SpotifyWebManager: NSObject, ObservableObject {
@@ -68,13 +69,45 @@ final class SpotifyWebManager: NSObject, ObservableObject {
         set { UserDefaults.standard.set(newValue, forKey: Self.kClientID) }
     }
 
+    // Tokeny w Keychainie — UserDefaults nie są szyfrowane i lecą do backupów
     private var accessToken: String? {
-        get { UserDefaults.standard.string(forKey: Self.kAccessToken) }
-        set { UserDefaults.standard.set(newValue, forKey: Self.kAccessToken) }
+        get { Self.keychainToken(Self.kAccessToken) }
+        set { Self.setKeychainToken(newValue, for: Self.kAccessToken) }
     }
     private var refreshToken: String? {
-        get { UserDefaults.standard.string(forKey: Self.kRefreshToken) }
-        set { UserDefaults.standard.set(newValue, forKey: Self.kRefreshToken) }
+        get { Self.keychainToken(Self.kRefreshToken) }
+        set { Self.setKeychainToken(newValue, for: Self.kRefreshToken) }
+    }
+
+    private static func keychainQuery(_ key: String) -> [String: Any] {
+        [kSecClass as String: kSecClassGenericPassword,
+         kSecAttrService as String: "spotify",
+         kSecAttrAccount as String: key]
+    }
+
+    private static func keychainToken(_ key: String) -> String? {
+        // Jednorazowa migracja ze starych wersji, które trzymały token w UserDefaults
+        if let legacy = UserDefaults.standard.string(forKey: key) {
+            setKeychainToken(legacy, for: key)
+            UserDefaults.standard.removeObject(forKey: key)
+        }
+        var q = keychainQuery(key)
+        q[kSecReturnData as String] = true
+        q[kSecMatchLimit as String] = kSecMatchLimitOne
+        var out: CFTypeRef?
+        guard SecItemCopyMatching(q as CFDictionary, &out) == errSecSuccess,
+              let data = out as? Data else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+
+    private static func setKeychainToken(_ value: String?, for key: String) {
+        let q = keychainQuery(key)
+        SecItemDelete(q as CFDictionary)
+        guard let value, let data = value.data(using: .utf8) else { return }
+        var add = q
+        add[kSecValueData as String] = data
+        add[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+        SecItemAdd(add as CFDictionary, nil)
     }
     private var tokenExpiry: Date? {
         get { UserDefaults.standard.object(forKey: Self.kTokenExpiry) as? Date }

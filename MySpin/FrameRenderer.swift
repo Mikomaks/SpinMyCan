@@ -1025,12 +1025,12 @@ final class FrameRenderer: ObservableObject {
             }
         }
 
-        // Watermark @mikomaks_ — subtelny, prawy dolny róg
+        // Watermark SpinMyCan @mikomaks_ — subtelny, prawy dolny róg
         let wmAttrs: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 10, weight: .medium),
             .foregroundColor: GRAY.withAlphaComponent(0.5)
         ]
-        let wm = "@mikomaks_" as NSString
+        let wm = "SpinMyCan @mikomaks_" as NSString
         let wmSz = wm.size(withAttributes: wmAttrs)
         wm.draw(at: CGPoint(x: W - wmSz.width - 12, y: H - wmSz.height - 7), withAttributes: wmAttrs)
 

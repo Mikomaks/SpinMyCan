@@ -306,7 +306,7 @@ final class WeatherManager: ObservableObject {
             DispatchQueue.main.async {
                 self.temperatureC = temp
                 self.lastUpdate   = Date()
-                print("[Weather] \(String(format: "%.1f", temp))°C @ \(lat),\(lon)")
+                print("[Weather] \(String(format: "%.1f", temp))°C")
             }
         }.resume()
     }

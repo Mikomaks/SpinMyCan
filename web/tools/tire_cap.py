@@ -6,10 +6,10 @@ Zamiast zgadywać, gdzie kończy się cień, LICZYMY KRZYWIZNĘ: opona ma proste
 boki o szerokości tw, więc jej dół to półokrąg o promieniu tw/2. Wszystko pod
 tym łukiem to z definicji nie opona.
 """
-import glob, math
+import glob, math, os
 from PIL import Image
 
-A = "/Users/mikomaks/Desktop/Programowanie/Projekty/MySpin/MySpin/Assets.xcassets"
+A = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "MySpin", "Assets.xcassets")
 
 def cap(name):
     p = glob.glob(f"{A}/{name}.imageset/*.png")[0]
