@@ -1523,7 +1523,7 @@ enum SessionShareHelper {
 
             // ── Watermark ──
             if o.watermark {
-                drawText("@mikomaks_",
+                drawText("SpinMyCan @mikomaks_",
                          at: CGPoint(x: W / 2, y: H - 70),
                          size: 30, weight: .black,
                          color: .white,

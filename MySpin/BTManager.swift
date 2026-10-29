@@ -315,9 +315,12 @@ final class BTManager: NSObject, ObservableObject, StreamDelegate {
             let wlanState = payload["iviWlanState"] as? String ?? "?"
             DispatchQueue.main.async { self.state = .wlanState(wlanState) }
 
-            // Loguj CAŁY payload — tu może być SSID i hasło
+            // Loguj payload bez sekretów — log da się wyeksportować przez „Wyślij logi”
             appendMessage(direction: .system, text: "WiFi motocykla: \(wlanState)")
-            appendMessage(direction: .system, text: "  pełny payload: \(payload)")
+            let secretKeys: Set<String> = ["password", "psk", "passphrase"]
+            var redacted = payload
+            for k in secretKeys where redacted[k] != nil { redacted[k] = "***" }
+            appendMessage(direction: .system, text: "  payload: \(redacted)")
 
             let ssid     = payload["ssid"]     as? String
             let password = payload["password"] as? String
@@ -327,7 +330,7 @@ final class BTManager: NSObject, ObservableObject, StreamDelegate {
                         ?? payload["band"]          as? String
 
             if let ssid { appendMessage(direction: .system, text: "  SSID: \(ssid)") }
-            if let password { appendMessage(direction: .system, text: "  Hasło: \(password)") }
+            if let password { appendMessage(direction: .system, text: "  Hasło: \(password.prefix(2))*** (\(password.count) zn.)") }
             if let band { appendMessage(direction: .system, text: "  Band: \(band)") }
 
             if wlanState == "READY" || wlanState == "CONNECTED" {

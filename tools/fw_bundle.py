@@ -41,11 +41,11 @@ def cmd_key():
         return
     key = secrets.token_bytes(32)
     rows = [", ".join("0x%02X" % b for b in key[i:i + 16]) for i in (0, 16)]
-    with open(KEY_H, "w") as f:
+    # 0600 od chwili utworzenia — bez okienka, w którym plik jest czytelny dla innych
+    with os.fdopen(os.open(KEY_H, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600), "w") as f:
         f.write("// Klucz do podpisywania programu płytki. NIE trafia do repozytorium, nie wysyłać nikomu.\n"
                 "// Opis: ota_key.example.h.\n\n#pragma once\n#include <stdint.h>\n\n"
                 "static const uint8_t OTA_KEY[32] = {\n    %s,\n    %s,\n};\n" % (rows[0], rows[1]))
-    os.chmod(KEY_H, 0o600)
     print("Utworzono klucz:", os.path.relpath(KEY_H, ROOT))
     print("Płytka pozna go dopiero po wgraniu kablem (make fw-flash).")
 
