@@ -239,9 +239,10 @@
 				};
 			};
 			buildConfigurationList = F061356D2F83D1010099D47C /* Build configuration list for PBXProject "MySpin" */;
-			developmentRegion = en;
+			developmentRegion = pl;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				pl,
 				en,
 				Base,
 			);
