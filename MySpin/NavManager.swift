@@ -36,11 +36,11 @@ final class NavManager: NSObject, ObservableObject {
         if let coord {
             req.region = MKCoordinateRegion(center: coord, latitudinalMeters: 40000, longitudinalMeters: 40000)
         }
-        statusNote = "Szukam…"
+        statusNote = String(localized: "Szukam…")
         MKLocalSearch(request: req).start { [weak self] resp, _ in
             DispatchQueue.main.async {
                 self?.searchResults = resp?.mapItems ?? []
-                self?.statusNote = (resp?.mapItems.isEmpty ?? true) ? "Brak wyników" : ""
+                self?.statusNote = (resp?.mapItems.isEmpty ?? true) ? String(localized: "Brak wyników") : ""
             }
         }
     }
@@ -63,10 +63,10 @@ final class NavManager: NSObject, ObservableObject {
         }
         guard let url = URL(string: link.trimmingCharacters(in: .whitespacesAndNewlines)),
               url.scheme?.hasPrefix("http") == true else {
-            statusNote = "Nie znalazłem współrzędnych w linku"
+            statusNote = String(localized: "Nie znalazłem współrzędnych w linku")
             return
         }
-        statusNote = "Rozwiązuję link…"
+        statusNote = String(localized: "Rozwiązuję link…")
         URLSession.shared.dataTask(with: url) { [weak self] data, resp, _ in
             let finalURL = resp?.url?.absoluteString ?? ""
             let html = data.flatMap { String(data: $0, encoding: .utf8) } ?? ""
@@ -76,7 +76,7 @@ final class NavManager: NSObject, ObservableObject {
                 if let dest {
                     self.navigate(to: dest, name: name, from: coord)
                 } else {
-                    self.statusNote = "Link bez współrzędnych — użyj Udostępnij → MySpin Nawiguj"
+                    self.statusNote = String(localized: "Link bez współrzędnych — użyj Udostępnij → MySpin Nawiguj")
                 }
             }
         }.resume()
@@ -84,7 +84,7 @@ final class NavManager: NSObject, ObservableObject {
 
     private func navigate(to dest: CLLocationCoordinate2D, name: String?, from coord: CLLocationCoordinate2D?) {
         let item = MKMapItem(placemark: MKPlacemark(coordinate: dest))
-        item.name = name ?? "Cel z Apple Maps"
+        item.name = name ?? String(localized: "Cel z Apple Maps")
         startNavigation(to: item, from: coord ?? dest)
     }
 
@@ -135,17 +135,17 @@ final class NavManager: NSObject, ObservableObject {
         req.source = MKMapItem(placemark: MKPlacemark(coordinate: coord))
         req.destination = item
         req.transportType = .automobile
-        statusNote = "Liczę trasę…"
+        statusNote = String(localized: "Liczę trasę…")
         MKDirections(request: req).calculate { [weak self] resp, _ in
             DispatchQueue.main.async {
                 guard let self else { return }
                 guard let route = resp?.routes.first else {
-                    self.statusNote = "Nie udało się policzyć trasy"; return
+                    self.statusNote = String(localized: "Nie udało się policzyć trasy"); return
                 }
                 self.steps = route.steps
                 self.stepIndex = 0
                 self.routeCoords = route.polyline.coordinatesArray()
-                self.destinationName = item.name ?? "Cel"
+                self.destinationName = item.name ?? String(localized: "Cel")
                 self.remainingDistance = route.distance
                 self.remainingTime = route.expectedTravelTime
                 self.routeSpeed = route.expectedTravelTime > 0 ? max(3, route.distance / route.expectedTravelTime) : 12
@@ -189,15 +189,15 @@ final class NavManager: NSObject, ObservableObject {
     private func advanceInstruction() {
         var idx = stepIndex
         while idx < steps.count && steps[idx].instructions.isEmpty { idx += 1 }
-        let instr = idx < steps.count ? steps[idx].instructions : "Kontynuuj prosto"
-        nextInstruction = instr.isEmpty ? "Jedź prosto" : instr
+        let instr = idx < steps.count ? steps[idx].instructions : String(localized: "Kontynuuj prosto")
+        nextInstruction = instr.isEmpty ? String(localized: "Jedź prosto") : instr
         speak(nextInstruction)
     }
 
     private func arrived() {
-        nextInstruction = "Dojechałeś do celu 🏁"
+        nextInstruction = String(localized: "Dojechałeś do celu 🏁")
         distanceToNext = 0; remainingDistance = 0; remainingTime = 0
-        speak("Dojechałeś do celu")
+        speak(String(localized: "Dojechałeś do celu"))
         isActive = false
     }
 
@@ -253,7 +253,7 @@ final class NavManager: NSObject, ObservableObject {
         try? AVAudioSession.sharedInstance().setCategory(.playback, options: [.duckOthers, .mixWithOthers])
         try? AVAudioSession.sharedInstance().setActive(true)
         let u = AVSpeechUtterance(string: text)
-        u.voice = AVSpeechSynthesisVoice(language: "pl-PL") ?? AVSpeechSynthesisVoice(language: "en-US")
+        u.voice = AVSpeechSynthesisVoice(language: Locale.current.language.languageCode?.identifier == "pl" ? "pl-PL" : "en-US")
         u.rate = 0.5
         synth.speak(u)
     }

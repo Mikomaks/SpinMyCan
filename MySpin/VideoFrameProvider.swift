@@ -191,7 +191,7 @@ final class VideoFrameProvider: ObservableObject {
     /// `src` to kopia tymczasowa — usuwana po przeróbce.
     func importVideo(from src: URL, title: String) {
         guard importTask == nil else { return }
-        publish { $0.importProgress = 0; $0.importStatus = "Przerabiam „\(title)”…" }
+        publish { $0.importProgress = 0; $0.importStatus = String(localized: "Przerabiam „\(title)”…") }
         let bg = UIApplication.shared.beginBackgroundTask(withName: "video-import")
         importTask = Task.detached(priority: .userInitiated) { [weak self] in
             let dst = Self.uniqueURL(for: title)
@@ -203,10 +203,10 @@ final class VideoFrameProvider: ObservableObject {
                     self?.publish { $0.importProgress = p }
                 }
                 let t = String(format: "%d:%02d", n / 15 / 60, n / 15 % 60)
-                self?.publish { $0.importStatus = "Dodano „\(title)” (\(t))" }
+                self?.publish { $0.importStatus = String(localized: "Dodano „\(title)” (\(t))") }
             } catch {
                 try? FileManager.default.removeItem(at: dst)
-                self?.publish { $0.importStatus = "Nie udało się: \(error.localizedDescription)" }
+                self?.publish { $0.importStatus = String(localized: "Nie udało się: \(error.localizedDescription)") }
             }
             try? FileManager.default.removeItem(at: src)
             await MainActor.run {

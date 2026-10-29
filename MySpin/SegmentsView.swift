@@ -93,7 +93,7 @@ struct SegmentsView: View {
                             .font(.system(.body, design: .monospaced).weight(.semibold))
                     }
                 }
-                Section(manager.segments.isEmpty ? "" : "Twoje odcinki") {
+                Section(manager.segments.isEmpty ? "" : String(localized: "Twoje odcinki")) {
                     if manager.segments.isEmpty {
                         Text("Nie masz jeszcze żadnego odcinka. Gdy go nagrasz, apka sama rozpozna każdy kolejny przejazd i pokaże na desce, ile jesteś przed albo za rekordem.")
                             .font(.caption)
@@ -133,7 +133,7 @@ private struct SegmentRow: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text(seg.name).font(.body.weight(.semibold))
                 Text(String(format: "%.1f km · %d %@", seg.lengthM / 1000, seg.runs.count,
-                            seg.runs.count == 1 ? "przejazd" : "przejazdów"))
+                            seg.runs.count == 1 ? String(localized: "przejazd") : String(localized: "przejazdów")))
                     .font(.caption).foregroundColor(.secondary)
             }
             Spacer()
@@ -170,9 +170,9 @@ struct SegmentDetailView: View {
                         .frame(height: 190)
                         .listRowInsets(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
                     HStack {
-                        stat(String(format: "%.2f km", seg.lengthM / 1000), "DŁUGOŚĆ")
-                        stat(seg.best.map { SegmentManager.fmt($0.timeSec) } ?? "—", "REKORD")
-                        stat(seg.best.map { String(format: "%.0f", $0.avgKmh) } ?? "—", "ŚR. KM/H")
+                        stat(String(format: "%.2f km", seg.lengthM / 1000), String(localized: "DŁUGOŚĆ"))
+                        stat(seg.best.map { SegmentManager.fmt($0.timeSec) } ?? "—", String(localized: "REKORD"))
+                        stat(seg.best.map { String(format: "%.0f", $0.avgKmh) } ?? "—", String(localized: "ŚR. KM/H"))
                     }
                 }
                 Section("Przejazdy") {
@@ -181,7 +181,7 @@ struct SegmentDetailView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(run.date.formatted(date: .abbreviated, time: .shortened))
                                     .font(.subheadline)
-                                Text(String(format: "vmax %.0f · przechył L %.0f° / P %.0f°",
+                                Text(String(format: String(localized: "vmax %.0f · przechył L %.0f° / P %.0f°"),
                                             run.vmax, run.maxLeanL, run.maxLeanR))
                                     .font(.caption).foregroundColor(.secondary)
                             }
@@ -191,7 +191,7 @@ struct SegmentDetailView: View {
                                     .font(.system(.body, design: .monospaced).weight(.semibold))
                                 if let best = seg.best {
                                     let d = run.timeSec - best.timeSec
-                                    Text(d < 0.05 ? "rekord" : String(format: "+%.1f s", d))
+                                    Text(d < 0.05 ? String(localized: "rekord") : String(format: "+%.1f s", d))
                                         .font(.caption2)
                                         .foregroundColor(d < 0.05 ? .green : .secondary)
                                 }
@@ -205,7 +205,7 @@ struct SegmentDetailView: View {
                 }
             }
         }
-        .navigationTitle(seg?.name ?? "Odcinek")
+        .navigationTitle(seg?.name ?? String(localized: "Odcinek"))
         .navigationBarTitleDisplayMode(.inline)
         .alert("Nazwa odcinka", isPresented: $renaming) {
             TextField("Nazwa", text: $newName)

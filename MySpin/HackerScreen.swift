@@ -65,7 +65,7 @@ extension FrameRenderer {
         let font = mono(size)
         guard live else {
             write("can0: waiting for carrier...", x: x, y: top + 6, size: size, color: Term.amber)
-            write("> podłącz płytkę CAN i włącz zapłon", x: x, y: top + 6 + lh, size: size, color: Term.dim)
+            write(String(localized: "> podłącz płytkę CAN i włącz zapłon"), x: x, y: top + 6 + lh, size: size, color: Term.dim)
             return
         }
         let lines = hackerLines.suffix(rows)

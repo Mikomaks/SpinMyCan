@@ -72,7 +72,7 @@ final class MemoriesManager: NSObject, ObservableObject {
     func start() {
         guard !isRunning else { return }
         isRunning = true
-        setStatus("Wspomnienia — ładowanie…")
+        setStatus(String(localized: "Wspomnienia — ładowanie…"))
         let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
         switch status {
         case .authorized, .limited:
@@ -80,10 +80,10 @@ final class MemoriesManager: NSObject, ObservableObject {
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization(for: .readWrite) { [weak self] st in
                 if st == .authorized || st == .limited { self?.buildAndBegin() }
-                else { self?.setStatus("Brak dostępu do Zdjęć — włącz w Ustawieniach") }
+                else { self?.setStatus(String(localized: "Brak dostępu do Zdjęć — włącz w Ustawieniach")) }
             }
         default:
-            setStatus("Brak dostępu do Zdjęć — włącz w Ustawieniach")
+            setStatus(String(localized: "Brak dostępu do Zdjęć — włącz w Ustawieniach"))
         }
     }
 
@@ -101,8 +101,8 @@ final class MemoriesManager: NSObject, ObservableObject {
             let built = self.curateSlides()
             guard !built.isEmpty else {
                 self.setStatus(self.selectedAlbumID.isEmpty
-                               ? "Brak zdjęć w bibliotece"
-                               : "Wybrany album jest pusty — zmień źródło w apce")
+                               ? String(localized: "Brak zdjęć w bibliotece")
+                               : String(localized: "Wybrany album jest pusty — zmień źródło w apce"))
                 return
             }
             self.slides = built
@@ -228,14 +228,14 @@ final class MemoriesManager: NSObject, ObservableObject {
             && abs(cal.component(.day, from: day) - cal.component(.day, from: now)) <= 3
         let year = cal.component(.year, from: day)
         if sameDayOfYear && year < cal.component(.year, from: now) {
-            return "Tego dnia · \(year)"
+            return String(localized: "Tego dnia · \(year)")
         }
         return Self.dayFormatter.string(from: day)
     }
 
     private static let dayFormatter: DateFormatter = {
         let f = DateFormatter()
-        f.locale = Locale(identifier: "pl_PL")
+        f.locale = Locale.current
         f.dateFormat = "d MMMM yyyy"
         return f
     }()

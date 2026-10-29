@@ -11,9 +11,9 @@ enum PosterFormat: String, Codable, CaseIterable {
 
     var label: String {
         switch self {
-        case .story: return "Relacja 9:16"
-        case .post:  return "Post 4:5"
-        case .free:  return "Cały plakat"
+        case .story: return String(localized: "Relacja 9:16")
+        case .post:  return String(localized: "Post 4:5")
+        case .free:  return String(localized: "Cały plakat")
         }
     }
     /// Wysokość przy szerokości 1080; nil = taka, jaka wyjdzie.
@@ -170,13 +170,13 @@ struct ShareConfigView: View {
                 } header: {
                     Text("Muzyka")
                 } footer: {
-                    Text(hasSongs ? "Piosenki z odtwarzacza w trakcie trasy: \(summary.tracks?.count ?? 0)."
-                                  : "W tej trasie nie zapisały się piosenki (zapis od wersji 1.18.0).")
+                    Text(hasSongs ? String(localized: "Piosenki z odtwarzacza w trakcie trasy: \(summary.tracks?.count ?? 0).")
+                                  : String(localized: "W tej trasie nie zapisały się piosenki (zapis od wersji 1.18.0)."))
                 }
                 .disabled(!hasSongs)
 
                 Section {
-                    Toggle("Podpis @mikomaks_", isOn: $options.watermark)
+                    Toggle("Podpis SpinMyCan @mikomaks_", isOn: $options.watermark)
                 }
             }
             }

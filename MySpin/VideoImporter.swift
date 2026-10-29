@@ -22,9 +22,9 @@ nonisolated enum VideoImporter {
         case noVideo, readFailed(String), tooLong
         var errorDescription: String? {
             switch self {
-            case .noVideo: return "w pliku nie ma obrazu"
-            case .readFailed(let why): return "nie da się odczytać filmu (\(why))"
-            case .tooLong: return "film za długi (limit 3 h)"
+            case .noVideo: return String(localized: "w pliku nie ma obrazu")
+            case .readFailed(let why): return String(localized: "nie da się odczytać filmu (\(why))")
+            case .tooLong: return String(localized: "film za długi (limit 3 h)")
             }
         }
     }
@@ -110,9 +110,9 @@ nonisolated enum VideoImporter {
         while pending != nil, Double(k) * step < max(duration, step) - 0.001 { try emit() }
         try frames.close()
         if reader.status == .failed {
-            throw Failure.readFailed(reader.error?.localizedDescription ?? "przerwane — apka zeszła w tło?")
+            throw Failure.readFailed(reader.error?.localizedDescription ?? String(localized: "przerwane — apka zeszła w tło?"))
         }
-        guard !offsets.isEmpty else { throw Failure.readFailed("brak klatek") }
+        guard !offsets.isEmpty else { throw Failure.readFailed(String(localized: "brak klatek")) }
         offsets.append(pos)
 
         // "MSV1" u16 fps u16 0 u32 liczba (liczba+1)×u32 przesunięcia, potem klatki.

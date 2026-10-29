@@ -1,0 +1,23 @@
+{
+  "sourceLanguage": "pl",
+  "strings": {
+    "CFBundleDisplayName": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SpinMyCan Ride"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SpinMyCan Jazda"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

@@ -141,8 +141,8 @@ struct TelemetryView: View {
 
             if telemetry.receivedChannels.isEmpty {
                 Text(telemetry.hasData
-                    ? "Wszystkie kanały = 'not supported' — niekompatybilny motocykl?"
-                    : "Brak danych — połącz TCP")
+                    ? String(localized: "Wszystkie kanały = 'not supported' — niekompatybilny motocykl?")
+                    : String(localized: "Brak danych — połącz TCP"))
                     .font(.system(size: 10))
                     .foregroundColor(.orange)
                     .padding(.vertical, 4)
@@ -560,7 +560,7 @@ struct YawCard: View {
 
 struct StatusFlag: View {
     let icon: String
-    let label: String
+    let label: LocalizedStringKey
     let on: Bool
     let onColor: Color
 
@@ -575,7 +575,7 @@ struct StatusFlag: View {
                 Text(label)
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(on ? .white : .secondary)
-                Text(on ? "AKTYWNY" : "NIEAKTYWNY")
+                Text(on ? String(localized: "AKTYWNY") : String(localized: "NIEAKTYWNY"))
                     .font(.system(size: 8, weight: .bold))
                     .foregroundColor(on ? onColor : Color.white.opacity(0.2))
                     .tracking(1)
