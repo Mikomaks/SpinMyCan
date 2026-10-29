@@ -1,0 +1,83 @@
+{
+  "sourceLanguage": "pl",
+  "strings": {
+    "BIEG": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GEAR"
+          }
+        }
+      }
+    },
+    "DESKA": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DASH"
+          }
+        }
+      }
+    },
+    "MAX L / P": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MAX L / R"
+          }
+        }
+      }
+    },
+    "OBR/MIN": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RPM"
+          }
+        }
+      }
+    },
+    "P": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "R"
+          }
+        }
+      }
+    },
+    "PRZECHYŁ": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LEAN"
+          }
+        }
+      }
+    },
+    "PŁYN": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "COOLANT"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

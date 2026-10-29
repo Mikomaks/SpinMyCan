@@ -95,7 +95,7 @@ struct SessionLibraryView: View {
                 if concatBusy {
                     ProgressView().controlSize(.small)
                 } else {
-                    Label("Połącz", systemImage: "rectangle.stack.badge.plus")
+                    Label(String(localized: "session.merge", defaultValue: "Połącz", comment: "Łączenie kilku tras w jedną"), systemImage: "rectangle.stack.badge.plus")
                 }
             }
             .buttonStyle(.borderedProminent)

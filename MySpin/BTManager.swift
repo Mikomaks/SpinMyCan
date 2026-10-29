@@ -22,12 +22,12 @@ enum BTState: Equatable {
     var label: String {
         switch self {
         case .idle:                    return "Idle"
-        case .waitingForAccessory:     return "Czekam na motocykl BT..."
-        case .sessionOpen:             return "BT: sesja otwarta"
-        case .handshaking(let s):      return "BT handshake: \(s)"
-        case .wlanState(let s):        return "WiFi motocykla: \(s)"
-        case .failed(let e):           return "BT błąd: \(e)"
-        case .disconnected:            return "BT rozłączony"
+        case .waitingForAccessory:     return String(localized: "Czekam na motocykl BT...")
+        case .sessionOpen:             return String(localized: "BT: sesja otwarta")
+        case .handshaking(let s):      return String(localized: "BT handshake: \(s)")
+        case .wlanState(let s):        return String(localized: "WiFi motocykla: \(s)")
+        case .failed(let e):           return String(localized: "BT błąd: \(e)")
+        case .disconnected:            return String(localized: "BT rozłączony")
         }
     }
 

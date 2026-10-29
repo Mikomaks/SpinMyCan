@@ -142,12 +142,12 @@ struct ContentView: View {
     private var expiryWarningCard: some View {
         let days = ProvisioningInfo.daysLeft ?? 0
         return VStack(alignment: .leading, spacing: 6) {
-            Label(days < 0 ? "Podpis aplikacji wygasł" : "Podpis wygasa za \(days) dni",
+            Label(days < 0 ? String(localized: "Podpis aplikacji wygasł") : String(localized: "Podpis wygasa za \(days) dni"),
                   systemImage: "hourglass.bottomhalf.filled")
                 .font(.headline).foregroundColor(.red)
             Text(days < 0
-                 ? "iOS przestanie uruchamiać apkę. Podłącz telefon do Maca i odśwież."
-                 : "Darmowe konto Apple podpisuje apkę tylko na 7 dni. Odśwież PRZED wyjazdem.")
+                 ? String(localized: "iOS przestanie uruchamiać apkę. Podłącz telefon do Maca i odśwież.")
+                 : String(localized: "Darmowe konto Apple podpisuje apkę tylko na 7 dni. Odśwież PRZED wyjazdem."))
                 .font(.caption).foregroundColor(.secondary)
             Text("Na Macu:  make refresh")
                 .font(.system(size: 12, design: .monospaced))
@@ -196,7 +196,7 @@ struct ContentView: View {
                         musicCard
 
                         Button { openSettings() } label: {
-                            LinkRow(title: "Ustawienia i diagnostyka", icon: "gearshape.fill", tint: .secondary)
+                            LinkRow(title: String(localized: "Ustawienia i diagnostyka"), icon: "gearshape.fill", tint: .secondary)
                         }
                         .buttonStyle(.plain)
                         .card(padding: 6)
@@ -329,7 +329,7 @@ struct ContentView: View {
 
     var memoriesCard: some View {
         VStack(alignment: .leading, spacing: 8) {
-            CardHeader("Wspomnienia — źródło zdjęć", icon: "photo.stack")
+            CardHeader(String(localized: "Wspomnienia — źródło zdjęć"), icon: "photo.stack")
 
             // UWAGA: NIE używamy Picker(.menu) — podgląd dashboardu odświeża się co 1s
             // (dashboardImage to @State), więc całe body się przebudowuje i wyskakujące
@@ -353,8 +353,8 @@ struct ContentView: View {
             }
 
             Text(memoriesAlbumID.isEmpty
-                 ? "Miks: zdjęcia z tego dnia w poprzednich latach, ulubione ❤️ i losowe z biblioteki. Uwaga: losowe obejmują też zrzuty ekranu."
-                 : "Tylko wybrany album. Zdjęcia grupowane po dniach, po 1-3 obok siebie.")
+                 ? String(localized: "Miks: zdjęcia z tego dnia w poprzednich latach, ulubione ❤️ i losowe z biblioteki. Uwaga: losowe obejmują też zrzuty ekranu.")
+                 : String(localized: "Tylko wybrany album. Zdjęcia grupowane po dniach, po 1-3 obok siebie."))
                 .font(.caption).foregroundColor(.secondary)
 
             if memoryAlbums.isEmpty {
@@ -369,14 +369,14 @@ struct ContentView: View {
 
     /// Nazwa aktualnie wybranego źródła (do przycisku).
     private var currentMemorySourceName: String {
-        if memoriesAlbumID.isEmpty { return "Wszystkie (tego dnia + ulubione + losowe)" }
+        if memoriesAlbumID.isEmpty { return String(localized: "Wszystkie (tego dnia + ulubione + losowe)") }
         if memoriesAlbumID == MemoriesManager.favoritesID {
-            return favoritesCount > 0 ? "Ulubione · \(favoritesCount) zdjęć" : "Ulubione"
+            return favoritesCount > 0 ? String(localized: "Ulubione · \(favoritesCount) zdjęć") : String(localized: "Ulubione")
         }
         if let a = memoryAlbums.first(where: { $0.id == memoriesAlbumID }) {
-            return "\(a.title) · \(a.count) zdjęć"
+            return String(localized: "\(a.title) · \(a.count) zdjęć")
         }
-        return "Wybrany album"
+        return String(localized: "Wybrany album")
     }
 
     /// Lista źródeł w arkuszu — odporna na 1Hz przebudowę widoku pod spodem.
@@ -384,10 +384,10 @@ struct ContentView: View {
         NavigationView {
             List {
                 Section {
-                    albumRow(id: "", title: "Wszystkie", subtitle: "tego dnia + ulubione + losowe")
-                    albumRow(id: MemoriesManager.favoritesID, title: "Ulubione",
-                             subtitle: favoritesCount > 0 ? "\(favoritesCount) zdjęć z serduszkiem"
-                                                          : "zdjęcia oznaczone serduszkiem")
+                    albumRow(id: "", title: String(localized: "Wszystkie"), subtitle: String(localized: "tego dnia + ulubione + losowe"))
+                    albumRow(id: MemoriesManager.favoritesID, title: String(localized: "Ulubione"),
+                             subtitle: favoritesCount > 0 ? String(localized: "\(favoritesCount) zdjęć z serduszkiem")
+                                                          : String(localized: "zdjęcia oznaczone serduszkiem"))
                 }
                 Section("Twoje albumy") {
                     if memoryAlbums.isEmpty {
@@ -395,7 +395,7 @@ struct ContentView: View {
                             .font(.caption).foregroundColor(.secondary)
                     }
                     ForEach(memoryAlbums) { a in
-                        albumRow(id: a.id, title: a.title, subtitle: "\(a.count) zdjęć")
+                        albumRow(id: a.id, title: a.title, subtitle: String(localized: "\(a.count) zdjęć"))
                     }
                 }
             }
@@ -443,7 +443,7 @@ struct ContentView: View {
     /// Opcje automatycznego nagrywania tras (ustawienia).
     var recordingOptionsCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            CardHeader("Nagrywanie tras", icon: "record.circle")
+            CardHeader(String(localized: "Nagrywanie tras"), icon: "record.circle")
 
             Toggle(isOn: $autoRecord) {
                 VStack(alignment: .leading, spacing: 1) {
@@ -484,7 +484,7 @@ struct ContentView: View {
     var btCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             // ── Bluetooth ──
-            CardHeader("Bluetooth motocykla", icon: "dot.radiowaves.left.and.right", tint: .blue)
+            CardHeader(String(localized: "Bluetooth motocykla"), icon: "dot.radiowaves.left.and.right", tint: .blue)
 
             HStack {
                 Circle().fill(btColor).frame(width: 8, height: 8)
@@ -505,7 +505,7 @@ struct ContentView: View {
             Divider()
 
             // ── WiFi motocykla (inline) ──
-            CardHeader("WiFi motocykla", icon: "wifi", tint: .blue)
+            CardHeader(String(localized: "WiFi motocykla"), icon: "wifi", tint: .blue)
 
             if let ssid = wifiSSID {
                 // SSID + hasło w jednym wierszu
@@ -517,7 +517,7 @@ struct ContentView: View {
                         if let pw = wifiPassword {
                             Button {
                                 UIPasteboard.general.string = pw
-                                wifiConnectStatus = "✅ Skopiowano hasło"
+                                wifiConnectStatus = String(localized: "✅ Skopiowano hasło")
                             } label: {
                                 Image(systemName: "doc.on.doc")
                             }
@@ -542,7 +542,7 @@ struct ContentView: View {
                 Button {
                     if let pw = wifiPassword {
                         UIPasteboard.general.string = pw
-                        wifiConnectStatus = "✅ Hasło w schowku — wybierz \(wifiSSID ?? "") i wklej"
+                        wifiConnectStatus = String(localized: "✅ Hasło w schowku — wybierz \(wifiSSID ?? "") i wklej")
                     }
                     if let url = URL(string: "App-Prefs:root=WIFI"),
                        UIApplication.shared.canOpenURL(url) {
@@ -570,9 +570,9 @@ struct ContentView: View {
 
     var wifiStatusLabel: String {
         switch bt.state {
-        case .wlanState(let s): return "Stan WiFi: \(s)"
-        case .handshaking:      return "Czekam na WiFi od motocykla..."
-        default:                return "Brak danych WiFi — uruchom BT najpierw"
+        case .wlanState(let s): return String(localized: "Stan WiFi: \(s)")
+        case .handshaking:      return String(localized: "Czekam na WiFi od motocykla...")
+        default:                return String(localized: "Brak danych WiFi — uruchom BT najpierw")
         }
     }
 
@@ -580,7 +580,7 @@ struct ContentView: View {
 
     var tcpCard: some View {
         VStack(alignment: .leading, spacing: 8) {
-            CardHeader("Przesył obrazu (TCP)", icon: "network", tint: .blue)
+            CardHeader(String(localized: "Przesył obrazu (TCP)"), icon: "network", tint: .blue)
 
             HStack {
                 Circle()
@@ -598,7 +598,7 @@ struct ContentView: View {
                 Spacer()
                 Button(action: toggleTCP) {
                     Label(
-                        session.tcpState.isConnected ? "Rozłącz" : "Połącz TCP",
+                        session.tcpState.isConnected ? String(localized: "Rozłącz") : String(localized: "Połącz TCP"),
                         systemImage: session.tcpState.isConnected ? "xmark.circle" : "bolt.horizontal"
                     )
                     .font(.caption.bold())
@@ -626,7 +626,7 @@ struct ContentView: View {
 
     var sensorsCard: some View {
         VStack(alignment: .leading, spacing: 10) {
-            CardHeader("Czujniki telefonu", icon: "location.fill") {
+            CardHeader(String(localized: "Czujniki telefonu"), icon: "location.fill") {
                 HStack(spacing: 5) {
                     Circle().fill(gpsStatusColor).frame(width: 8, height: 8)
                     Text(gpsStatusText).font(.caption).foregroundColor(.secondary)
@@ -753,9 +753,9 @@ struct ContentView: View {
                     }.buttonStyle(.bordered).tint(.purple).font(.caption.bold())
 
                     // 3 zmienne — edytowalne
-                    calField("Garaż (A)", $motion.calGarageRaw)
-                    calField("Pion (B)",  $motion.calUprightRaw)
-                    calField("Różnica Δ", $motion.calDelta)
+                    calField(String(localized: "Garaż (A)"), $motion.calGarageRaw)
+                    calField(String(localized: "Pion (B)"),  $motion.calUprightRaw)
+                    calField(String(localized: "Różnica Δ"), $motion.calDelta)
                 }
                 .padding(.top, 8)
             } label: {
@@ -778,7 +778,7 @@ struct ContentView: View {
     }
 
     var gpsStatusText: String {
-        guard motion.gpsAccuracy > 0 else { return "Brak GPS" }
+        guard motion.gpsAccuracy > 0 else { return String(localized: "Brak GPS") }
         return String(format: "GPS %.0fm", motion.gpsAccuracy)
     }
 
@@ -978,7 +978,7 @@ struct ContentView: View {
     var screenCard: some View {
         let screens = orderedScreens()
         return VStack(alignment: .leading, spacing: 8) {
-            CardHeader("Ekrany na desce", icon: "rectangle.on.rectangle")
+            CardHeader(String(localized: "Ekrany na desce"), icon: "rectangle.on.rectangle")
 
             Toggle(isOn: Binding(get: { isDark }, set: { setDashTheme(dark: $0) })) {
                 VStack(alignment: .leading, spacing: 2) {
@@ -1107,7 +1107,7 @@ struct ContentView: View {
     var navCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                CardHeader("Nawigacja", icon: "location.north.line.fill")
+                CardHeader(String(localized: "Nawigacja"), icon: "location.north.line.fill")
                 Spacer()
                 Image(systemName: navManager.voiceEnabled ? "speaker.wave.2.fill" : "speaker.slash.fill")
                     .font(.caption).foregroundStyle(.secondary)
@@ -1124,7 +1124,7 @@ struct ContentView: View {
                         .font(.subheadline.bold()).lineLimit(1)
                     Text(navManager.nextInstruction)
                         .font(.caption).foregroundColor(.blue).lineLimit(2)
-                    Text(String(format: "Pozostało %.1f km · ≈ %d min",
+                    Text(String(format: String(localized: "Pozostało %.1f km · ≈ %d min"),
                                 navManager.remainingDistance/1000, Int(navManager.remainingTime/60)))
                         .font(.caption).foregroundColor(.secondary)
                 }
@@ -1171,7 +1171,7 @@ struct ContentView: View {
                         if let coord = motion.lastLocationCoord {
                             navManager.startNavigation(to: item, from: coord)
                         } else {
-                            navManager.statusNote = "Brak GPS — nie mogę policzyć trasy"
+                            navManager.statusNote = String(localized: "Brak GPS — nie mogę policzyć trasy")
                         }
                     } label: {
                         HStack(spacing: 8) {
@@ -1204,7 +1204,7 @@ struct ContentView: View {
     var perfCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                CardHeader("Pomiary osiągów", icon: "stopwatch")
+                CardHeader(String(localized: "Pomiary osiągów"), icon: "stopwatch")
                 Spacer()
                 if !perfMeter.runs.isEmpty {
                     Button { perfMeter.clearRuns() } label: {
@@ -1259,9 +1259,9 @@ struct ContentView: View {
     /// Etykieta akcji podwójnego kliknięcia na danym ekranie (nil = brak).
     private func doubleActionLabel(_ s: DashboardScreen) -> String? {
         switch joyState.doubleAction(s) {
-        case "__calibrate": return "Kalibracja lean"
-        case "__exit":      return "Wyjście do klasycznego"
-        case "__nextVideo": return "Następny film"
+        case "__calibrate": return String(localized: "Kalibracja lean")
+        case "__exit":      return String(localized: "Wyjście do klasycznego")
+        case "__nextVideo": return String(localized: "Następny film")
         default:            return nil
         }
     }
@@ -1269,7 +1269,7 @@ struct ContentView: View {
     /// Przyjazna nazwa przycisku (Góra/Dół/...) — bez hex.
     private func buttonName(_ keyId: UInt8) -> String {
         if keyId == 0 { return "—" }
-        return JoyButton(rawValue: keyId)?.label ?? "Klawisz \(keyId)"
+        return JoyButton(rawValue: keyId)?.label ?? String(localized: "Klawisz \(Int(keyId))")
     }
 
     /// Przypisuje keyId do akcji lub slotu „goto".
@@ -1295,7 +1295,7 @@ struct ContentView: View {
         let _ = joyState.bindingsRevision   // zależność → odświeżenie po zmianie bindu
         return VStack(alignment: .leading, spacing: 8) {
             HStack {
-                CardHeader("Keybindy: \(scr.title)", icon: "gamecontroller.fill")
+                CardHeader(String(localized: "Keybindy: \(scr.title)"), icon: "gamecontroller.fill")
                 Spacer()
                 Button { KeyBindings.resetAll(); joyState.bindingsRevision &+= 1 } label: {
                     Text("Reset").font(.caption.bold()).foregroundColor(.red)
@@ -1317,7 +1317,7 @@ struct ContentView: View {
                     Text("2× kliknięcie = \(dblLbl)")
                         .font(.system(size: 12)).frame(maxWidth: .infinity, alignment: .leading)
                     bindButton(keyId: KeyBindings.doubleKey(screen: activeScreen),
-                               bindId: "dbl.\(activeScreen)", title: "Podwójne kliknięcie", accent: .orange)
+                               bindId: "dbl.\(activeScreen)", title: String(localized: "Podwójne kliknięcie"), accent: .orange)
                 }
                 Text("Back na motocyklu wychodzi z mySPIN — nie użyjemy go. Zamiast tego 2× szybko wybrany guzik.")
                     .font(.system(size: 10)).foregroundColor(.secondary)
@@ -1374,7 +1374,7 @@ struct ContentView: View {
             }
             .pickerStyle(.menu).font(.system(size: 11))
             Spacer()
-            bindButton(keyId: key, bindId: bindId, title: "Przejdź do ekranu", accent: .indigo)
+            bindButton(keyId: key, bindId: bindId, title: String(localized: "Przejdź do ekranu"), accent: .indigo)
         }
     }
 
@@ -1423,7 +1423,7 @@ struct ContentView: View {
 
     var recorderCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            CardHeader("Trasa", icon: "record.circle") {
+            CardHeader(String(localized: "Trasa"), icon: "record.circle") {
                 if recorder.isRecording {
                     HStack(spacing: 6) {
                         Circle().fill(Color.red).frame(width: 8, height: 8)
@@ -1445,7 +1445,7 @@ struct ContentView: View {
                     StatTile(label: "KM", value: String(format: "%.1f", recorder.currentDistKm))
                     StatTile(label: "MAX KM/H", value: "\(Int(recorder.maxSpeedKmh))")
                     StatTile(label: "MAX L", value: String(format: "%.0f°", recorder.maxLeanLeft), color: .blue)
-                    StatTile(label: "MAX P", value: String(format: "%.0f°", recorder.maxLeanRight), color: .red)
+                    StatTile(label: String(localized: "MAX P"), value: String(format: "%.0f°", recorder.maxLeanRight), color: .red)
                 }
                 .padding(.vertical, 10)
                 .background(AppStyle.inset, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
@@ -1461,7 +1461,7 @@ struct ContentView: View {
                     recorder.start()
                 }
             } label: {
-                Label(recorder.isRecording ? "Zatrzymaj i podsumuj" : "Nagraj trasę",
+                Label(recorder.isRecording ? String(localized: "Zatrzymaj i podsumuj") : String(localized: "Nagraj trasę"),
                       systemImage: recorder.isRecording ? "stop.fill" : "record.circle")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
@@ -1475,14 +1475,14 @@ struct ContentView: View {
             Button {
                 showRiderMode = true
             } label: {
-                LinkRow(title: "Licznik przechyłu na cały ekran", icon: "iphone.gen3.radiowaves.left.and.right", tint: .orange)
+                LinkRow(title: String(localized: "Licznik przechyłu na cały ekran"), icon: "iphone.gen3.radiowaves.left.and.right", tint: .orange)
             }
             .buttonStyle(.plain)
 
             if !recorder.isRecording {
                 Text(autoRecord
-                     ? "Trasa zacznie się nagrywać sama po połączeniu z motocyklem."
-                     : "Auto-nagrywanie jest wyłączone — trasę startujesz ręcznie.")
+                     ? String(localized: "Trasa zacznie się nagrywać sama po połączeniu z motocyklem.")
+                     : String(localized: "Auto-nagrywanie jest wyłączone — trasę startujesz ręcznie."))
                     .font(.caption2).foregroundColor(.secondary)
             }
         }
@@ -1501,7 +1501,7 @@ struct ContentView: View {
     var bikeLinkCard: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                CardHeader("Mostek CAN", icon: "cable.connector")
+                CardHeader(String(localized: "Mostek CAN"), icon: "cable.connector")
                 Spacer()
                 Toggle("", isOn: $bikeLinkOn)
                     .labelsHidden()
@@ -1524,33 +1524,33 @@ struct ContentView: View {
 
                 if let t = bikeLink.live {
                     HStack {
-                        bikeStat(t.engineFresh ? "\(t.rpm)" : "—", "OBR/MIN")
-                        bikeStat(t.engineFresh ? (t.gear == 0 ? "N" : "\(t.gear)") : "—", "BIEG")
-                        bikeStat(t.engineFresh ? "\(t.throttleRaw)" : "—", "GAZ (SUR.)")
+                        bikeStat(t.engineFresh ? "\(t.rpm)" : "—", String(localized: "OBR/MIN"))
+                        bikeStat(t.engineFresh ? (t.gear == 0 ? "N" : "\(t.gear)") : "—", String(localized: "BIEG"))
+                        bikeStat(t.engineFresh ? "\(t.throttleRaw)" : "—", String(localized: "GAZ (SUR.)"))
                         bikeStat(t.leanFresh ? String(format: "%.1f°", abs(t.leanDeg)) : "—",
-                                 t.leanFresh ? (t.leanDeg < -0.5 ? "PRZECHYŁ L" : (t.leanDeg > 0.5 ? "PRZECHYŁ P" : "PRZECHYŁ")) : "PRZECHYŁ")
+                                 t.leanFresh ? (t.leanDeg < -0.5 ? String(localized: "PRZECHYŁ L") : (t.leanDeg > 0.5 ? String(localized: "PRZECHYŁ P") : String(localized: "PRZECHYŁ"))) : String(localized: "PRZECHYŁ"))
                     }
                     if t.ext {
                         HStack {
-                            bikeStat(t.coolantC.map { String(format: "%.0f°C", $0) } ?? "—", "PŁYN")
-                            bikeStat(t.airC.map { String(format: "%.0f°C", $0) } ?? "—", "POWIETRZE")
-                            bikeStat(t.rideMode ?? "—", "TRYB")
-                            bikeStat(t.traction.map { $0 == 0 ? "OFF" : "\($0)" } ?? "—", "TRAKCJA")
+                            bikeStat(t.coolantC.map { String(format: "%.0f°C", $0) } ?? "—", String(localized: "PŁYN"))
+                            bikeStat(t.airC.map { String(format: "%.0f°C", $0) } ?? "—", String(localized: "POWIETRZE"))
+                            bikeStat(t.rideMode ?? "—", String(localized: "TRYB"))
+                            bikeStat(t.traction.map { $0 == 0 ? "OFF" : "\($0)" } ?? "—", String(localized: "TRAKCJA"))
                         }
                     }
-                    Text((t.busFps > 0 ? "\(t.busFps) ramek/s na magistrali"
-                                       : "Płytka połączona, magistrala milczy (zapłon wyłączony albo nie wpięta)")
-                         + (t.fwVersion > 0 ? " · program płytki v\(t.fwVersion)" : ""))
+                    Text((t.busFps > 0 ? String(localized: "\(t.busFps) ramek/s na magistrali")
+                                       : String(localized: "Płytka połączona, magistrala milczy (zapłon wyłączony albo nie wpięta)"))
+                         + (t.fwVersion > 0 ? String(localized: " · program płytki v\(t.fwVersion)") : ""))
                         .font(.caption2)
                         .foregroundColor(.secondary)
                     // Jakość łącza Bluetooth: przy dużych stratach wskazania na desce się spóźniają.
                     if bikeLink.quality.rate > 0 {
                         let ql = bikeLink.quality
                         let bad = ql.lost * 10 > ql.rate || ql.maxGapMs > 150
-                        Text("Łącze: \(ql.rate) pakietów/s"
-                             + (ql.lost > 0 ? ", zgubione \(ql.lost)" : "")
-                             + ", najdłuższa przerwa \(ql.maxGapMs) ms"
-                             + (t.connIntervalMs.map { String(format: ", odstęp Bluetooth %.0f ms", $0) } ?? ""))
+                        Text(String(localized: "Łącze: \(ql.rate) pakietów/s")
+                             + (ql.lost > 0 ? String(localized: ", zgubione \(ql.lost)") : "")
+                             + String(localized: ", najdłuższa przerwa \(ql.maxGapMs) ms")
+                             + (t.connIntervalMs.map { String(format: String(localized: ", odstęp Bluetooth %.0f ms"), $0) } ?? ""))
                             .font(.caption2)
                             .foregroundColor(bad ? .orange : .secondary)
                     }
@@ -1568,8 +1568,8 @@ struct ContentView: View {
                 Toggle(isOn: $bikeLeanOn) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Przechył z czujnika motocykla").font(.subheadline)
-                        Text(motion.leanFromBike ? "Teraz: czujnik motocykla"
-                                                 : "Teraz: telefon (przejmuje sam, gdy płytka milczy)")
+                        Text(motion.leanFromBike ? String(localized: "Teraz: czujnik motocykla")
+                                                 : String(localized: "Teraz: telefon (przejmuje sam, gdy płytka milczy)"))
                             .font(.caption2).foregroundColor(.secondary)
                     }
                 }
@@ -1580,9 +1580,9 @@ struct ContentView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Prędkość z przedniego koła").font(.subheadline)
                         Text(bikeLink.wheelFactor.map {
-                                String(format: "Przelicznik potwierdzony GPS-em (%.2f%% względem założenia). Reaguje od razu, działa w tunelu.",
+                                String(format: String(localized: "Przelicznik potwierdzony GPS-em (%.2f%% względem założenia). Reaguje od razu, działa w tunelu."),
                                        ($0 / WheelSpeedCalibration.expected - 1) * 100)
-                             } ?? "Czeka na potwierdzenie z GPS: ok. pół minuty równej jazdy powyżej 30 km/h. Do tego czasu deska pokazuje GPS.")
+                             } ?? String(localized: "Czeka na potwierdzenie z GPS: ok. pół minuty równej jazdy powyżej 30 km/h. Do tego czasu deska pokazuje GPS."))
                             .font(.caption2).foregroundColor(.secondary)
                     }
                 }
@@ -1592,7 +1592,7 @@ struct ContentView: View {
                 Toggle(isOn: $canRawLog) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Zapis ramek do rozszyfrowania").font(.subheadline)
-                        Text(String(format: "Wszystkie ramki + GPS i przechył telefonu, ok. 50 MB na godzinę jazdy. Logi starsze niż 14 dni znikają same. Zajęte: %.0f MB z %.0f.",
+                        Text(String(format: String(localized: "Wszystkie ramki + GPS i przechył telefonu, ok. 50 MB na godzinę jazdy. Logi starsze niż 14 dni znikają same. Zajęte: %.0f MB z %.0f."),
                                     Double(bikeLink.logTotalBytes) / 1_048_576,
                                     Double(BikeLinkManager.logQuotaBytes) / 1_048_576))
                             .font(.caption2).foregroundColor(.secondary)
@@ -1604,7 +1604,7 @@ struct ContentView: View {
                 if canRawLog, !bikeLink.logName.isEmpty {
                     Text(String(format: "%@ · %.1f MB · %d ID%@", bikeLink.logName,
                                 Double(bikeLink.logBytes) / 1_048_576, bikeLink.logIDs,
-                                bikeLink.logLost > 0 ? " · zgubione pakiety: \(bikeLink.logLost)" : ""))
+                                bikeLink.logLost > 0 ? String(localized: " · zgubione pakiety: \(bikeLink.logLost)") : ""))
                         .font(.system(.caption2, design: .monospaced))
                         .foregroundColor(.secondary)
                 }
@@ -1612,7 +1612,7 @@ struct ContentView: View {
                 Button {
                     showBusViewer = true
                 } label: {
-                    LinkRow(title: "Podgląd magistrali na żywo", icon: "waveform.path.ecg")
+                    LinkRow(title: String(localized: "Podgląd magistrali na żywo"), icon: "waveform.path.ecg")
                 }
                 .buttonStyle(.plain)
 
@@ -1675,13 +1675,13 @@ struct ContentView: View {
             switch bikeLink.diagState {
             case .idle:
                 Text(bikeLink.diagClearAddr == nil
-                     ? "Zapłon włączony, silnik zgaszony. Odczyt niczego nie zmienia; kasowanie odblokuje się, gdy motocykl odpowie kodami."
-                     : "Zapłon włączony, silnik zgaszony. Odczyt niczego nie zmienia.")
+                     ? String(localized: "Zapłon włączony, silnik zgaszony. Odczyt niczego nie zmienia; kasowanie odblokuje się, gdy motocykl odpowie kodami.")
+                     : String(localized: "Zapłon włączony, silnik zgaszony. Odczyt niczego nie zmienia."))
                     .font(.caption2).foregroundColor(.secondary)
             case .running(let op):
                 HStack(spacing: 6) {
                     ProgressView()
-                    Text(op == .clear ? "Kasuję kody…" : "Pytam sterowniki…").font(.caption)
+                    Text(op == .clear ? String(localized: "Kasuję kody…") : String(localized: "Pytam sterowniki…")).font(.caption)
                 }
             case .finished(let op, let replies, let tx):
                 VStack(alignment: .leading, spacing: 4) {
@@ -1734,8 +1734,8 @@ struct ContentView: View {
                         .buttonStyle(.borderedProminent)
                         .tint(AppStyle.accent)
                         .disabled(running)
-                        Text(running ? "Zgaś silnik — płytka przyjmuje nowy program tylko na postoju."
-                                     : "Trwa ok. minuty. Trzymaj telefon przy motocyklu i nie wyłączaj zapłonu.")
+                        Text(running ? String(localized: "Zgaś silnik — płytka przyjmuje nowy program tylko na postoju.")
+                                     : String(localized: "Trwa ok. minuty. Trzymaj telefon przy motocyklu i nie wyłączaj zapłonu."))
                             .font(.caption2).foregroundColor(.secondary)
                     }
                 } else {
@@ -1745,13 +1745,13 @@ struct ContentView: View {
                 }
             }
         case .starting:
-            firmwareProgress(nil, "Łączę się z płytką…")
+            firmwareProgress(nil, String(localized: "Łączę się z płytką…"))
         case .sending(let p):
-            firmwareProgress(p, String(format: "Wysyłam program: %.0f%%", p * 100))
+            firmwareProgress(p, String(format: String(localized: "Wysyłam program: %.0f%%"), p * 100))
         case .verifying:
-            firmwareProgress(1, "Płytka sprawdza podpis…")
+            firmwareProgress(1, String(localized: "Płytka sprawdza podpis…"))
         case .restarting:
-            firmwareProgress(nil, "Płytka uruchamia nowy program…")
+            firmwareProgress(nil, String(localized: "Płytka uruchamia nowy program…"))
         case .done(let v):
             HStack {
                 Label("Płytka zaktualizowana do v\(v)", systemImage: "checkmark.circle.fill")
@@ -1792,7 +1792,7 @@ struct ContentView: View {
     var segmentsCard: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                CardHeader("Odcinki", icon: "flag.checkered")
+                CardHeader(String(localized: "Odcinki"), icon: "flag.checkered")
                 Spacer()
                 Text("\(segments.segments.count)")
                     .font(.system(.caption, design: .monospaced))
@@ -1813,7 +1813,7 @@ struct ContentView: View {
             Button {
                 showSegments = true
             } label: {
-                LinkRow(title: "Wszystkie odcinki i przejazdy", icon: "list.bullet")
+                LinkRow(title: String(localized: "Wszystkie odcinki i przejazdy"), icon: "list.bullet")
             }
             .buttonStyle(.plain)
         }
@@ -1838,7 +1838,7 @@ struct ContentView: View {
     var libraryCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                CardHeader("Biblioteka tras", icon: "books.vertical", tint: .purple)
+                CardHeader(String(localized: "Biblioteka tras"), icon: "books.vertical", tint: .purple)
                 Spacer()
                 Text("\(storage.library.count)")
                     .font(.system(.caption, design: .monospaced))
@@ -1890,7 +1890,7 @@ struct ContentView: View {
             Button {
                 showLibrary = true
             } label: {
-                LinkRow(title: "Wszystkie zapisane trasy", icon: "list.bullet", tint: .purple)
+                LinkRow(title: String(localized: "Wszystkie zapisane trasy"), icon: "list.bullet", tint: .purple)
             }
             .buttonStyle(.plain)
         }
@@ -1975,8 +1975,8 @@ struct ContentView: View {
                     .fill(session.tcpState.isConnected ? Color.green : Color.gray.opacity(0.5))
                     .frame(width: 7, height: 7)
                 Text(session.tcpState.isConnected
-                     ? "Na wyświetlaczu motocykla · \(session.framesSent) klatek"
-                     : "Podgląd — tak będzie wyglądać deska")
+                     ? String(localized: "Na wyświetlaczu motocykla · \(session.framesSent) klatek")
+                     : String(localized: "Podgląd — tak będzie wyglądać deska"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
@@ -2011,26 +2011,26 @@ struct ContentView: View {
     /// Połączenie z wyświetlaczem motocykla jednym zdaniem (szczegóły w diagnostyce).
     private var bikeStatus: (text: String, color: Color) {
         switch session.tcpState {
-        case .connected:                return ("Obraz leci", .green)
-        case .connecting, .handshaking: return ("Łączę…", .yellow)
+        case .connected:                return (String(localized: "Obraz leci"), .green)
+        case .connecting, .handshaking: return (String(localized: "Łączę…"), .yellow)
         default:                        break
         }
-        if bt.state.isActive { return ("Bluetooth OK", .yellow) }
-        if case .failed = bt.state { return ("Błąd Bluetooth", .red) }
-        return ("Niepołączony", .gray)
+        if bt.state.isActive { return (String(localized: "Bluetooth OK"), .yellow) }
+        if case .failed = bt.state { return (String(localized: "Błąd Bluetooth"), .red) }
+        return (String(localized: "Niepołączony"), .gray)
     }
 
     private var canStatus: (text: String, color: Color) {
-        guard bikeLinkOn else { return ("Wyłączony", .gray) }
+        guard bikeLinkOn else { return (String(localized: "Wyłączony"), .gray) }
         switch bikeLink.state {
         case .connected:
-            if bikeLink.live?.simulated == true { return ("Symulacja", .orange) }
-            return ((bikeLink.live?.busFps ?? 0) > 0 ? "Dane płyną" : "Połączony", .green)
-        case .connecting:        return ("Łączę…", .yellow)
-        case .searching:         return ("Czeka na zapłon", .gray)
-        case .bluetoothOff:      return ("Bluetooth wył.", .red)
-        case .unauthorized:      return ("Brak zgody", .red)
-        case .unsupported, .off: return ("Niedostępny", .gray)
+            if bikeLink.live?.simulated == true { return (String(localized: "Symulacja"), .orange) }
+            return ((bikeLink.live?.busFps ?? 0) > 0 ? String(localized: "Dane płyną") : String(localized: "Połączony"), .green)
+        case .connecting:        return (String(localized: "Łączę…"), .yellow)
+        case .searching:         return (String(localized: "Czeka na zapłon"), .gray)
+        case .bluetoothOff:      return (String(localized: "Bluetooth wył."), .red)
+        case .unauthorized:      return (String(localized: "Brak zgody"), .red)
+        case .unsupported, .off: return (String(localized: "Niedostępny"), .gray)
         }
     }
 
@@ -2038,14 +2038,14 @@ struct ContentView: View {
     var statusPills: some View {
         HStack(spacing: 8) {
             Button { openSettings(at: "bt") } label: {
-                StatusPill(icon: "display", title: "DESKA", value: bikeStatus.text, color: bikeStatus.color)
+                StatusPill(icon: "display", title: String(localized: "DESKA"), value: bikeStatus.text, color: bikeStatus.color)
             }
             Button { openSettings(at: "can") } label: {
                 StatusPill(icon: "cable.connector", title: "CAN", value: canStatus.text, color: canStatus.color)
             }
             Button { openSettings(at: "sensors") } label: {
                 StatusPill(icon: "location.fill", title: "GPS",
-                           value: motion.gpsAccuracy > 0 ? String(format: "±%.0f m", motion.gpsAccuracy) : "Brak sygnału",
+                           value: motion.gpsAccuracy > 0 ? String(format: "±%.0f m", motion.gpsAccuracy) : String(localized: "Brak sygnału"),
                            color: gpsStatusColor)
             }
         }
@@ -2055,13 +2055,13 @@ struct ContentView: View {
     /// Motocykl podał swoją sieć WiFi, a obraz jeszcze nie leci — trzeba do niej dołączyć.
     var wifiHintCard: some View {
         VStack(alignment: .leading, spacing: 10) {
-            CardHeader("Dołącz do WiFi motocykla", icon: "wifi", tint: .green)
+            CardHeader(String(localized: "Dołącz do WiFi motocykla"), icon: "wifi", tint: .green)
             Text("Motocykl czeka w sieci \(wifiSSID ?? ""). Hasło skopiuję do schowka — wybierz tę sieć w ustawieniach i wklej.")
                 .font(.caption).foregroundColor(.secondary)
             Button {
                 if let pw = wifiPassword {
                     UIPasteboard.general.string = pw
-                    wifiConnectStatus = "✅ Hasło w schowku — wybierz \(wifiSSID ?? "") i wklej"
+                    wifiConnectStatus = String(localized: "✅ Hasło w schowku — wybierz \(wifiSSID ?? "") i wklej")
                 }
                 if let url = URL(string: "App-Prefs:root=WIFI"),
                    UIApplication.shared.canOpenURL(url) {
@@ -2085,7 +2085,7 @@ struct ContentView: View {
         if let src = Self.leanSource(enabled: bikeLinkOn, fromBike: motion.leanFromBike,
                                      simulated: bikeLink.live?.simulated == true) {
             let (text, color): (String, Color) = src == .bike ? ("CAN", .green)
-                : (src == .simulated ? ("SIM", .orange) : ("TELEFON", .secondary))
+                : (src == .simulated ? ("SIM", .orange) : (String(localized: "TELEFON"), .secondary))
             Text(text)
                 .font(.system(size: 10, weight: .bold))
                 .foregroundStyle(color)
@@ -2099,7 +2099,7 @@ struct ContentView: View {
         let lean = motion.leanAngleDeg
         let engine = bikeLink.live.flatMap { $0.engineFresh ? $0 : nil }
         return VStack(alignment: .leading, spacing: 14) {
-            CardHeader("Na żywo", icon: "speedometer") {
+            CardHeader(String(localized: "Na żywo"), icon: "speedometer") {
                 leanSourceBadge
                 Button { motion.resetStats() } label: {
                     Image(systemName: "arrow.counterclockwise")
@@ -2114,11 +2114,11 @@ struct ContentView: View {
             HStack(spacing: 0) {
                 StatTile(label: "KM/H", value: "\(Int(motion.speedKmh))", big: true)
                 Divider().frame(height: 44)
-                StatTile(label: lean < -1.5 ? "PRZECHYŁ W LEWO" : (lean > 1.5 ? "PRZECHYŁ W PRAWO" : "PRZECHYŁ"),
+                StatTile(label: lean < -1.5 ? String(localized: "PRZECHYŁ W LEWO") : (lean > 1.5 ? String(localized: "PRZECHYŁ W PRAWO") : String(localized: "PRZECHYŁ")),
                          value: String(format: "%.0f°", abs(lean)), color: leanCardColor, big: true)
                 if let e = engine {
                     Divider().frame(height: 44)
-                    StatTile(label: "\(e.rpm) OBR/MIN", value: e.gear == 0 ? "N" : "\(e.gear)",
+                    StatTile(label: String(localized: "\(e.rpm) OBR/MIN"), value: e.gear == 0 ? "N" : "\(e.gear)",
                              color: e.gear == 0 ? .green : .primary, big: true)
                 }
             }
@@ -2126,8 +2126,8 @@ struct ContentView: View {
             HStack(spacing: 0) {
                 StatTile(label: "MAX KM/H", value: "\(Int(motion.maxSpeedKmh))")
                 StatTile(label: "MAX L", value: String(format: "%.0f°", motion.maxLeanLeft), color: .blue)
-                StatTile(label: "MAX P", value: String(format: "%.0f°", motion.maxLeanRight), color: .red)
-                StatTile(label: "PRZECIĄŻENIE", value: String(format: "%.1f", motion.gForce), unit: "g",
+                StatTile(label: String(localized: "MAX P"), value: String(format: "%.0f°", motion.maxLeanRight), color: .red)
+                StatTile(label: String(localized: "PRZECIĄŻENIE"), value: String(format: "%.1f", motion.gForce), unit: "g",
                          color: motion.gForce > 1.0 ? .orange : .primary)
             }
             .padding(.vertical, 10)
@@ -2139,8 +2139,8 @@ struct ContentView: View {
                     Button {
                         motion.startCalibration()
                     } label: {
-                        Label(motion.calibrationCountdown >= 0 ? "Zero za \(motion.calibrationCountdown) s"
-                              : (motion.calibrationCountdown == -2 ? "Skalibrowano" : "Wyzeruj przechył"),
+                        Label(motion.calibrationCountdown >= 0 ? String(localized: "Zero za \(motion.calibrationCountdown) s")
+                              : (motion.calibrationCountdown == -2 ? String(localized: "Skalibrowano") : String(localized: "Wyzeruj przechył")),
                               systemImage: motion.calibrationCountdown == -2 ? "checkmark" : "scope")
                             .frame(maxWidth: .infinity).padding(.vertical, 4)
                     }
@@ -2166,24 +2166,24 @@ struct ContentView: View {
 
     private func screenShortTitle(_ s: DashboardScreen) -> String {
         switch s {
-        case .classic:     return "Klasyczny"
-        case .lean:        return "Przechył"
+        case .classic:     return String(localized: "Klasyczny")
+        case .lean:        return String(localized: "Przechył")
         case .snake:       return "Snake"
         case .sudoku:      return "Sudoku"
-        case .navigation:  return "Nawigacja"
-        case .performance: return "Pomiary"
-        case .video:       return "Wideo"
-        case .navClassic:  return "Mapa + deska"
+        case .navigation:  return String(localized: "Nawigacja")
+        case .performance: return String(localized: "Pomiary")
+        case .video:       return String(localized: "Wideo")
+        case .navClassic:  return String(localized: "Mapa + deska")
         case .disco:       return "Disco"
-        case .memories:    return "Wspomnienia"
-        case .hacker:      return "Terminal"
+        case .memories:    return String(localized: "Wspomnienia")
+        case .hacker:      return String(localized: "Terminal")
         }
     }
 
     /// Szybki wybór ekranu deski — poziomy pasek w kolejności ustawionej w ustawieniach.
     var screenStrip: some View {
         VStack(alignment: .leading, spacing: 12) {
-            CardHeader("Ekran na desce", icon: "rectangle.on.rectangle") {
+            CardHeader(String(localized: "Ekran na desce"), icon: "rectangle.on.rectangle") {
                 Button { openSettings(at: "display") } label: {
                     Text("Kolejność")
                         .font(.caption.weight(.semibold))
@@ -2266,26 +2266,27 @@ struct ContentView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(spacing: 14) {
-                        SectionTitle("Deska na motocyklu")
+                        SectionTitle(String(localized: "Deska na motocyklu"))
                         screenCard.id("display")
                         bindingsCard.id("keys")
 
-                        SectionTitle("Jazda")
+                        SectionTitle(String(localized: "Jazda"))
                         recordingOptionsCard.id("recording")
                         RouteCloudCard().id("cloud")
                         sensorsCard.id("sensors")
 
-                        SectionTitle("Dane z motocykla")
+                        SectionTitle(String(localized: "Dane z motocykla"))
                         bikeLinkCard.id("can")
 
-                        SectionTitle("Muzyka")
+                        SectionTitle(String(localized: "Muzyka"))
                         spotifyCard.id("spotify")
 
-                        SectionTitle("Diagnostyka połączenia")
+                        SectionTitle(String(localized: "Diagnostyka połączenia"))
                         btCard.id("bt")
                         tcpCard.id("tcp")
 
-                        SectionTitle("Aplikacja")
+                        SectionTitle(String(localized: "Aplikacja"))
+                        LanguageCard().id("language")
                         liveActivityCard.id("island")
                         aboutCard.id("about")
                     }
@@ -3133,10 +3134,10 @@ enum JoyButton: UInt8, CaseIterable {
 
     var label: String {
         switch self {
-        case .up:    return "Góra"
-        case .down:  return "Dół"
-        case .left:  return "Lewo"
-        case .right: return "Prawo"
+        case .up:    return String(localized: "Góra")
+        case .down:  return String(localized: "Dół")
+        case .left:  return String(localized: "Lewo")
+        case .right: return String(localized: "Prawo")
         case .ok:    return "OK"
         case .back:  return "Back"
         }
@@ -3144,12 +3145,12 @@ enum JoyButton: UInt8, CaseIterable {
     /// Co przycisk robi (sterowanie muzyką + ekrany).
     var actionLabel: String {
         switch self {
-        case .up:    return "▲ Poprzedni ekran"
-        case .down:  return "▼ Następny ekran"
-        case .left:  return "⏮ Poprzedni"
-        case .right: return "⏭ Następny"
-        case .ok:    return "⏯ Play / Pause"
-        case .back:  return "⊙ Kalibracja"
+        case .up:    return String(localized: "▲ Poprzedni ekran")
+        case .down:  return String(localized: "▼ Następny ekran")
+        case .left:  return String(localized: "⏮ Poprzedni")
+        case .right: return String(localized: "⏭ Następny")
+        case .ok:    return String(localized: "⏯ Play / Pause")
+        case .back:  return String(localized: "⊙ Kalibracja")
         }
     }
 }
@@ -3510,6 +3511,18 @@ struct TelemetryLogView: View {
         case nonzero   = "🟢 Niezerowe"       // tylko wiersze z 🟢
         case lifecycle = "🔌 Połączenie"     // tylko 🔌✅❌🏍📤⟳
         case warnings  = "⚠️ Uwagi"           // tylko ⚠️❌
+
+        /// Nazwa do wyświetlenia (rawValue zostaje bez zmian).
+        var title: String {
+            switch self {
+            case .all:       return String(localized: "Wszystko")
+            case .values:    return String(localized: "🟢 Wartości")
+            case .changes:   return String(localized: "🔄 Zmiany")
+            case .nonzero:   return String(localized: "🟢 Niezerowe")
+            case .lifecycle: return String(localized: "🔌 Połączenie")
+            case .warnings:  return String(localized: "⚠️ Uwagi")
+            }
+        }
     }
 
     var displayPackets: [RawPacketEntry] {
@@ -3572,7 +3585,7 @@ struct TelemetryLogView: View {
                 } label: {
                     HStack(spacing: 4) {
                         Image(systemName: isFrozen ? "play.fill" : "pause.fill")
-                        Text(isFrozen ? "Play" : "Pauza")
+                        Text(isFrozen ? String(localized: "Play") : String(localized: "Pauza"))
                     }
                     .font(.caption.bold())
                     .padding(.horizontal, 10).padding(.vertical, 5)
@@ -3607,7 +3620,7 @@ struct TelemetryLogView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
                     ForEach(LogFilter.allCases, id: \.self) { f in
-                        Button(f.rawValue) { filter = f }
+                        Button(f.title) { filter = f }
                             .font(.system(size: 10, weight: .bold))
                             .padding(.horizontal, 8).padding(.vertical, 4)
                             .background(filter == f ? Color.blue : Color(.systemGray5))
@@ -3784,13 +3797,13 @@ struct RideExtrasView: View {
     var body: some View {
         VStack(spacing: 16) {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                SummaryStatBox(label: "W RUCHU", value: fmtTime(summary.movingSec),
+                SummaryStatBox(label: String(localized: "W RUCHU"), value: fmtTime(summary.movingSec),
                                icon: "timer", color: .green)
-                SummaryStatBox(label: "ŁĄCZNIE", value: fmtTime(summary.durationSec),
+                SummaryStatBox(label: String(localized: "ŁĄCZNIE"), value: fmtTime(summary.durationSec),
                                icon: "clock", color: .secondary)
                 SummaryStatBox(label: "MAX G-FORCE", value: String(format: "%.2f g", summary.maxGforce),
                                icon: "arrow.up.circle", color: .orange)
-                SummaryStatBox(label: "PUNKTÓW GPS", value: "\(summary.points.count)",
+                SummaryStatBox(label: String(localized: "PUNKTÓW GPS"), value: "\(summary.points.count)",
                                icon: "mappin.and.ellipse", color: .blue)
             }
             .padding(.horizontal)
@@ -3798,13 +3811,13 @@ struct RideExtrasView: View {
             // ── Silnik (tylko trasy nagrane z mostkiem CAN) ──
             if let eng = summary.engineStats {
                 VStack(alignment: .leading, spacing: 8) {
-                    CardHeader("Silnik", icon: "engine.combustion")
+                    CardHeader(String(localized: "Silnik"), icon: "engine.combustion")
                         .padding(.horizontal)
 
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                        SummaryStatBox(label: "MAX OBROTY", value: "\(eng.maxRPM)",
+                        SummaryStatBox(label: String(localized: "MAX OBROTY"), value: "\(eng.maxRPM)",
                                        icon: "gauge.high", color: .red)
-                        SummaryStatBox(label: "ŚRED. OBROTY W RUCHU", value: "\(eng.avgRPM)",
+                        SummaryStatBox(label: String(localized: "ŚRED. OBROTY W RUCHU"), value: "\(eng.avgRPM)",
                                        icon: "gauge.medium", color: .orange)
                     }
                     .padding(.horizontal)
@@ -3831,8 +3844,8 @@ struct RideExtrasView: View {
                     .frame(height: 110, alignment: .bottom)
                     .padding(.horizontal)
 
-                    Text("Zmian biegów: \(eng.shifts)"
-                         + (eng.coverage < 0.95 ? String(format: " · dane z silnika dla %.0f%% trasy", eng.coverage * 100) : ""))
+                    Text(String(localized: "Zmian biegów: \(eng.shifts)")
+                         + (eng.coverage < 0.95 ? String(format: String(localized: " · dane z silnika dla %.0f%% trasy"), eng.coverage * 100) : ""))
                         .font(.system(size: 10))
                         .foregroundColor(.secondary)
                         .padding(.horizontal)
@@ -3843,7 +3856,7 @@ struct RideExtrasView: View {
             // ── Piosenki (od v1.18.0) — dotknięcie przewija odtwarzanie do tej chwili ──
             if let tracks = summary.tracks, !tracks.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
-                    CardHeader("Muzyka", icon: "music.note", tint: .green)
+                    CardHeader(String(localized: "Muzyka"), icon: "music.note", tint: .green)
                         .padding(.horizontal)
                     ForEach(Array(tracks.enumerated()), id: \.offset) { i, t in
                         let at = t.time.timeIntervalSince(summary.startTime)
@@ -3871,7 +3884,7 @@ struct RideExtrasView: View {
             }
 
             // ── Usuń trasę (przytrzymaj — celowo, żeby nie skasować przypadkiem) ──
-            Label(routeDeleted ? "Trasa usunięta ✓" : "Przytrzymaj, aby usunąć trasę",
+            Label(routeDeleted ? String(localized: "Trasa usunięta ✓") : String(localized: "Przytrzymaj, aby usunąć trasę"),
                   systemImage: routeDeleted ? "checkmark.circle" : "trash")
                 .font(.caption.bold())
                 .foregroundColor(routeDeleted ? .secondary : .red)
