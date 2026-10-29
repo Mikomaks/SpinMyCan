@@ -72,7 +72,7 @@ private extension RideActivityAttributes.ContentState {
     }
     var gearColor: Color { gear == 0 ? Tacho.green : .white }
     var leanText: String {
-        leanDeg == 0 ? "0°" : "\(abs(leanDeg))° \(leanDeg < 0 ? "L" : "P")"
+        leanDeg == 0 ? "0°" : "\(abs(leanDeg))° \(leanDeg < 0 ? "L" : String(localized: "P"))"
     }
     var coolantColor: Color {
         guard let c = coolantC else { return .secondary }
@@ -82,7 +82,7 @@ private extension RideActivityAttributes.ContentState {
 
 private struct StatusDot: View {
     let on: Bool
-    let label: String
+    let label: LocalizedStringKey
     var body: some View {
         HStack(spacing: 3) {
             Circle().fill(on ? Tacho.green : Color.gray.opacity(0.6)).frame(width: 6, height: 6)
@@ -93,7 +93,7 @@ private struct StatusDot: View {
 
 private struct Stat: View {
     let value: String
-    let label: String
+    let label: LocalizedStringKey
     var color: Color = .white
     var body: some View {
         VStack(spacing: 0) {

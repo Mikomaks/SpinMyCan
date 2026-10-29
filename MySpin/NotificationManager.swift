@@ -24,7 +24,7 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
 
         let endAction = UNNotificationAction(
             identifier: endActionID,
-            title:      "Zakończ i zapisz trasę",
+            title:      String(localized: "Zakończ i zapisz trasę"),
             options:    [.foreground]
         )
         let category = UNNotificationCategory(
@@ -39,8 +39,8 @@ final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     /// Wysyła powiadomienie "moto wyłączone od godziny — zakończyć trasę?".
     func sendGracePeriodNotification() {
         let content = UNMutableNotificationContent()
-        content.title = "Trasa nadal nagrywana"
-        content.body  = "Motocykl wyłączony od godziny. Zakończyć i zapisać trasę?"
+        content.title = String(localized: "Trasa nadal nagrywana")
+        content.body  = String(localized: "Motocykl wyłączony od godziny. Zakończyć i zapisać trasę?")
         content.sound = .default
         content.categoryIdentifier = categoryID
 

@@ -20,67 +20,67 @@ extension DashboardScreen {
         // Uwaga: Back (0x0E) jest martwy — motocykl używa go do wyjścia z mySPIN.
         // Akcje „wyjście/kalibracja" odpalamy przez DŁUGIE przytrzymanie OK.
         case .classic: return [
-            .init(id: "classic.prev",       label: "⏮ Poprzedni utwór", defaultKey: 0x20),
-            .init(id: "classic.next",       label: "⏭ Następny utwór",  defaultKey: 0x21),
-            .init(id: "classic.playpause",  label: "⏯ Play / Pause (OK)", defaultKey: 0x0C),
-            .init(id: "classic.screenPrev", label: "▲ Poprzedni ekran", defaultKey: 0x1E),
-            .init(id: "classic.screenNext", label: "▼ Następny ekran",  defaultKey: 0x1F),
+            .init(id: "classic.prev",       label: String(localized: "⏮ Poprzedni utwór"), defaultKey: 0x20),
+            .init(id: "classic.next",       label: String(localized: "⏭ Następny utwór"),  defaultKey: 0x21),
+            .init(id: "classic.playpause",  label: String(localized: "⏯ Play / Pause (OK)"), defaultKey: 0x0C),
+            .init(id: "classic.screenPrev", label: String(localized: "▲ Poprzedni ekran"), defaultKey: 0x1E),
+            .init(id: "classic.screenNext", label: String(localized: "▼ Następny ekran"),  defaultKey: 0x1F),
         ]
         case .lean: return [
-            .init(id: "lean.screenPrev", label: "▲ Poprzedni ekran",   defaultKey: 0x1E),
-            .init(id: "lean.screenNext", label: "▼ Następny ekran",    defaultKey: 0x1F),
-            .init(id: "lean.calibrate",  label: "⊙ Kalibracja (OK)",   defaultKey: 0x0C),
+            .init(id: "lean.screenPrev", label: String(localized: "▲ Poprzedni ekran"),   defaultKey: 0x1E),
+            .init(id: "lean.screenNext", label: String(localized: "▼ Następny ekran"),    defaultKey: 0x1F),
+            .init(id: "lean.calibrate",  label: String(localized: "⊙ Kalibracja (OK)"),   defaultKey: 0x0C),
         ]
         case .snake: return [
-            .init(id: "snake.up",      label: "Wąż: góra",         defaultKey: 0x1E),
-            .init(id: "snake.down",    label: "Wąż: dół",          defaultKey: 0x1F),
-            .init(id: "snake.left",    label: "Wąż: lewo",         defaultKey: 0x20),
-            .init(id: "snake.right",   label: "Wąż: prawo",        defaultKey: 0x21),
-            .init(id: "snake.restart", label: "Zagraj ponownie (OK)", defaultKey: 0x0C),
+            .init(id: "snake.up",      label: String(localized: "Wąż: góra"),         defaultKey: 0x1E),
+            .init(id: "snake.down",    label: String(localized: "Wąż: dół"),          defaultKey: 0x1F),
+            .init(id: "snake.left",    label: String(localized: "Wąż: lewo"),         defaultKey: 0x20),
+            .init(id: "snake.right",   label: String(localized: "Wąż: prawo"),        defaultKey: 0x21),
+            .init(id: "snake.restart", label: String(localized: "Zagraj ponownie (OK)"), defaultKey: 0x0C),
         ]
         case .sudoku: return [
-            .init(id: "sudoku.up",    label: "Kursor góra / cyfra +",  defaultKey: 0x1E),
-            .init(id: "sudoku.down",  label: "Kursor dół / cyfra −",   defaultKey: 0x1F),
-            .init(id: "sudoku.left",  label: "Kursor lewo",            defaultKey: 0x20),
-            .init(id: "sudoku.right", label: "Kursor prawo",           defaultKey: 0x21),
-            .init(id: "sudoku.ok",    label: "Edytuj / zatwierdź (OK)", defaultKey: 0x0C),
+            .init(id: "sudoku.up",    label: String(localized: "Kursor góra / cyfra +"),  defaultKey: 0x1E),
+            .init(id: "sudoku.down",  label: String(localized: "Kursor dół / cyfra −"),   defaultKey: 0x1F),
+            .init(id: "sudoku.left",  label: String(localized: "Kursor lewo"),            defaultKey: 0x20),
+            .init(id: "sudoku.right", label: String(localized: "Kursor prawo"),           defaultKey: 0x21),
+            .init(id: "sudoku.ok",    label: String(localized: "Edytuj / zatwierdź (OK)"), defaultKey: 0x0C),
         ]
         case .navigation: return [
-            .init(id: "nav.screenPrev", label: "▲ Poprzedni ekran", defaultKey: 0x1E),
-            .init(id: "nav.screenNext", label: "▼ Następny ekran",  defaultKey: 0x1F),
+            .init(id: "nav.screenPrev", label: String(localized: "▲ Poprzedni ekran"), defaultKey: 0x1E),
+            .init(id: "nav.screenNext", label: String(localized: "▼ Następny ekran"),  defaultKey: 0x1F),
         ]
         case .performance: return [
-            .init(id: "perf.screenPrev", label: "▲ Poprzedni ekran", defaultKey: 0x1E),
-            .init(id: "perf.screenNext", label: "▼ Następny ekran",  defaultKey: 0x1F),
-            .init(id: "perf.reset",      label: "Reset pomiaru",     defaultKey: 0x0C),
+            .init(id: "perf.screenPrev", label: String(localized: "▲ Poprzedni ekran"), defaultKey: 0x1E),
+            .init(id: "perf.screenNext", label: String(localized: "▼ Następny ekran"),  defaultKey: 0x1F),
+            .init(id: "perf.reset",      label: String(localized: "Reset pomiaru"),     defaultKey: 0x0C),
         ]
         case .video: return [
-            .init(id: "video.back",       label: "◀ 10 s do tyłu",       defaultKey: 0x20),
-            .init(id: "video.forward",    label: "▶ 10 s do przodu",     defaultKey: 0x21),
-            .init(id: "video.playpause",  label: "⏯ Pauza / dalej (OK)", defaultKey: 0x0C),
-            .init(id: "video.screenPrev", label: "▲ Poprzedni ekran",    defaultKey: 0x1E),
-            .init(id: "video.screenNext", label: "▼ Następny ekran",     defaultKey: 0x1F),
+            .init(id: "video.back",       label: String(localized: "◀ 10 s do tyłu"),       defaultKey: 0x20),
+            .init(id: "video.forward",    label: String(localized: "▶ 10 s do przodu"),     defaultKey: 0x21),
+            .init(id: "video.playpause",  label: String(localized: "⏯ Pauza / dalej (OK)"), defaultKey: 0x0C),
+            .init(id: "video.screenPrev", label: String(localized: "▲ Poprzedni ekran"),    defaultKey: 0x1E),
+            .init(id: "video.screenNext", label: String(localized: "▼ Następny ekran"),     defaultKey: 0x1F),
         ]
         case .navClassic: return [
-            .init(id: "navc.screenPrev", label: "▲ Poprzedni ekran", defaultKey: 0x1E),
-            .init(id: "navc.screenNext", label: "▼ Następny ekran",  defaultKey: 0x1F),
+            .init(id: "navc.screenPrev", label: String(localized: "▲ Poprzedni ekran"), defaultKey: 0x1E),
+            .init(id: "navc.screenNext", label: String(localized: "▼ Następny ekran"),  defaultKey: 0x1F),
         ]
         case .disco: return [
-            .init(id: "disco.prev",       label: "⏮ Poprzedni utwór", defaultKey: 0x20),
-            .init(id: "disco.next",       label: "⏭ Następny utwór",  defaultKey: 0x21),
-            .init(id: "disco.playpause",  label: "⏯ Play / Pause (OK)", defaultKey: 0x0C),
-            .init(id: "disco.screenPrev", label: "▲ Poprzedni ekran", defaultKey: 0x1E),
-            .init(id: "disco.screenNext", label: "▼ Następny ekran",  defaultKey: 0x1F),
+            .init(id: "disco.prev",       label: String(localized: "⏮ Poprzedni utwór"), defaultKey: 0x20),
+            .init(id: "disco.next",       label: String(localized: "⏭ Następny utwór"),  defaultKey: 0x21),
+            .init(id: "disco.playpause",  label: String(localized: "⏯ Play / Pause (OK)"), defaultKey: 0x0C),
+            .init(id: "disco.screenPrev", label: String(localized: "▲ Poprzedni ekran"), defaultKey: 0x1E),
+            .init(id: "disco.screenNext", label: String(localized: "▼ Następny ekran"),  defaultKey: 0x1F),
         ]
         case .hacker: return [
-            .init(id: "hack.screenPrev", label: "▲ Poprzedni ekran", defaultKey: 0x1E),
-            .init(id: "hack.screenNext", label: "▼ Następny ekran",  defaultKey: 0x1F),
+            .init(id: "hack.screenPrev", label: String(localized: "▲ Poprzedni ekran"), defaultKey: 0x1E),
+            .init(id: "hack.screenNext", label: String(localized: "▼ Następny ekran"),  defaultKey: 0x1F),
         ]
         case .memories: return [
-            .init(id: "mem.prev",       label: "⏮ Poprzednie zdjęcie", defaultKey: 0x20),
-            .init(id: "mem.next",       label: "⏭ Następne zdjęcie",   defaultKey: 0x21),
-            .init(id: "mem.screenPrev", label: "▲ Poprzedni ekran",    defaultKey: 0x1E),
-            .init(id: "mem.screenNext", label: "▼ Następny ekran",     defaultKey: 0x1F),
+            .init(id: "mem.prev",       label: String(localized: "⏮ Poprzednie zdjęcie"), defaultKey: 0x20),
+            .init(id: "mem.next",       label: String(localized: "⏭ Następne zdjęcie"),   defaultKey: 0x21),
+            .init(id: "mem.screenPrev", label: String(localized: "▲ Poprzedni ekran"),    defaultKey: 0x1E),
+            .init(id: "mem.screenNext", label: String(localized: "▼ Następny ekran"),     defaultKey: 0x1F),
         ]
         }
     }

@@ -1,0 +1,28 @@
+{
+  "sourceLanguage": "pl",
+  "strings": {
+    "✓ Cel zapisany — otwórz MySpin": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "✓ Destination saved — open MySpin"
+          }
+        }
+      }
+    },
+    "✗ Brak lokalizacji w udostępnieniu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "✗ No location in the shared item"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

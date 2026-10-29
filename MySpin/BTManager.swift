@@ -22,12 +22,12 @@ enum BTState: Equatable {
     var label: String {
         switch self {
         case .idle:                    return "Idle"
-        case .waitingForAccessory:     return "Czekam na motocykl BT..."
-        case .sessionOpen:             return "BT: sesja otwarta"
-        case .handshaking(let s):      return "BT handshake: \(s)"
-        case .wlanState(let s):        return "WiFi motocykla: \(s)"
-        case .failed(let e):           return "BT błąd: \(e)"
-        case .disconnected:            return "BT rozłączony"
+        case .waitingForAccessory:     return String(localized: "Czekam na motocykl BT...")
+        case .sessionOpen:             return String(localized: "BT: sesja otwarta")
+        case .handshaking(let s):      return String(localized: "BT handshake: \(s)")
+        case .wlanState(let s):        return String(localized: "WiFi motocykla: \(s)")
+        case .failed(let e):           return String(localized: "BT błąd: \(e)")
+        case .disconnected:            return String(localized: "BT rozłączony")
         }
     }
 
@@ -315,9 +315,12 @@ final class BTManager: NSObject, ObservableObject, StreamDelegate {
             let wlanState = payload["iviWlanState"] as? String ?? "?"
             DispatchQueue.main.async { self.state = .wlanState(wlanState) }
 
-            // Loguj CAŁY payload — tu może być SSID i hasło
+            // Loguj payload bez sekretów — log da się wyeksportować przez „Wyślij logi”
             appendMessage(direction: .system, text: "WiFi motocykla: \(wlanState)")
-            appendMessage(direction: .system, text: "  pełny payload: \(payload)")
+            let secretKeys: Set<String> = ["password", "psk", "passphrase"]
+            var redacted = payload
+            for k in secretKeys where redacted[k] != nil { redacted[k] = "***" }
+            appendMessage(direction: .system, text: "  payload: \(redacted)")
 
             let ssid     = payload["ssid"]     as? String
             let password = payload["password"] as? String
@@ -327,7 +330,7 @@ final class BTManager: NSObject, ObservableObject, StreamDelegate {
                         ?? payload["band"]          as? String
 
             if let ssid { appendMessage(direction: .system, text: "  SSID: \(ssid)") }
-            if let password { appendMessage(direction: .system, text: "  Hasło: \(password)") }
+            if let password { appendMessage(direction: .system, text: "  Hasło: \(password.prefix(2))*** (\(password.count) zn.)") }
             if let band { appendMessage(direction: .system, text: "  Band: \(band)") }
 
             if wlanState == "READY" || wlanState == "CONNECTED" {

@@ -65,19 +65,19 @@ enum Obd {
     /// Znaczenie znanych kodów (standard OBD; P-kody producenta — nieznane).
     static func meaning(_ code: String) -> String? {
         [
-            "U0073": "szyna CAN wyłączona (bus off)",
-            "U0100": "brak łączności ze sterownikiem silnika",
-            "U0121": "brak łączności z ABS",
-            "U0123": "brak łączności z czujnikiem ruchu (IMU)",
-            "U0132": "brak łączności ze sterownikiem zawieszenia",
-            "U0155": "brak łączności z zegarami",
+            "U0073": String(localized: "szyna CAN wyłączona (bus off)"),
+            "U0100": String(localized: "brak łączności ze sterownikiem silnika"),
+            "U0121": String(localized: "brak łączności z ABS"),
+            "U0123": String(localized: "brak łączności z czujnikiem ruchu (IMU)"),
+            "U0132": String(localized: "brak łączności ze sterownikiem zawieszenia"),
+            "U0155": String(localized: "brak łączności z zegarami"),
         ][code]
     }
 
     /// Sterownik po adresie odpowiedzi. 0x7E8 to w OBD zawsze sterownik silnika.
     static func ecuName(_ id: UInt32, ext: Bool = false) -> String {
-        if ext { return String(format: "sterownik %08X (29-bit)", id) }
-        return id == 0x7E8 ? "silnik (7E8)" : String(format: "sterownik %03X", id)
+        if ext { return String(format: String(localized: "sterownik %08X (29-bit)"), id) }
+        return id == 0x7E8 ? String(localized: "silnik (7E8)") : String(format: String(localized: "sterownik %03X"), id)
     }
 
     /// Którym adresowaniem kasować, skoro dany sterownik odpowiedział na odczyt.
@@ -90,29 +90,35 @@ enum Obd {
     /// Kody odmowy (UDS/OBD) po polsku.
     static func refusal(_ nrc: UInt8) -> String {
         switch nrc {
-        case 0x11: return "ta usługa nieobsługiwana"
-        case 0x12: return "ta funkcja nieobsługiwana"
-        case 0x22: return "warunki niespełnione (np. silnik pracuje)"
-        case 0x31: return "zapytanie poza zakresem"
-        case 0x33: return "wymaga zabezpieczenia serwisowego"
-        case 0x78: return "przetwarzam…"
-        default: return String(format: "odmowa 0x%02X", nrc)
+        case 0x11: return String(localized: "ta usługa nieobsługiwana")
+        case 0x12: return String(localized: "ta funkcja nieobsługiwana")
+        case 0x22: return String(localized: "warunki niespełnione (np. silnik pracuje)")
+        case 0x31: return String(localized: "zapytanie poza zakresem")
+        case 0x33: return String(localized: "wymaga zabezpieczenia serwisowego")
+        case 0x78: return String(localized: "przetwarzam…")
+        default: return String(format: String(localized: "odmowa 0x%02X"), nrc)
         }
     }
 
     /// Jedno zdanie o odpowiedzi sterownika na daną komendę.
     static func summary(_ op: DiagOp, _ r: DiagReply) -> String {
         let b = r.bytes
-        if !r.isObd { return "ramka: " + b.map { String(format: "%02X", $0) }.joined(separator: " ") }
-        if b.count >= 3, b[0] == 0x7F { return "odmowa: " + refusal(b[2]) }
+        if !r.isObd {
+            let hexBytes = b.map { String(format: "%02X", $0) }.joined(separator: " ")
+            return String(localized: "ramka: \(hexBytes)")
+        }
+        if b.count >= 3, b[0] == 0x7F {
+            let why = refusal(b[2])
+            return String(localized: "odmowa: \(why)")
+        }
         switch op {
         case .ping:
-            return b.first == 0x41 ? "odpowiada na OBD" : "nieznana odpowiedź"
+            return b.first == 0x41 ? String(localized: "odpowiada na OBD") : String(localized: "nieznana odpowiedź")
         case .clear:
-            return b.first == 0x44 ? "kody skasowane" : "nieznana odpowiedź"
+            return b.first == 0x44 ? String(localized: "kody skasowane") : String(localized: "nieznana odpowiedź")
         case .read, .probe:
-            guard let c = codes(b) else { return "nieznana odpowiedź" }
-            if c.isEmpty { return "brak zapisanych kodów" }
+            guard let c = codes(b) else { return String(localized: "nieznana odpowiedź") }
+            if c.isEmpty { return String(localized: "brak zapisanych kodów") }
             return c.map { code in meaning(code).map { "\(code) — \($0)" } ?? code }.joined(separator: "\n")
         }
     }

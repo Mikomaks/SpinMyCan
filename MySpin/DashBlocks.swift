@@ -169,8 +169,8 @@ extension FrameRenderer {
             ctx.restoreGState()
             drawNavCursor(cx: rect.midX, cy: rect.midY)   // heading-up → strzałka w górę
         } else {
-            writeCtr("Ustaw cel w karcie Nawigacja (w apce)", x: rect.midX, y: rect.midY - 8, size: 15, color: GRAY)
-            writeCtr("albo wklej link z Apple Maps", x: rect.midX, y: rect.midY + 14, size: 12, color: DIM)
+            writeCtr(String(localized: "Ustaw cel w karcie Nawigacja (w apce)"), x: rect.midX, y: rect.midY - 8, size: 15, color: GRAY)
+            writeCtr(String(localized: "albo wklej link z Apple Maps"), x: rect.midX, y: rect.midY + 14, size: 12, color: DIM)
         }
 
         // ── Banner turn-by-turn (góra) ──
@@ -561,12 +561,12 @@ extension FrameRenderer {
 
         writeCtr("km/h", x: cx, y: kmhY, size: 18, color: GRAY)
 
-        // ── Separator z watermarkiem pośrodku: ─── @mikomaks_ ─── ──
+        // ── Separator z watermarkiem pośrodku: ─── SpinMyCan @mikomaks_ ─── ──
         let wmAttrs: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 10, weight: .medium),
             .foregroundColor: GRAY.withAlphaComponent(0.65)   // GRAY=65% white → widoczne po JPEG
         ]
-        let wmText = "@mikomaks_"
+        let wmText = "SpinMyCan @mikomaks_"
         let wmSz   = (wmText as NSString).size(withAttributes: wmAttrs)
         let wmGap:  CGFloat = 8   // odstęp między linią a tekstem
         let wmX    = cx - wmSz.width / 2

@@ -156,8 +156,8 @@ final class SegmentManager: ObservableObject {
         recTrace = []; recStart = nil; recLast = nil
         recDistM = 0; recSec = 0
         isRecording = true
-        liveText = "Nagrywam odcinek…"
-        setChip(DashChip(text: "● ODCINEK 0.0 km", tone: .warn))
+        liveText = String(localized: "Nagrywam odcinek…")
+        setChip(DashChip(text: String(localized: "● ODCINEK 0.0 km"), tone: .warn))
     }
 
     func cancelRecording() {
@@ -171,7 +171,7 @@ final class SegmentManager: ObservableObject {
     /// albo powód odrzucenia do pokazania użytkownikowi.
     @discardableResult
     func finishRecording(name: String) -> String? {
-        guard isRecording else { return "Nie nagrywam" }
+        guard isRecording else { return String(localized: "Nie nagrywam") }
         let trace = Self.trimmed(recTrace)
         isRecording = false
         recTrace = []; recStart = nil; recLast = nil
@@ -179,11 +179,11 @@ final class SegmentManager: ObservableObject {
         setChip(nil)
 
         guard trace.count >= 5, let last = trace.last, last.d >= Self.minLengthM else {
-            return "Za krótki odcinek — potrzeba co najmniej \(Int(Self.minLengthM)) m jazdy"
+            return String(localized: "Za krótki odcinek — potrzeba co najmniej \(Int(Self.minLengthM)) m jazdy")
         }
         let clean = name.trimmingCharacters(in: .whitespacesAndNewlines)
         let first = Self.run(from: trace, date: Date())
-        var seg = Segment(name: clean.isEmpty ? "Odcinek \(segments.count + 1)" : clean,
+        var seg = Segment(name: clean.isEmpty ? String(localized: "Odcinek \(segments.count + 1)") : clean,
                           created: Date(), points: trace, runs: [first])
         seg.id = UUID()
         segments.insert(seg, at: 0)
@@ -270,7 +270,7 @@ final class SegmentManager: ObservableObject {
         recSec = time.timeIntervalSince(recStart!)
         recTrace.append(SegPoint(lat: c.latitude, lon: c.longitude, d: recDistM, t: recSec,
                                  kmh: kmh, lean: lean))
-        setChip(DashChip(text: String(format: "● ODCINEK %.1f km", recDistM / 1000), tone: .warn))
+        setChip(DashChip(text: String(format: String(localized: "● ODCINEK %.1f km"), recDistM / 1000), tone: .warn))
     }
 
     /// Szuka przecięcia bramki startu któregokolwiek odcinka.
@@ -352,8 +352,8 @@ final class SegmentManager: ObservableObject {
         let refTotal = pts.last?.t ?? 0
         if l.off >= 5 || elapsed > refTotal * 3 + 120 {
             live = nil; liveActive = false
-            liveText = "Odcinek \(seg.name) przerwany"
-            setChip(DashChip(text: "⏱ \(seg.name) — przerwany", tone: .quiet))
+            liveText = String(localized: "Odcinek \(seg.name) przerwany")
+            setChip(DashChip(text: String(localized: "⏱ \(seg.name) — przerwany"), tone: .quiet))
             resultUntil = Date().addingTimeInterval(6)
             return
         }
@@ -396,7 +396,7 @@ final class SegmentManager: ObservableObject {
         let diff = prevBest.map { time - $0 }
         var txt = "🏁 \(seg.name)  \(Self.fmt(time))"
         if let d = diff { txt += String(format: "  %@%.1f s", d <= 0 ? "−" : "+", abs(d)) }
-        if isRecord, prevBest != nil { txt += "  REKORD" }
+        if isRecord, prevBest != nil { txt += "  " + String(localized: "REKORD") }
         liveText = txt
         setChip(DashChip(text: txt, tone: isRecord ? .good : .bad))
         resultUntil = Date().addingTimeInterval(Self.resultShowSec)

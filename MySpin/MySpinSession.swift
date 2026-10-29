@@ -18,11 +18,11 @@ enum TCPState: Equatable {
     var label: String {
         switch self {
         case .idle:                   return "TCP: idle"
-        case .connecting:             return "TCP: łączę..."
-        case .handshaking(let s):     return "TCP: handshake \(s)/7"
-        case .connected:              return "TCP: POŁĄCZONY ✓"
-        case .failed(let e):          return "TCP błąd: \(e)"
-        case .disconnected:           return "TCP: rozłączony"
+        case .connecting:             return String(localized: "TCP: łączę...")
+        case .handshaking(let s):     return String(localized: "TCP: handshake \(s)/7")
+        case .connected:              return String(localized: "TCP: POŁĄCZONY ✓")
+        case .failed(let e):          return String(localized: "TCP błąd: \(e)")
+        case .disconnected:           return String(localized: "TCP: rozłączony")
         }
     }
 
@@ -99,7 +99,7 @@ final class MySpinSession: ObservableObject {
         logTele("🔌 Łączę z motocyklem \(host):\(port)...")
 
         guard let nwPort = NWEndpoint.Port(rawValue: port) else {
-            tcpState = .failed("Zły port"); return
+            tcpState = .failed(String(localized: "Zły port")); return
         }
 
         let ep = NWEndpoint.hostPort(host: NWEndpoint.Host(host), port: nwPort)

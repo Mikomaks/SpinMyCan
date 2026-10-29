@@ -108,7 +108,7 @@ struct WeatherAhead: Equatable {
     }
 
     private static func rainWord(_ mmH: Double) -> String {
-        mmH < 1 ? "mżawka" : (mmH < 4 ? "deszcz" : "ulewa")
+        mmH < 1 ? String(localized: "mżawka") : (mmH < 4 ? String(localized: "deszcz") : String(localized: "ulewa"))
     }
 
     /// Pigułki na deskę. `navRemaining` = bieżący dystans do celu (maleje w czasie
@@ -125,25 +125,25 @@ struct WeatherAhead: Equatable {
 
         if rainingNow {
             if let d = dryAt {
-                let tail = (onRoute && dryDistM != nil) ? "sucho za \(km(dryDistM!))" : "jeszcze \(span(mins(d)))"
-                out.append(DashChip(text: "☔ pada · \(tail)", tone: .rain))
+                let tail = (onRoute && dryDistM != nil) ? String(localized: "sucho za \(km(dryDistM!))") : String(localized: "jeszcze \(span(mins(d)))")
+                out.append(DashChip(text: String(localized: "☔ pada · \(tail)"), tone: .rain))
             } else {
-                out.append(DashChip(text: "☔ pada", tone: .rain))
+                out.append(DashChip(text: String(localized: "☔ pada"), tone: .rain))
             }
         } else if let r = rainAt {
             let m = mins(r)
             let word = Self.rainWord(rainMmH)
             if m <= 1 {
-                out.append(DashChip(text: "☔ \(word) tuż przed tobą", tone: .rain))
+                out.append(DashChip(text: String(localized: "☔ \(word) tuż przed tobą"), tone: .rain))
             } else if onRoute, let dist = rainDistM {
-                out.append(DashChip(text: "☔ \(word) za \(km(dist)) · \(span(m))", tone: .rain))
+                out.append(DashChip(text: String(localized: "☔ \(word) za \(km(dist)) · \(span(m))"), tone: .rain))
             } else {
-                out.append(DashChip(text: "☔ \(word) za \(span(m))", tone: .rain))
+                out.append(DashChip(text: String(localized: "☔ \(word) za \(span(m))"), tone: .rain))
             }
         } else if horizonMin > 0 {
             let txt = onRoute
-                ? (reachesDestination ? "sucho do celu" : String(format: "sucho przez %.0f km", horizonKm))
-                : "sucho przez \(span(horizonMin))"
+                ? (reachesDestination ? String(localized: "sucho do celu") : String(format: String(localized: "sucho przez %.0f km"), horizonKm))
+                : String(localized: "sucho przez \(span(horizonMin))")
             out.append(DashChip(text: txt, tone: .quiet))
         }
 
@@ -154,7 +154,7 @@ struct WeatherAhead: Equatable {
             if rel > 180 { rel -= 360 }; if rel < -180 { rel += 360 }
             let cross = gustKmh * abs(sin(rel * .pi / 180))
             if cross >= 30 {
-                let side = rel > 0 ? "z prawej" : "z lewej"
+                let side = rel > 0 ? String(localized: "z prawej") : String(localized: "z lewej")
                 // Krótko, żeby zmieścił się OBOK pigułki deszczu (środek deski ma 444 px).
                 out.append(DashChip(text: String(format: "💨 %.0f km/h %@", cross, side),
                                     tone: cross >= 50 ? .bad : .warn))
@@ -306,7 +306,7 @@ final class WeatherManager: ObservableObject {
             DispatchQueue.main.async {
                 self.temperatureC = temp
                 self.lastUpdate   = Date()
-                print("[Weather] \(String(format: "%.1f", temp))°C @ \(lat),\(lon)")
+                print("[Weather] \(String(format: "%.1f", temp))°C")
             }
         }.resume()
     }
