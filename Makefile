@@ -28,10 +28,17 @@
 
 SHELL := /bin/bash
 
+# Osobiste ustawienia (NIE w repozytorium — local.mk jest w .gitignore), np.:
+#   DEVICE_UDID      = 00000000-0000-0000-0000-000000000000
+#   DEVELOPMENT_TEAM = ABCDE12345
+-include local.mk
+
 SCHEME        = MySpin
 BUNDLE_ID     = wassup.MySpin
-# UDID telefonu: xcrun devicectl list devices (albo: make install DEVICE_UDID=...)
+# UDID telefonu: xcrun devicectl list devices (albo w local.mk, albo: make install DEVICE_UDID=...)
 DEVICE_UDID  ?= TWOJ-UDID-TELEFONU
+# Zespół podpisu Apple (Xcode ▸ Settings ▸ Accounts) — w local.mk; pusty = ten z projektu Xcode
+DEVELOPMENT_TEAM ?=
 # Uwaga: budujemy do /tmp żeby ominąć iCloud Drive xattr pollution (com.apple.FinderInfo)
 # która psuje codesign gdy projekt jest na Desktop synchronizowanym przez iCloud.
 DERIVED_DATA  = /tmp/SpinMyCan_build
@@ -80,6 +87,7 @@ build: $(VIDEO_DEP)
 		-derivedDataPath $(DERIVED_DATA) \
 		-destination 'generic/platform=iOS' \
 		-allowProvisioningUpdates \
+		$(if $(DEVELOPMENT_TEAM),DEVELOPMENT_TEAM=$(DEVELOPMENT_TEAM),) \
 		ENABLE_ON_DEMAND_RESOURCES=NO \
 		ASSETCATALOG_COMPILER_SKIP_APP_STORE_DEPLOYMENT=YES \
 		ONLY_ACTIVE_ARCH=YES \
