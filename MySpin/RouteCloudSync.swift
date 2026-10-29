@@ -59,14 +59,14 @@ final class RouteCloudSync: ObservableObject {
             folderName = url.lastPathComponent
             sync()
         } catch {
-            status = "Nie da się zapamiętać folderu: \(error.localizedDescription)"
+            status = String(localized: "Nie da się zapamiętać folderu: \(error.localizedDescription)")
         }
     }
 
     /// Odłącza folder; trasy, których nie ma w telefonie, najpierw wracają z chmury.
     func disconnect() {
         busy = true
-        status = "Ściągam trasy z chmury…"
+        status = String(localized: "Ściągam trasy z chmury…")
         q.async { [self] in
             var failed = 0
             _ = withFolder { folder in
@@ -80,14 +80,14 @@ final class RouteCloudSync: ObservableObject {
             DispatchQueue.main.async { [self] in
                 busy = false
                 if failed > 0 {
-                    status = "Nie ściągnęło się \(failed) tras — folder zostaje podłączony. Sprawdź internet."
+                    status = String(localized: "Nie ściągnęło się \(failed) tras — folder zostaje podłączony. Sprawdź internet.")
                     return
                 }
                 defaults.removeObject(forKey: Self.bookmarkKey)
                 defaults.removeObject(forKey: Self.nameKey)
                 folderName = nil
                 cloudCount = 0; cloudOnlyCount = 0
-                status = "Folder odłączony, wszystkie trasy są w telefonie."
+                status = String(localized: "Folder odłączony, wszystkie trasy są w telefonie.")
             }
         }
     }
@@ -121,13 +121,13 @@ final class RouteCloudSync: ObservableObject {
             }
             DispatchQueue.main.async { [self] in
                 busy = false
-                guard ok else { status = "Brak dostępu do folderu — wybierz go jeszcze raz."; return }
+                guard ok else { status = String(localized: "Brak dostępu do folderu — wybierz go jeszcze raz."); return }
                 cloudCount = cloud
                 cloudOnlyCount = cloudOnly
                 let f = DateFormatter(); f.dateFormat = "HH:mm"
-                var s = "Zsynchronizowano \(f.string(from: Date()))"
-                if copied > 0 { s += " · wysłane pliki: \(copied)" }
-                if offloaded > 0 { s += " · zwolnione z telefonu: \(offloaded)" }
+                var s = String(localized: "Zsynchronizowano \(f.string(from: Date()))")
+                if copied > 0 { s += String(localized: " · wysłane pliki: \(copied)") }
+                if offloaded > 0 { s += String(localized: " · zwolnione z telefonu: \(offloaded)") }
                 status = s
             }
         }

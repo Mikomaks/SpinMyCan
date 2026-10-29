@@ -15,7 +15,7 @@ import Combine
 enum SudokuDifficulty: Int, CaseIterable, Codable {
     case easy = 0, medium = 1, hard = 2, expert = 3
     var givens: Int { [45, 35, 30, 26][rawValue] }
-    var title: String { ["Łatwy", "Średni", "Trudny", "Ekspert"][rawValue] }
+    var title: String { [String(localized: "Łatwy"), String(localized: "Średni"), String(localized: "Trudny"), String(localized: "Ekspert")][rawValue] }
 }
 
 // MARK: — Snapshot dla renderera (czytany na innym wątku)
@@ -253,7 +253,7 @@ final class SudokuGame: ObservableObject {
     }
 
     private func failOnline() {
-        note = "Brak internetu — generuję planszę lokalnie"
+        note = String(localized: "Brak internetu — generuję planszę lokalnie")
         newGame(difficulty)
     }
 

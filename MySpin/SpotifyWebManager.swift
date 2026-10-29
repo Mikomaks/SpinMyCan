@@ -38,7 +38,7 @@ final class SpotifyWebManager: NSObject, ObservableObject {
     @Published var elapsed:    Double   = 0
     @Published var duration:   Double   = 0
     @Published var isConnected: Bool    = false
-    @Published var statusText:  String  = "Nie połączony"
+    @Published var statusText:  String  = String(localized: "Nie połączony")
 
     /// Interpolowane — do płynnego progress bara
     var currentElapsed: Double {
@@ -121,17 +121,17 @@ final class SpotifyWebManager: NSObject, ObservableObject {
         guard !clientID.isEmpty, refreshToken != nil else { return }
         if let expiry = tokenExpiry, Date() < expiry, accessToken != nil {
             isConnected = true
-            statusText  = "Spotify ✓ (token ok)"
+            statusText  = String(localized: "Spotify ✓ (token ok)")
             startPolling()
         } else {
             // Token wygasł — odśwież
-            statusText = "Spotify: odświeżam token..."
+            statusText = String(localized: "Spotify: odświeżam token...")
             refreshAccessToken { [weak self] success in
                 if success {
                     self?.isConnected = true
                     self?.startPolling()
                 } else {
-                    self?.statusText = "Spotify: token wygasł — zaloguj ponownie"
+                    self?.statusText = String(localized: "Spotify: token wygasł — zaloguj ponownie")
                 }
             }
         }
@@ -141,7 +141,7 @@ final class SpotifyWebManager: NSObject, ObservableObject {
 
     func authenticate() {
         guard !clientID.isEmpty else {
-            statusText = "⚠️ Wprowadź Client ID z Spotify Developer Dashboard"
+            statusText = String(localized: "⚠️ Wprowadź Client ID z Spotify Developer Dashboard")
             return
         }
 
@@ -160,7 +160,7 @@ final class SpotifyWebManager: NSObject, ObservableObject {
         ]
         guard let authURL = comps.url else { return }
 
-        statusText = "Spotify: otwieranie okna logowania..."
+        statusText = String(localized: "Spotify: otwieranie okna logowania...")
         let session = ASWebAuthenticationSession(
             url: authURL,
             callbackURLScheme: Self.redirectScheme
@@ -168,7 +168,7 @@ final class SpotifyWebManager: NSObject, ObservableObject {
             guard let self else { return }
             if let err = error as? ASWebAuthenticationSessionError,
                err.code == .canceledLogin {
-                DispatchQueue.main.async { self.statusText = "Spotify: logowanie anulowane" }
+                DispatchQueue.main.async { self.statusText = String(localized: "Spotify: logowanie anulowane") }
                 return
             }
             if let error {
@@ -179,7 +179,7 @@ final class SpotifyWebManager: NSObject, ObservableObject {
                   let code = URLComponents(url: url, resolvingAgainstBaseURL: false)?
                       .queryItems?.first(where: { $0.name == "code" })?.value
             else {
-                DispatchQueue.main.async { self.statusText = "Spotify: brak kodu OAuth" }
+                DispatchQueue.main.async { self.statusText = String(localized: "Spotify: brak kodu OAuth") }
                 return
             }
             self.exchangeCode(code)
@@ -197,7 +197,7 @@ final class SpotifyWebManager: NSObject, ObservableObject {
         tokenExpiry  = nil
         isConnected  = false
         clearTrack()
-        statusText   = "Spotify: rozłączono"
+        statusText   = String(localized: "Spotify: rozłączono")
     }
 
     // MARK: — Token exchange
@@ -330,12 +330,12 @@ final class SpotifyWebManager: NSObject, ObservableObject {
                     }
                 case 204:
                     if !self.title.isEmpty { self.clearTrack() }
-                    self.statusText = "Spotify: nic nie gra"
+                    self.statusText = String(localized: "Spotify: nic nie gra")
                 case 401:
                     self.accessToken = nil
                     self.refreshAccessToken()
                 case 429:
-                    self.statusText = "Spotify: rate limit (429)"
+                    self.statusText = String(localized: "Spotify: rate limit (429)")
                 default:
                     if let error {
                         self.statusText = "Spotify err: \(error.localizedDescription.prefix(40))"
@@ -501,9 +501,9 @@ final class SpotifyWebManager: NSObject, ObservableObject {
                     self?.refreshAccessToken()
                 case 403:
                     // Brakuje scope user-modify-playback-state — wymagane ponowne logowanie
-                    self?.statusText = "⚠️ Rozłącz i połącz Spotify ponownie (brak uprawnienia modify)"
+                    self?.statusText = String(localized: "⚠️ Rozłącz i połącz Spotify ponownie (brak uprawnienia modify)")
                 case 404:
-                    self?.statusText = "Spotify: brak aktywnego urządzenia"
+                    self?.statusText = String(localized: "Spotify: brak aktywnego urządzenia")
                 default:
                     self?.statusText = "Spotify ctrl: HTTP \(status)"
                 }

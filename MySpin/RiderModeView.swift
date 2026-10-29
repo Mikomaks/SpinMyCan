@@ -234,7 +234,7 @@ struct RiderModeView: View {
                     .monospacedDigit()
                     .shadow(color: zoneColor(lean).opacity(0.7), radius: size * 0.04)
                     .contentTransition(.numericText())
-                Text(lean < -1.5 ? "LEWO" : (lean > 1.5 ? "PRAWO" : "—"))
+                Text(lean < -1.5 ? String(localized: "LEWO") : (lean > 1.5 ? String(localized: "PRAWO") : "—"))
                     .font(.system(size: size * 0.045, weight: .heavy))
                     .tracking(3)
                     .foregroundStyle(.white.opacity(0.5))
@@ -386,7 +386,7 @@ struct RiderModeView: View {
                 HStack(spacing: 10) {
                     Image(systemName: recorder.isRecording ? "stop.fill" : "record.circle")
                         .font(.system(size: 22, weight: .bold))
-                    Text(recorder.isRecording ? "ZATRZYMAJ" : "NAGRYWAJ")
+                    Text(recorder.isRecording ? String(localized: "ZATRZYMAJ") : String(localized: "NAGRYWAJ"))
                         .font(.system(size: 16, weight: .heavy)).tracking(2)
                 }
                 .foregroundStyle(.white)

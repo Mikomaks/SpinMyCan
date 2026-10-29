@@ -77,7 +77,7 @@ struct CardHeader<Trailing: View>: View {
                 .foregroundStyle(.white)
                 .frame(width: 30, height: 30)
                 .background(tint.gradient, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .font(.system(.headline, design: .rounded))
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
@@ -100,7 +100,8 @@ struct SectionTitle: View {
     init(_ text: String) { self.text = text }
 
     var body: some View {
-        Text(text.uppercased())
+        Text(LocalizedStringKey(text))
+            .textCase(.uppercase)
             .font(.system(size: 12, weight: .semibold))
             .tracking(0.8)
             .foregroundStyle(.secondary)
@@ -127,7 +128,7 @@ struct StatusPill: View {
                     .foregroundStyle(color)
                     .frame(width: 22, height: 22)
                     .background(color.opacity(0.15), in: Circle())
-                Text(title)
+                Text(LocalizedStringKey(title))
                     .font(.system(size: 10, weight: .semibold))
                     .tracking(0.5)
                     .foregroundStyle(.secondary)
@@ -175,7 +176,7 @@ struct StatTile: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            Text(label)
+            Text(LocalizedStringKey(label))
                 .font(.system(size: 9, weight: .bold))
                 .tracking(0.8)
                 .foregroundStyle(.secondary)
@@ -198,7 +199,7 @@ struct LinkRow: View {
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(tint)
                 .frame(width: 22)
-            Text(title)
+            Text(LocalizedStringKey(title))
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.primary)
                 .lineLimit(1)

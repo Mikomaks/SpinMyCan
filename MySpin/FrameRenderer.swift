@@ -336,7 +336,7 @@ final class FrameRenderer: ObservableObject {
             // Klatki wideo idą wprost z VideoFrameProvider (bypass renderera).
             // Ten placeholder pokazuje się tylko zanim pierwsza klatka będzie gotowa.
             BG_DARK.setFill(); UIRectFill(CGRect(origin: .zero, size: CGSize(width: l.W, height: l.H)))
-            writeCtr("Isle of Man TT — ładowanie…", x: l.W/2, y: l.H/2, size: 20, color: GRAY)
+            writeCtr(String(localized: "Isle of Man TT — ładowanie…"), x: l.W/2, y: l.H/2, size: 20, color: GRAY)
         }
 
         // Overlay kalibracji (ręczna) — odliczanie 5..1, pomiar 0, "Skalibrowano" -2
@@ -855,7 +855,7 @@ final class FrameRenderer: ObservableObject {
 
     func paintSnakeScreen(_ l: Layout) {
         guard let g = snakeSnapshot else {
-            writeCtr("Snake — ładowanie...", x: l.W/2, y: l.H/2, size: 20, color: GRAY)
+            writeCtr(String(localized: "Snake — ładowanie..."), x: l.W/2, y: l.H/2, size: 20, color: GRAY)
             return
         }
         let W = l.W, H = l.H
@@ -870,7 +870,7 @@ final class FrameRenderer: ObservableObject {
 
         // Pasek wyniku
         write("SNAKE", x: 14, y: topBar/2, size: 16, color: GREEN, bold: true)
-        writeR("Wynik: \(g.score)", x: W - 14, y: topBar/2, size: 16, color: WHITE, bold: true)
+        writeR(String(localized: "Wynik: \(g.score)"), x: W - 14, y: topBar/2, size: 16, color: WHITE, bold: true)
 
         // Plansza
         BG_DARK.setFill()
@@ -903,9 +903,9 @@ final class FrameRenderer: ObservableObject {
             RED.setStroke()
             let bp = UIBezierPath(roundedRect: bx, cornerRadius: 10); bp.lineWidth = 2; bp.stroke()
             writeCtr("GAME OVER", x: W/2, y: H/2 - 12, size: 26, color: RED, bold: true)
-            writeCtr("Wynik \(g.score)  •  OK = zagraj ponownie", x: W/2, y: H/2 + 18, size: 14, color: WHITE)
+            writeCtr(String(localized: "Wynik \(g.score)  •  OK = zagraj ponownie"), x: W/2, y: H/2 + 18, size: 14, color: WHITE)
         } else if !g.started {
-            writeCtr("Wciśnij kierunek joystickiem aby zacząć", x: W/2, y: oy + gridH/2, size: 16, color: WHITE, bold: true)
+            writeCtr(String(localized: "Wciśnij kierunek joystickiem aby zacząć"), x: W/2, y: oy + gridH/2, size: 16, color: WHITE, bold: true)
         }
     }
 
@@ -913,7 +913,7 @@ final class FrameRenderer: ObservableObject {
 
     func paintSudokuScreen(_ l: Layout) {
         guard let s = sudokuSnapshot else {
-            writeCtr("Sudoku — ładowanie...", x: l.W/2, y: l.H/2, size: 20, color: GRAY)
+            writeCtr(String(localized: "Sudoku — ładowanie..."), x: l.W/2, y: l.H/2, size: 20, color: GRAY)
             return
         }
         let W = l.W, H = l.H
@@ -924,12 +924,18 @@ final class FrameRenderer: ObservableObject {
         let oy = topBar + (H - topBar - grid) / 2
 
         // Pasek górny
+        let srcName: String
+        switch s.source {
+        case "Dnia": srcName = String(localized: "Dnia")
+        case "Online": srcName = "Online"
+        default: srcName = String(localized: "Losowa")
+        }
         write("SUDOKU", x: 14, y: topBar/2, size: 15, color: BLUE, bold: true)
-        writeCtr("\(s.source) · \(s.difficulty)", x: W/2, y: topBar/2, size: 13, color: GRAY, bold: true)
+        writeCtr("\(srcName) · \(s.difficulty)", x: W/2, y: topBar/2, size: 13, color: GRAY, bold: true)
         writeR("\(s.filled)/81", x: W - 14, y: topBar/2, size: 14, color: WHITE, bold: true)
 
         if s.generating {
-            writeCtr("Generuję planszę...", x: W/2, y: H/2, size: 22, color: GRAY, bold: true)
+            writeCtr(String(localized: "Generuję planszę..."), x: W/2, y: H/2, size: 22, color: GRAY, bold: true)
             return
         }
 
@@ -1017,8 +1023,8 @@ final class FrameRenderer: ObservableObject {
         let hintX = ox + grid + 20
         if hintX < W - 20 {
             let hints = s.editing
-                ? ["EDYCJA", "Góra/Dół:", "  cyfra", "OK: zatwierdź", "Back: anuluj"]
-                : ["NAWIGACJA", "D-pad: kursor", "OK: edytuj", "Back: wyjście"]
+                ? [String(localized: "EDYCJA"), String(localized: "Góra/Dół:"), String(localized: "  cyfra"), String(localized: "OK: zatwierdź"), String(localized: "Back: anuluj")]
+                : [String(localized: "NAWIGACJA"), String(localized: "D-pad: kursor"), String(localized: "OK: edytuj"), String(localized: "Back: wyjście")]
             for (i, line) in hints.enumerated() {
                 write(line, x: hintX, y: oy + 16 + CGFloat(i)*20,
                       size: i == 0 ? 13 : 11, color: i == 0 ? (s.editing ? ORANGE : GRAY) : DIM, bold: i == 0)
@@ -1042,7 +1048,7 @@ final class FrameRenderer: ObservableObject {
             UIBezierPath(roundedRect: bx, cornerRadius: 10).fill()
             GREEN.setStroke()
             let bp = UIBezierPath(roundedRect: bx, cornerRadius: 10); bp.lineWidth = 2; bp.stroke()
-            writeCtr("ROZWIĄZANE! 🎉", x: W/2, y: H/2, size: 24, color: GREEN, bold: true)
+            writeCtr(String(localized: "ROZWIĄZANE! 🎉"), x: W/2, y: H/2, size: 24, color: GREEN, bold: true)
         }
     }
 
@@ -1067,7 +1073,7 @@ final class FrameRenderer: ObservableObject {
             drawNavCursor(cx: mapX + mapW/2, cy: H/2)   // heading-up → strzałka zawsze w górę
         } else {
             BG_DARK.setFill(); UIRectFill(mapRect)
-            writeCtr("Czekam na GPS / mapę…", x: mapX + mapW/2, y: H/2, size: 16, color: GRAY)
+            writeCtr(String(localized: "Czekam na GPS / mapę…"), x: mapX + mapW/2, y: H/2, size: 16, color: GRAY)
         }
 
         // ── Banner turn-by-turn ──
@@ -1130,12 +1136,12 @@ final class FrameRenderer: ObservableObject {
 
     func paintPerfScreen(_ l: Layout) {
         guard let p = perfSnapshot else {
-            writeCtr("Pomiary — ładowanie...", x: l.W/2, y: l.H/2, size: 20, color: GRAY); return
+            writeCtr(String(localized: "Pomiary — ładowanie..."), x: l.W/2, y: l.H/2, size: 20, color: GRAY); return
         }
         let W = l.W, H = l.H
 
         // Pasek górny
-        write("POMIARY", x: 14, y: 16, size: 15, color: ORANGE, bold: true)
+        write(String(localized: "POMIARY"), x: 14, y: 16, size: 15, color: ORANGE, bold: true)
         let stateCol = p.running ? RED : (p.armed ? GREEN : GRAY)
         writeR(p.stateLabel, x: W - 14, y: 16, size: 14, color: stateCol, bold: true)
         // separator
@@ -1154,7 +1160,7 @@ final class FrameRenderer: ObservableObject {
             writeCtr(String(format: "%.0f m", p.distance), x: lcx, y: 270, size: 16, color: DIM, bold: true)
         } else {
             writeCtr(String(format: "MAX %d km/h", Int(p.maxSpeed)), x: lcx, y: 234, size: 18, color: GRAY, bold: true)
-            writeCtr("Zatrzymaj się i rusz aby zmierzyć", x: lcx, y: 264, size: 11, color: DIMMER)
+            writeCtr(String(localized: "Zatrzymaj się i rusz aby zmierzyć"), x: lcx, y: 264, size: 11, color: DIMMER)
         }
 
         // ── Prawa siatka wyników (na żywo lub ostatni przejazd) ──
@@ -1189,7 +1195,7 @@ final class FrameRenderer: ObservableObject {
         cell(1, 0, "0–100 km/h", fT(z100v), nil, GREEN)
         cell(0, 1, "60–100",     fT(sixtyv), nil, BLUE)
         cell(1, 1, "0–400 m",    fT(d4v),   nil, BLUE)
-        cell(0, 2, "¼ mili",     fT(qv),    trapv == nil ? nil : String(format: "@ %d km/h", Int(trapv!)), ORANGE)
+        cell(0, 2, String(localized: "¼ mili"),     fT(qv),    trapv == nil ? nil : String(format: "@ %d km/h", Int(trapv!)), ORANGE)
         cell(1, 2, "MAX",        "\(Int(p.maxSpeed))", "km/h", RED)
     }
 
@@ -1239,7 +1245,7 @@ final class FrameRenderer: ObservableObject {
         RED_LINE.setStroke(); artPath.lineWidth = 1.0; artPath.stroke()
 
         guard !npTitle.isEmpty else {
-            writeCtr("Nic nie gra", x: cx, y: artY + artSize + 24, size: 13, color: DIM)
+            writeCtr(String(localized: "Nic nie gra"), x: cx, y: artY + artSize + 24, size: 13, color: DIM)
             return
         }
 
@@ -1290,11 +1296,11 @@ final class FrameRenderer: ObservableObject {
             // ── Stan: Skalibrowano ✓ (ręczna kalibracja) ─────────────────
             writeGlow("✓", x: cx, y: cy - 14, size: 64, color: GREEN,
                       glow: GREEN.withAlphaComponent(0.45))
-            writeCtr("SKALIBROWANO", x: cx, y: cy + 40, size: 14,
+            writeCtr(String(localized: "SKALIBROWANO"), x: cx, y: cy + 40, size: 14,
                      color: GREEN, bold: true)
         } else {
             // ── Stan: Odliczanie / Pomiar ─────────────────────────────────
-            writeCtr("JEDŹ PROSTO", x: cx, y: cy - 70, size: 13,
+            writeCtr(String(localized: "JEDŹ PROSTO"), x: cx, y: cy - 70, size: 13,
                      color: WHITE, bold: true)
 
             // Duży licznik
@@ -1323,7 +1329,7 @@ final class FrameRenderer: ObservableObject {
                              cornerRadius: 4).fill()
             }
 
-            writeCtr("przechyl poprawnie zamontowany telefon", x: cx, y: barY + 22,
+            writeCtr(String(localized: "przechyl poprawnie zamontowany telefon"), x: cx, y: barY + 22,
                      size: 9, color: DIM)
         }
 

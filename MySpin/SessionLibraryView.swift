@@ -51,12 +51,12 @@ struct SessionLibraryView: View {
                     .listStyle(.insetGrouped)
                 }
             }
-            .navigationTitle(selectMode ? "Wybierz trasy" : "Biblioteka tras")
+            .navigationTitle(selectMode ? String(localized: "Wybierz trasy") : String(localized: "Biblioteka tras"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     if storage.library.count >= 2 {
-                        Button(selectMode ? "Anuluj" : "Wybierz") {
+                        Button(selectMode ? String(localized: "Anuluj") : String(localized: "Wybierz")) {
                             selectMode.toggle()
                             if !selectMode { selectedIDs.removeAll() }
                         }
@@ -84,8 +84,8 @@ struct SessionLibraryView: View {
     private var concatBar: some View {
         HStack {
             Text(selectedIDs.isEmpty
-                 ? "Zaznacz 2+ trasy do połączenia"
-                 : "Wybrano: \(selectedIDs.count)")
+                 ? String(localized: "Zaznacz 2+ trasy do połączenia")
+                 : String(localized: "Wybrano: \(selectedIDs.count)"))
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             Spacer()
@@ -161,14 +161,14 @@ struct SessionLibraryView: View {
             DispatchQueue.main.async {
                 concatBusy = false
                 if let m = merged {
-                    concatStatus = "✅ Połączono \(summaries.count) tras → \(String(format: "%.1f km", m.totalDistKm))"
+                    concatStatus = String(localized: "✅ Połączono \(summaries.count) tras → \(String(format: "%.1f km", m.totalDistKm))")
                     selectMode = false
                     selectedIDs.removeAll()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
                         concatStatus = nil
                     }
                 } else {
-                    concatStatus = "❌ Błąd łączenia"
+                    concatStatus = String(localized: "❌ Błąd łączenia")
                 }
             }
         }
@@ -290,7 +290,7 @@ struct SessionPlayerView: View {
 
                         // ── Speed chart ──
                         TimelineChartView(
-                            title: "Prędkość",
+                            title: String(localized: "Prędkość"),
                             unit:  "km/h",
                             color: .cyan,
                             values: speedSamples,
@@ -383,7 +383,7 @@ struct SessionPlayerView: View {
 
     // ── Tytuł nawigacji ──
     private var playerTitle: String {
-        guard let s = replay.summary else { return "Odtwarzanie" }
+        guard let s = replay.summary else { return String(localized: "Odtwarzanie") }
         let f = DateFormatter()
         f.dateFormat = "dd.MM HH:mm"
         return f.string(from: s.startTime)
@@ -393,11 +393,11 @@ struct SessionPlayerView: View {
     @ViewBuilder
     private func statsBar(_ s: SessionSummary) -> some View {
         HStack(spacing: 0) {
-            statBox("DYSTANS", String(format: "%.1f", s.totalDistKm), "km", .green)
+            statBox(String(localized: "DYSTANS"), String(format: "%.1f", s.totalDistKm), "km", .green)
             Divider().frame(height: 32)
             statBox("MAX",     "\(Int(s.maxSpeedKmh))",                "km/h", .cyan)
             Divider().frame(height: 32)
-            statBox("ŚREDNIA", "\(Int(s.avgSpeedKmh))",                "km/h", .blue)
+            statBox(String(localized: "ŚREDNIA"), "\(Int(s.avgSpeedKmh))",                "km/h", .blue)
             Divider().frame(height: 32)
             statBox("LEAN",    String(format: "%.0f°/%.0f°",
                                        min(s.maxLeanLeft, 65),
@@ -1342,7 +1342,7 @@ enum SessionShareHelper {
     /// wiele dni → „14–16 sierpnia 2026" (trasa potrafi trwać kilka dni).
     private static func dateRangeText(_ s: SessionSummary) -> String {
         let cal = Calendar.current
-        let pl  = Locale(identifier: "pl_PL")
+        let pl  = Locale.current
         let sameDay = cal.isDate(s.startTime, inSameDayAs: s.endTime)
         if sameDay {
             let f = DateFormatter(); f.locale = pl; f.dateFormat = "EEEE, d MMMM yyyy"
@@ -1544,13 +1544,13 @@ enum SessionShareHelper {
             drawText(heroStr, at: CGPoint(x: W / 2, y: top + 60),
                      size: 110, weight: .heavy, color: .white, alignment: .center)
             cg.restoreGState()
-            drawText("KILOMETRÓW", at: CGPoint(x: W / 2, y: top + 138),
+            drawText(String(localized: "KILOMETRÓW"), at: CGPoint(x: W / 2, y: top + 138),
                      size: 28, weight: .heavy, color: gsxRedLight, alignment: .center, tracking: 8)
 
         case .stats:
             drawStat(label: "MAX KM/H", value: "\(Int(s.maxSpeedKmh))",
                      at: CGPoint(x: W * 0.20, y: top + 45), accent: gsxRedLight)
-            drawStat(label: "ŚREDNIA", value: "\(Int(s.avgSpeedKmh)) km/h",
+            drawStat(label: String(localized: "ŚREDNIA"), value: "\(Int(s.avgSpeedKmh)) km/h",
                      at: CGPoint(x: W * 0.50, y: top + 45), accent: .white)
             drawStat(label: "MAX G", value: String(format: "%.2f", s.maxGforce),
                      at: CGPoint(x: W * 0.80, y: top + 45), accent: gsxRedLight)
@@ -1565,13 +1565,13 @@ enum SessionShareHelper {
         case .engine(let e):
             drawStat(label: "MAX RPM", value: "\(e.maxRPM)",
                      at: CGPoint(x: W * 0.20, y: top + 45), accent: gsxRedLight)
-            drawStat(label: "ŚR. RPM", value: "\(e.avgRPM)",
+            drawStat(label: String(localized: "ŚR. RPM"), value: "\(e.avgRPM)",
                      at: CGPoint(x: W * 0.50, y: top + 45), accent: .white)
-            drawStat(label: "ZMIANY BIEGÓW", value: "\(e.shifts)",
+            drawStat(label: String(localized: "ZMIANY BIEGÓW"), value: "\(e.shifts)",
                      at: CGPoint(x: W * 0.80, y: top + 45), accent: .white)
 
         case .gears(let e, let pie):
-            drawText("CZAS NA BIEGACH", at: CGPoint(x: W / 2, y: top + 18),
+            drawText(String(localized: "CZAS NA BIEGACH"), at: CGPoint(x: W / 2, y: top + 18),
                      size: 22, weight: .heavy, color: grayLabel, alignment: .center, tracking: 4)
             let share = e.gearShare
             let secs = Array(e.gearSeconds[1...])
@@ -1607,7 +1607,7 @@ enum SessionShareHelper {
                     let y = top + 165 - CGFloat(used.count - 1) * 19 + CGFloat(row) * 38
                     palette[i].setFill()
                     UIBezierPath(roundedRect: CGRect(x: 540, y: y - 11, width: 22, height: 22), cornerRadius: 5).fill()
-                    drawText("\(i + 1). bieg", at: CGPoint(x: 580, y: y), size: 26, weight: .heavy, color: .white)
+                    drawText(String(localized: "\(i + 1). bieg"), at: CGPoint(x: 580, y: y), size: 26, weight: .heavy, color: .white)
                     drawText("\(Int((share[i] * 100).rounded()))%", at: CGPoint(x: 800, y: y), size: 26, weight: .bold,
                              color: UIColor(white: 0.85, alpha: 1), alignment: .right)
                     drawText(mmss(secs[i]), at: CGPoint(x: 940, y: y), size: 26, weight: .semibold,
@@ -1634,7 +1634,7 @@ enum SessionShareHelper {
             }
 
         case .fav(let t):
-            drawText("♪  UTWÓR TRASY", at: CGPoint(x: W / 2, y: top + 22),
+            drawText(String(localized: "♪  UTWÓR TRASY"), at: CGPoint(x: W / 2, y: top + 22),
                      size: 22, weight: .heavy, color: UIColor(red: 0.11, green: 0.84, blue: 0.38, alpha: 1),
                      alignment: .center, tracking: 4)
             drawText(clip(t.title, size: 44, weight: .heavy, width: W - 160),
@@ -1665,8 +1665,8 @@ enum SessionShareHelper {
             }
             let moving = s.movingSec
             let timeStr = moving > 0
-                ? "W RUCHU  \(hm(moving))   ·   ŁĄCZNIE  \(hm(s.durationSec))"
-                : "CZAS  \(hm(s.durationSec))"
+                ? String(localized: "W RUCHU  \(hm(moving))   ·   ŁĄCZNIE  \(hm(s.durationSec))")
+                : String(localized: "CZAS  \(hm(s.durationSec))")
             drawText(timeStr, at: CGPoint(x: W / 2, y: top + 35), size: 30, weight: .semibold,
                      color: UIColor(white: 0.78, alpha: 1), alignment: .center, tracking: 2)
         }
@@ -1701,7 +1701,7 @@ enum SessionShareHelper {
         guard coords.count >= 2 else {
             UIColor(white: 0.55, alpha: 1).set()
             let para = NSMutableParagraphStyle(); para.alignment = .center
-            ("brak GPS" as NSString).draw(
+            (String(localized: "brak GPS") as NSString).draw(
                 in: CGRect(x: rect.minX, y: rect.midY - 24, width: rect.width, height: 48),
                 withAttributes: [
                     .font: UIFont.systemFont(ofSize: 36, weight: .medium),

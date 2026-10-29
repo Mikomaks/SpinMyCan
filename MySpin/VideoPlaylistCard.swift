@@ -32,7 +32,7 @@ struct VideoPlaylistCard: View {
                         .frame(width: 22)
                     VStack(alignment: .leading, spacing: 1) {
                         Text(item.title).lineLimit(1)
-                        Text(Self.clock(item.seconds) + (item.builtin ? " · wbudowany" : ""))
+                        Text(Self.clock(item.seconds) + (item.builtin ? String(localized: " · wbudowany") : ""))
                             .font(.caption).foregroundStyle(.secondary)
                     }
                     Spacer()
@@ -48,7 +48,7 @@ struct VideoPlaylistCard: View {
 
             if let p = video.importProgress {
                 ProgressView(value: p) {
-                    Text(video.importStatus ?? "Przerabiam…").font(.caption)
+                    Text(video.importStatus ?? String(localized: "Przerabiam…")).font(.caption)
                 }
                 Text("Trzymaj apkę na wierzchu do końca przeróbki.")
                     .font(.caption2).foregroundStyle(.secondary)
