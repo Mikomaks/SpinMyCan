@@ -68,7 +68,7 @@ final class PerfMeter: ObservableObject {
     }
 
     init() {
-        display = PerfSnapshot(stateLabel: "Stój by zacząć", armed: false, running: false,
+        display = PerfSnapshot(stateLabel: String(localized: "Stój by zacząć"), armed: false, running: false,
                                speed: 0, elapsed: 0, distance: 0, zeroTo60: nil, zeroTo100: nil,
                                quarter: nil, quarterTrap: nil, zeroTo400m: nil, maxSpeed: 0, lastRun: nil)
         loadRuns()
@@ -167,8 +167,8 @@ final class PerfMeter: ObservableObject {
         let armed = state == .armed && speed < launchKmh
         let label: String
         switch state {
-        case .running: label = "POMIAR"
-        case .armed:   label = armed ? "NA STARCIE" : "—"
+        case .running: label = String(localized: "POMIAR")
+        case .armed:   label = armed ? String(localized: "NA STARCIE") : "—"
         }
         display = PerfSnapshot(
             stateLabel: label, armed: armed, running: state == .running,

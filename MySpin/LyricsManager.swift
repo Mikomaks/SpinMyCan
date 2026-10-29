@@ -58,7 +58,7 @@ final class LyricsManager: ObservableObject {
 
     private func fetch(title: String, artist: String, duration: Double) {
         task?.cancel()
-        setState(lines: [], status: "szukam tekstu…")
+        setState(lines: [], status: String(localized: "szukam tekstu…"))
 
         // 1) dokładne dopasowanie po /get (artysta+tytuł+czas)
         var c = URLComponents(string: "https://lrclib.net/api/get")!
@@ -89,7 +89,7 @@ final class LyricsManager: ObservableObject {
                let parsed = self.parse(first), !parsed.isEmpty {
                 self.publish(parsed)
             } else {
-                self.setState(lines: [], status: "brak tekstu")
+                self.setState(lines: [], status: String(localized: "brak tekstu"))
             }
         }
     }
@@ -112,7 +112,7 @@ final class LyricsManager: ObservableObject {
     private func parse(_ obj: Any) -> [LyricLine]? {
         guard let dict = obj as? [String: Any] else { return nil }
         if (dict["instrumental"] as? Bool) == true {
-            setState(lines: [], status: "instrumental 🎸")
+            setState(lines: [], status: String(localized: "instrumental 🎸"))
             return []
         }
         guard let lrc = dict["syncedLyrics"] as? String, !lrc.isEmpty else { return nil }
@@ -120,7 +120,7 @@ final class LyricsManager: ObservableObject {
     }
 
     private func publish(_ parsed: [LyricLine]) {
-        setState(lines: parsed, status: parsed.isEmpty ? "brak tekstu" : "")
+        setState(lines: parsed, status: parsed.isEmpty ? String(localized: "brak tekstu") : "")
     }
 
     /// Parsuje format LRC: "[mm:ss.xx] tekst" (linia może mieć kilka znaczników czasu).

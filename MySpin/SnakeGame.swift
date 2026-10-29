@@ -21,17 +21,17 @@ enum DashboardScreen: Int, CaseIterable {
 
     var title: String {
         switch self {
-        case .classic:     return "Klasyczny"
-        case .lean:        return "Lean — przechył"
-        case .snake:       return "Snake 🐍"
-        case .sudoku:      return "Sudoku 🔢"
-        case .navigation:  return "Nawigacja 🗺️"
-        case .performance: return "Pomiary 🏁"
-        case .video:       return "Wideo 🎬"
-        case .navClassic:  return "Nawigacja + deska 🧭"
-        case .disco:       return "Disco 🪩"
-        case .memories:    return "Wspomnienia 📸"
-        case .hacker:      return "Terminal CAN 💻"
+        case .classic:     return String(localized: "Klasyczny")
+        case .lean:        return String(localized: "Lean — przechył")
+        case .snake:       return String(localized: "Snake 🐍")
+        case .sudoku:      return String(localized: "Sudoku 🔢")
+        case .navigation:  return String(localized: "Nawigacja 🗺️")
+        case .performance: return String(localized: "Pomiary 🏁")
+        case .video:       return String(localized: "Wideo 🎬")
+        case .navClassic:  return String(localized: "Nawigacja + deska 🧭")
+        case .disco:       return String(localized: "Disco 🪩")
+        case .memories:    return String(localized: "Wspomnienia 📸")
+        case .hacker:      return String(localized: "Terminal CAN 💻")
         }
     }
     var icon: String {

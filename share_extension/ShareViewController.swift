@@ -119,7 +119,7 @@ final class ShareViewController: UIViewController {
     // MARK: — Toast + zamknięcie
 
     private func done(ok: Bool) {
-        showToast(ok ? "✓ Cel zapisany — otwórz MySpin" : "✗ Brak lokalizacji w udostępnieniu")
+        showToast(ok ? String(localized: "✓ Cel zapisany — otwórz MySpin") : String(localized: "✗ Brak lokalizacji w udostępnieniu"))
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) { [weak self] in
             self?.extensionContext?.completeRequest(returningItems: nil)
         }

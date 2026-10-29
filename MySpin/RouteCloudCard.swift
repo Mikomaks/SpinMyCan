@@ -16,8 +16,8 @@ struct RouteCloudCard: View {
             }
 
             if let name = cloud.folderName {
-                Text("Folder: \(name) · tras w chmurze: \(cloud.cloudCount)"
-                     + (cloud.cloudOnlyCount > 0 ? " · tylko w chmurze: \(cloud.cloudOnlyCount)" : ""))
+                Text(String(localized: "Folder: \(name) · tras w chmurze: \(cloud.cloudCount)")
+                     + (cloud.cloudOnlyCount > 0 ? String(localized: " · tylko w chmurze: \(cloud.cloudOnlyCount)") : ""))
                     .font(.subheadline)
                 Text("Każda trasa trafia do folderu zaraz po zapisaniu. Trasy starsze niż \(RouteCloudSync.keepLocalDays) dni znikają z telefonu, gdy iCloud potwierdzi kopię — dalej są w bibliotece, otwarcie ściąga je z chmury.")
                     .font(.caption).foregroundStyle(.secondary)

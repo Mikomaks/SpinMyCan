@@ -169,8 +169,8 @@ extension FrameRenderer {
             ctx.restoreGState()
             drawNavCursor(cx: rect.midX, cy: rect.midY)   // heading-up → strzałka w górę
         } else {
-            writeCtr("Ustaw cel w karcie Nawigacja (w apce)", x: rect.midX, y: rect.midY - 8, size: 15, color: GRAY)
-            writeCtr("albo wklej link z Apple Maps", x: rect.midX, y: rect.midY + 14, size: 12, color: DIM)
+            writeCtr(String(localized: "Ustaw cel w karcie Nawigacja (w apce)"), x: rect.midX, y: rect.midY - 8, size: 15, color: GRAY)
+            writeCtr(String(localized: "albo wklej link z Apple Maps"), x: rect.midX, y: rect.midY + 14, size: 12, color: DIM)
         }
 
         // ── Banner turn-by-turn (góra) ──

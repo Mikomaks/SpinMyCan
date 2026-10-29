@@ -36,7 +36,7 @@ enum ProvisioningInfo {
     /// Krótki tekst do paska: „7 dni". nil gdy nie dotyczy.
     static var shortLabel: String? {
         guard let d = daysLeft else { return nil }
-        return d < 0 ? "wygasł" : "\(d) dni"
+        return d < 0 ? String(localized: "wygasł") : String(localized: "\(d) dni")
     }
 
     /// Czy warto ostrzec użytkownika (≤ 2 dni albo już po terminie).
