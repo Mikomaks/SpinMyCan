@@ -16,6 +16,7 @@
   <img alt="ESP32-S3" src="https://img.shields.io/badge/ESP32--S3-CAN%20%E2%86%92%20BLE-E7352C?logo=espressif&logoColor=white">
   <img alt="MIT" src="https://img.shields.io/badge/license-MIT-blue">
   <img alt="CAN board optional" src="https://img.shields.io/badge/CAN%20board-optional-2ea44f">
+    <a href="https://github.com/Mikomaks/SpinMyCan/releases"><img alt="Version" src="https://img.shields.io/github/v/release/Mikomaks/SpinMyCan"></a>
 </p>
 
 <p align="center"><a href="README.pl.md">🇵🇱 Polska wersja</a></p>
