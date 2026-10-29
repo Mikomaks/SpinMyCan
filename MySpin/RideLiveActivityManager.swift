@@ -6,8 +6,9 @@
 // Zasady iOS: aktywność da się ZACZĄĆ tylko z apką na pierwszym planie; aktualizować
 // można też z tła (apka żyje w tle dzięki GPS). Aktualizujemy najwyżej co 2 s i tylko
 // po zmianie — wyspa to podgląd, nie wskaźnik do jazdy, a każda zmiana kosztuje baterię.
-// Gdy apka zginie, po 2 min iOS przyciemnia aktywność (staleDate) zamiast pokazywać
-// stare liczby jak świeże.
+// Ubicie apki zamyka aktywność (AppDelegate.applicationWillTerminate). Gdy apka zginie
+// bez ostrzeżenia (awaria, iOS), po 2 min iOS przyciemnia aktywność (staleDate) zamiast
+// pokazywać stare liczby jak świeże.
 
 import ActivityKit
 import Foundation
@@ -69,6 +70,19 @@ final class RideLiveActivityManager {
         } catch {
             lastError = error.localizedDescription
         }
+    }
+
+    /// Przy zamykaniu apki: zamyka aktywności i czeka na to najwyżej 2 s (koniec jest
+    /// asynchroniczny, a po powrocie z applicationWillTerminate proces znika).
+    nonisolated static func endAllBeforeExit() {
+        let done = DispatchSemaphore(value: 0)
+        Task.detached {
+            for a in Activity<RideActivityAttributes>.activities {
+                await a.end(nil, dismissalPolicy: .immediate)
+            }
+            done.signal()
+        }
+        _ = done.wait(timeout: .now() + 2)
     }
 
     private func endAll() {

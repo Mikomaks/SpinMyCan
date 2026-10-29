@@ -18,6 +18,12 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
                      supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         AppDelegate.lock
     }
+
+    /// Ubicie apki (przesunięcie w przełączniku apek): zamknij Dynamic Island — inaczej
+    /// zostaje na ekranie z ostatnimi liczbami. Apka żyje w tle (GPS), więc iOS to woła.
+    func applicationWillTerminate(_ application: UIApplication) {
+        RideLiveActivityManager.endAllBeforeExit()
+    }
 }
 
 enum OrientationLock {
