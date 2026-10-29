@@ -2534,6 +2534,9 @@ struct ContentView: View {
         if ProcessInfo.processInfo.environment["BLOCK_SHOT"] != nil {
             FrameRenderer.debugWriteBlockShots()
         }
+        if ProcessInfo.processInfo.environment["README_SHOTS"] != nil {
+            FrameRenderer.debugWriteReadmeMedia()
+        }
         if ProcessInfo.processInfo.environment["FEATURE_TEST"] != nil {
             FeatureSelfTest.run()
         }

@@ -1752,11 +1752,11 @@ extension FrameRenderer {
         r.npIsPlaying = true
         r.lyricsLines = [
             .init(time: 88,  text: "Lights are running down the line"),
-            .init(time: 92,  text: "Cold air hits the visor glass, this is a very long line to test wrapping"),
-            .init(time: 96,  text: "Lean it over, hold the throttle, every corner one more song for the road"),
-            .init(time: 100, text: "Engine humming through the night"),
-            .init(time: 104, text: "Lights are running down the line"),
-            .init(time: 108, text: "Waiting for the right time"),
+            .init(time: 92,  text: "A very long test line to check how the wrapping behaves on the display tonight"),
+            .init(time: 96,  text: "Another long line of made-up words to see the wrap and the karaoke highlight"),
+            .init(time: 100, text: "Every corner, one more song"),
+            .init(time: 104, text: "Engine humming through the night"),
+            .init(time: 108, text: "Hold the throttle, find the line"),
         ]
         let png = r.renderImage().pngData()
         let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
