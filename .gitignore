@@ -9,3 +9,5 @@ canlogs/
 MySpin/video_tt.mjpg
 MySpin/video_tt.mjpg.part
 video/
+# osobiste ustawienia (UDID telefonu, zespół podpisu)
+local.mk
