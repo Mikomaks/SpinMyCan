@@ -175,12 +175,47 @@ struct MySpinPacketBuilder {
         build(type: .serverInitDone, payload: Data([0x01]))
     }
 
-    /// AppList (type 70) — lista aplikacji wysyłana po handshake w odpowiedzi na type 67.
+    /// AppList (type 70) — app list sent after the handshake in reply to type 67.
+    /// The bike needs this message before it starts showing frames.
     ///
-    /// Payload zarejestrowany z pcapng (realny mySPIN iOS, 850B, 12 aplikacji Bosch/third-party).
-    /// Motocykl potrzebuje tej wiadomości żeby aktywować wyświetlanie klatek.
-    static func appList() -> Data {
-        // 850 dokładnych bajtów z pcapng, wygenerowane przez parser Pythona
+    /// Format (little-endian), per entry after a u32 count:
+    ///   str packageId, str name, u32 0, str vendor, 13 bytes of flags
+    ///   where str = 0x01, u16 length, UTF-8 bytes.
+    /// Flag byte 8 differs per app (1/2/3, meaning unknown); the rest is constant.
+    struct AppListEntry {
+        var packageId: String
+        var name: String
+        var vendor: String
+        var kind: UInt8 = 1
+    }
+
+    /// Our own list (one entry). Default since 1.21.0 — needs confirming on the bike.
+    static let ownAppList: [AppListEntry] = [
+        AppListEntry(packageId: "com.spinmycan.dash", name: "SpinMyCan", vendor: "SpinMyCan"),
+    ]
+
+    /// UserDefaults key: true → send the legacy recorded list (fallback while testing).
+    static let legacyAppListKey = "appList.useLegacy"
+
+    static func encodeAppList(_ entries: [AppListEntry]) -> Data {
+        func u16(_ v: Int) -> [UInt8] { [UInt8(v & 0xFF), UInt8((v >> 8) & 0xFF)] }
+        func str(_ s: String) -> [UInt8] { let b = Array(s.utf8); return [0x01] + u16(b.count) + b }
+        var out: [UInt8] = [UInt8(entries.count & 0xFF), UInt8((entries.count >> 8) & 0xFF), 0, 0]
+        for e in entries {
+            out += str(e.packageId) + str(e.name) + [0, 0, 0, 0] + str(e.vendor)
+            out += [0x01, 0x00, 0x00, 0x01, 0x01, 0x00, 0x00, 0x00, e.kind, 0x01, 0x65, 0x6E, 0x67]   // …"eng"
+        }
+        return Data(out)
+    }
+
+    static func appList(defaults: UserDefaults = .standard) -> Data {
+        let payload = defaults.bool(forKey: legacyAppListKey) ? legacyAppListPayload() : encodeAppList(ownAppList)
+        return build(type: .appList, payload: payload)
+    }
+
+    /// TEMPORARY (test/own-app-list): the list recorded from the original app.
+    /// Delete together with the toggle once the own list is confirmed on the bike.
+    static func legacyAppListPayload() -> Data {
         let hex =
             "00000000" +
             "" +
@@ -203,7 +238,7 @@ struct MySpinPacketBuilder {
             if let byte = UInt8(hex[i..<j], radix: 16) { payload.append(byte) }
             i = j
         }
-        return build(type: .appList, payload: payload)
+        return payload
     }
 
     // ── Pakiety runtime ──
