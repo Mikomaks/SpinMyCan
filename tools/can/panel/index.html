@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel CAN</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+:root{
+  --bg:#0b0e12; --panel:#12171e; --panel2:#171d26; --line:#242d3a; --text:#d6dde8; --dim:#7b8798;
+  --accent:#4cc9f0; --ok:#5ee08a; --warn:#ffb454; --hot:#ff5d73; --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: light){
+  :root{ --bg:#eef1f5; --panel:#fff; --panel2:#f4f6f9; --line:#d5dbe4; --text:#18202b; --dim:#66738a; --accent:#0a7ea4; --ok:#1b9a4b; --warn:#c77700; --hot:#d3293f; }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:13px/1.35 -apple-system,system-ui,sans-serif}
+button,select,input{font:inherit;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+button{cursor:pointer} button:hover{border-color:var(--accent)} button.on{background:var(--accent);color:#04202b;border-color:var(--accent)}
+input[type=number]{width:70px} input[type=text]{width:120px}
+.mono{font-family:var(--mono)}
+header{position:sticky;top:0;z-index:1000;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--panel)}
+header .sp{flex:1}
+#dot{width:9px;height:9px;border-radius:50%;background:var(--dim);display:inline-block;margin-right:6px}
+#dot.live{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+#status{color:var(--dim);max-width:46ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#seekrow{display:none;align-items:center;gap:8px}
+#seekrow input[type=range]{width:240px}
+#clock{font:600 16px var(--mono);color:var(--accent);min-width:8ch}
+#goto{width:84px}
+#tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px;padding:10px 12px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:7px 10px;min-height:58px}
+.tile .k{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.tile .v{font:600 21px var(--mono);margin-top:1px;white-space:nowrap}
+.tile .u{color:var(--dim);font-size:11px;font-weight:400;margin-left:3px}
+.tile.na .v{color:var(--dim)}
+.bar{height:5px;background:var(--panel2);border-radius:3px;margin-top:4px;position:relative;overflow:hidden}
+.bar i{position:absolute;top:0;bottom:0;background:var(--accent)}
+main{display:grid;grid-template-columns:minmax(560px,1.35fr) minmax(340px,1fr);gap:10px;padding:0 12px 14px}
+main>section:nth-child(-n+2){height:clamp(420px,64vh,900px)}
+section{background:var(--panel);border:1px solid var(--line);border-radius:10px;min-height:0;display:flex;flex-direction:column}
+section>h2{margin:0;padding:8px 12px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--dim);border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+section>h2 .sp{flex:1}
+.scroll{overflow:auto;min-height:0;flex:1}
+table{border-collapse:collapse;width:100%}
+th{position:sticky;top:0;background:var(--panel);text-align:left;font-weight:500;color:var(--dim);padding:4px 8px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap}
+td{padding:2px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+tr.row{cursor:pointer} tr.row:hover td{background:var(--panel2)} tr.row.sel td{background:color-mix(in srgb,var(--accent) 16%,transparent)}
+td.id{font:600 13px var(--mono);color:var(--accent)}
+td.hz,td.cnt{font-family:var(--mono);color:var(--dim);text-align:right}
+.by{display:inline-block;width:2.6ch;text-align:center;font-family:var(--mono);border-radius:3px;margin-right:2px;padding:0 1px}
+.by.base{outline:1px dashed var(--warn);outline-offset:-1px}
+td.dec{color:var(--ok);font-size:12px;max-width:380px;overflow:hidden;text-overflow:ellipsis}
+td.nm{color:var(--text)}
+.pill{font-size:10px;padding:0 5px;border-radius:8px;border:1px solid var(--line);color:var(--dim);margin-left:4px}
+#detail{padding:10px 12px;overflow:auto;flex:1}
+#detail h3{margin:0 0 6px;font:600 15px var(--mono)}
+.bits{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin:8px 0}
+.byte{border:1px solid var(--line);border-radius:7px;padding:4px;background:var(--panel2)}
+.byte .h{display:flex;justify-content:space-between;color:var(--dim);font-size:10px}
+.byte .hx{font:600 15px var(--mono);text-align:center}
+.bitrow{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;margin-top:3px}
+.bit{height:13px;border-radius:2px;background:var(--bg);border:1px solid var(--line);font:9px/11px var(--mono);text-align:center;color:transparent}
+.bit.one{background:var(--accent);border-color:var(--accent);color:#04202b}
+.bit.act{box-shadow:0 0 0 1px var(--warn)}
+.quick{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 10px}
+.quick button{padding:1px 7px;font:11px var(--mono)}
+.sig{display:grid;grid-template-columns:auto 1fr auto;gap:6px;align-items:center;padding:3px 0;border-bottom:1px solid var(--line)}
+.sig .val{font:600 13px var(--mono);color:var(--ok)}
+.sig small{color:var(--dim)}
+.form{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
+#lanes{grid-column:1/-1;min-height:210px;max-height:70vh}
+#mapSec{grid-column:1/-1;height:clamp(380px,60vh,800px)}
+#map{flex:1;min-height:0;border-radius:0 0 10px 10px}
+.leaflet-container{background:var(--panel2)}
+.mk-joy{color:#c792ea}
+#lanes .scroll{display:flex;flex-direction:column}
+.lane{display:grid;grid-template-columns:200px 1fr;border-bottom:1px solid var(--line);height:84px;flex:none}
+.lane .meta{padding:5px 10px;border-right:1px solid var(--line)}
+.lane .meta b{font:600 12px var(--mono)} .lane .meta .cur{font:600 18px var(--mono)}
+.lane .meta small{color:var(--dim);display:block}
+.lane .meta .x{float:right;border:0;background:none;color:var(--dim);padding:0 3px}
+.lane canvas{width:100%;height:83px;display:block;min-width:0}
+.empty{color:var(--dim);padding:18px;text-align:center}
+kbd{font:11px var(--mono);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 4px}
+@media (max-width:1050px){ main{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header>
+  <span id="dot"></span><b>Panel CAN</b>
+  <select id="src" title="Źródło ramek"></select>
+  <span id="clock" title="Godzina w tym miejscu nagrania"></span>
+  <span id="seekrow">
+    <button id="play">⏸</button>
+    <select id="speed"><option>0.25</option><option>0.5</option><option selected>1</option><option>2</option><option>5</option><option>10</option><option>30</option><option>60</option></select>×
+    <input id="seek" type="range" min="0" max="1000" value="0">
+    <span id="pos" class="mono">0.0 / 0.0 s</span>
+    <label><input id="loop" type="checkbox" checked> pętla</label>
+    <input id="goto" type="text" placeholder="17:39:50" title="Idź do godziny (Enter)">
+  </span>
+  <span id="status"></span>
+  <span class="sp"></span>
+  <button id="freeze" title="Zamraża widok (dane dalej się zbierają) — spacja">⏯ Zamroź</button>
+  <button id="mark" title="Wstawia znacznik w przebiegach — klawisz M">📍 Znacznik</button>
+  <button id="base" title="Zapamiętuje obecne bajty; różniące się dostają żółtą ramkę">Zdjęcie bazowe</button>
+  <button id="clear">Wyczyść</button>
+</header>
+
+<div id="tiles"></div>
+
+<main>
+  <section>
+    <h2>Ramki na szynie <span class="pill" id="nIds">0 ID</span> <span class="pill" id="nRate">0 /s</span>
+      <span class="sp"></span>
+      <input id="filter" type="text" placeholder="filtr ID / nazwa">
+      <label title="Tylko ramki, w których coś zmieniło się w ostatnich 5 s"><input id="onlyChg" type="checkbox"> tylko zmienne</label>
+      <label title="Kolumna z odczytem znanych sygnałów (z SYGNALY.md)"><input id="xlate" type="checkbox" checked> tłumacz</label>
+      <select id="fmt"><option value="hex">HEX</option><option value="dec">DEC</option><option value="bin">BIN</option></select>
+    </h2>
+    <div class="scroll"><table id="tbl"><thead><tr>
+      <th data-s="id">ID</th><th data-s="name">Co to</th><th data-s="hz">Hz</th><th data-s="cnt">Ramek</th><th>Bajty 0…7</th><th class="decH">Odczyt</th>
+    </tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section>
+    <h2><span id="dTitle">Szczegóły</span><span class="sp"></span><span style="text-transform:none;letter-spacing:0">kliknij ramkę po lewej</span></h2>
+    <div id="detail"><div class="empty">Wybierz ramkę z tabeli, żeby zobaczyć bity, znane sygnały i dodać własny przebieg.</div></div>
+  </section>
+
+  <section id="lanes">
+    <h2>Przebiegi w czasie
+      <span class="sp"></span>
+      <label>okno <select id="win"><option value="5">5 s</option><option value="10">10 s</option><option value="30" selected>30 s</option><option value="60">60 s</option><option value="180">3 min</option><option value="600">10 min</option><option value="1800">30 min</option></select></label>
+      <label title="Zdarzenia połączenia i przyciski joysticka z dziennika łącza"><input id="showEv" type="checkbox" checked> zdarzenia</label>
+      <button id="clearTr">Usuń wszystkie</button>
+    </h2>
+    <div class="scroll" id="laneBox"></div>
+  </section>
+
+  <section id="mapSec">
+    <h2>Trasa GPS <span class="pill" id="trkInfo">—</span>
+      <span class="sp"></span>
+      <span style="text-transform:none;letter-spacing:0">kliknij trasę, żeby przewinąć w to miejsce</span>
+      <label><input id="follow" type="checkbox" checked> śledź</label>
+    </h2>
+    <div id="map"></div>
+  </section>
+</main>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const hex2 = n => n.toString(16).toUpperCase().padStart(2,"0");
+const hexId = n => n.toString(16).toUpperCase().padStart(3,"0");
+const COLORS = ["#4cc9f0","#ffb454","#5ee08a","#ff5d73","#c792ea","#f9e45b","#7fd1b9","#ff8fab"];
+const CAP = 40000;                       // ramek historii na jedno ID
+
+let KNOWN = [], KNOWN_BY_ID = new Map();
+let ids = new Map();                     // id -> stan
+let tNow = 0, frameCount = 0, rateT = 0, rateN = 0, rateVal = 0;
+let frozen = false, frozenT = 0;
+let traces = [], marks = [], baseline = new Map();
+let selected = null, sortKey = "id", sortDir = 1;
+let status = {};
+let srvMarks = [], track = [], extrasSeen = -1;
+// Sztuczna ramka 0x7F0 w logu z apki: dane telefonu (panel.py, _phone_bytes)
+const PHONE_SIGNALS = [
+  {name:"tel_kmh",  id:0x7F0, byte:0, kind:"u16",  scale:0.01,  offset:0, unit:"km/h", note:"prędkość GPS telefonu"},
+  {name:"tel_lean", id:0x7F0, byte:2, kind:"s16o", scale:0.01,  offset:0, unit:"°",    note:"przechył liczony przez telefon"},
+  {name:"tel_g",    id:0x7F0, byte:4, kind:"u16",  scale:0.001, offset:0, unit:"g",    note:"przeciążenie z telefonu"},
+  {name:"gps_acc",  id:0x7F0, byte:6, kind:"u8",   scale:1,     offset:0, unit:"m",    note:"dokładność GPS (255 = brak)"},
+];
+
+// ── dekodowanie ──────────────────────────────────────────────────────────────
+function raw(kind, d, b){
+  switch(kind){
+    case "u8": return d[b];
+    case "u16": return d[b]*256 + d[b+1];
+    case "u16le": return d[b+1]*256 + d[b];
+    case "s16o": return d[b]*256 + d[b+1] - 32768;
+    case "lo4": return d[b] & 15;
+    case "hi4": return d[b] >> 4;
+    case "u20": return d[b]*4096 + d[b+1]*16 + (d[b+2] >> 4);
+    case "s8": return d[b] > 127 ? d[b]-256 : d[b];
+  }
+  return NaN;
+}
+const span = k => ({u8:1,s8:1,lo4:1,hi4:1,u16:2,u16le:2,s16o:2,u20:3}[k]||1);
+function fmt(v, digits){
+  if (!isFinite(v)) return "—";
+  const a = Math.abs(v);
+  const d = digits != null ? digits : (a >= 1000 ? 0 : a >= 100 ? 1 : 2);
+  return v.toFixed(d).replace(/\.?0+$/, m => m.includes(".") && d>0 ? "" : m);
+}
+function sigValue(s, d){ return raw(s.kind, d, s.byte) * s.scale + s.offset; }
+
+// Tłumaczenia opisowe znanych sygnałów (te same, co w apce i SYGNALY.md)
+const NAMED = {
+  gear:  v => v === 0 ? "N" : (v >= 1 && v <= 6 ? String(v) : "—"),
+  sdms:  v => ({1:"A",2:"B",3:"C"})[v] || "?",
+  tc_level: v => v === 0 ? "OFF" : String(v),
+  damp_mode: v => ({0:"H",1:"M",2:"S",3:"U"})[v] || "?",
+  preload_mode: v => ({2:"AUTO",3:"SOLO",4:"SOLO+bagaż",5:"DUO"})[v] || "?",
+  clutch_raw: v => (v & 4 ? "SPRZĘGŁO " : "") + (v & 16 ? "START " : "") + (v & 8 ? "[0x08]" : ""),
+  cruise_raw: v => (v & 16) ? "TEMPOMAT wł." : "wył.",
+};
+function sigText(s, d){
+  const v = sigValue(s, d);
+  if (NAMED[s.name]) return NAMED[s.name](v);
+  return fmt(v) + (s.unit && s.unit !== "surowe" && s.unit !== "bity" ? " " + s.unit : "");
+}
+
+// ── dane ─────────────────────────────────────────────────────────────────────
+function entry(id){
+  let e = ids.get(id);
+  if (!e){
+    e = { id, d: new Uint8Array(8), prev: new Uint8Array(8), chg: new Float64Array(8).fill(-99), bitT: new Float64Array(64).fill(-99),
+          cnt: 0, hz: 0, hzN: 0, hzT: tNow, first: tNow, seen: tNow, lastChg: -99,
+          ring: { t: new Float64Array(CAP), d: new Uint8Array(CAP*8), n: 0 }, row: null, cells: null };
+    ids.set(id, e);
+  }
+  return e;
+}
+function ingest(f){
+  const t = f[0], id = f[1], h = f[2];
+  const e = entry(id);
+  tNow = t;
+  for (let i = 0; i < 8; i++){
+    const nb = i*2 < h.length ? parseInt(h.substr(i*2,2),16) : 0;
+    if (e.cnt === 0) { e.d[i] = nb; e.prev[i] = nb; continue; }
+    const old = e.d[i];
+    if (nb !== old){
+      e.chg[i] = t; e.lastChg = t;
+      const x = nb ^ old;
+      for (let b = 0; b < 8; b++) if (x & (1<<b)) e.bitT[i*8+b] = t;
+    }
+    e.d[i] = nb;
+  }
+  e.cnt++; e.hzN++; e.seen = t;
+  const r = e.ring, k = r.n % CAP;
+  r.t[k] = t; r.d.set(e.d, k*8); r.n++;
+  frameCount++; rateN++;
+}
+function resetAll(){
+  ids = new Map(); tNow = 0; frameCount = 0; marks = []; baseline = new Map(); rateN = 0; rateT = 0; rateVal = 0;
+  $("#tbl tbody").innerHTML = "";
+}
+
+// ── połączenie ───────────────────────────────────────────────────────────────
+let es = null;
+function connect(){
+  es = new EventSource("/stream");
+  es.onmessage = ev => {
+    const m = JSON.parse(ev.data);
+    if (m.reset) resetAll();
+    for (const f of m.f) ingest(f);
+    status = m.s || {};
+    if (status.extras != null && status.extras !== extrasSeen){ extrasSeen = status.extras; loadExtras(); }
+  };
+  es.onerror = () => { $("#status").textContent = "brak połączenia z serwerem panelu…"; };
+}
+
+// ── tabela ───────────────────────────────────────────────────────────────────
+function viewT(){ return frozen ? frozenT : tNow; }
+/** Godzina (czas lokalny) dla czasu t w nagraniu; "" gdy nie znamy startu. */
+function clock(t, withSec = true){
+  if (!status.start) return "";
+  const d = new Date((status.start + t) * 1000);
+  const p = n => String(n).padStart(2, "0");
+  return p(d.getHours()) + ":" + p(d.getMinutes()) + (withSec ? ":" + p(d.getSeconds()) : "");
+}
+function heat(age){ return age < 0 || age > 2.2 ? 0 : 1 - age/2.2; }
+function byteText(v, mode){
+  if (mode === "dec") return String(v).padStart(3," ");
+  if (mode === "bin") return v.toString(2).padStart(8,"0");
+  return hex2(v);
+}
+function nameOf(id){
+  const k = KNOWN_BY_ID.get(id);
+  if (!k) return "";
+  return [...new Set(k.map(s => s.name))].slice(0,4).join(", ");
+}
+function ensureRow(e){
+  if (e.row) return;
+  const tr = document.createElement("tr"); tr.className = "row";
+  tr.innerHTML = '<td class="id"></td><td class="nm"></td><td class="hz"></td><td class="cnt"></td><td class="by8"></td><td class="dec"></td>';
+  const by = tr.children[4];
+  e.cells = [];
+  for (let i = 0; i < 8; i++){ const s = document.createElement("span"); s.className = "by"; by.appendChild(s); e.cells.push(s); }
+  tr.children[0].textContent = hexId(e.id);
+  tr.children[1].textContent = nameOf(e.id);
+  tr.onclick = () => select(e.id);
+  e.row = tr; e.tds = Array.from(tr.children);
+  $("#tbl tbody").appendChild(tr);
+}
+let lastTable = 0;
+function renderTable(now){
+  if (now - lastTable < 66) return;           // ~15 odświeżeń/s
+  lastTable = now;
+  const t = viewT();
+  const mode = $("#fmt").value, xl = $("#xlate").checked, only = $("#onlyChg").checked;
+  const q = $("#filter").value.trim().toLowerCase();
+  $(".decH").style.display = xl ? "" : "none";
+  const list = [...ids.values()];
+  for (const e of list){
+    if (t - e.hzT >= 1){ e.hz = e.hzN / (t - e.hzT); e.hzN = 0; e.hzT = t; }
+    ensureRow(e);
+  }
+  list.sort((a,b) => {
+    const A = sortKey === "id" ? a.id : sortKey === "hz" ? a.hz : sortKey === "cnt" ? a.cnt : nameOf(a.id), B = sortKey === "id" ? b.id : sortKey === "hz" ? b.hz : sortKey === "cnt" ? b.cnt : nameOf(b.id);
+    return (A < B ? -1 : A > B ? 1 : 0) * sortDir;
+  });
+  const tb = $("#tbl tbody");
+  let prevRow = null;
+  for (const e of list){
+    const visible = (!only || t - e.lastChg < 5) &&
+      (!q || hexId(e.id).toLowerCase().includes(q) || nameOf(e.id).toLowerCase().includes(q));
+    e.row.style.display = visible ? "" : "none";
+    if (!visible) continue;
+    if (prevRow ? prevRow.nextSibling !== e.row : tb.firstChild !== e.row) tb.insertBefore(e.row, prevRow ? prevRow.nextSibling : tb.firstChild);
+    prevRow = e.row;
+    e.row.classList.toggle("sel", e.id === selected);
+    // tabela pokazuje stan z chwili zamrożenia
+    const d = frozen ? stateAt(e, t) : e.d;
+    e.tds[2].textContent = e.hz >= 100 ? e.hz.toFixed(0) : e.hz.toFixed(1);
+    e.tds[3].textContent = e.cnt;
+    const bs = baseline.get(e.id);
+    for (let i = 0; i < 8; i++){
+      const c = e.cells[i];
+      const txt = byteText(d[i], mode);
+      if (c.textContent !== txt) c.textContent = txt;
+      const h = heat(t - e.chg[i]);
+      c.style.background = h ? `color-mix(in srgb, var(--hot) ${Math.round(h*70)}%, transparent)` : "";
+      c.style.color = h > .5 ? "#fff" : "";
+      c.classList.toggle("base", !!bs && bs[i] !== d[i]);
+    }
+    e.tds[5].style.display = xl ? "" : "none";
+    if (xl){
+      const ks = KNOWN_BY_ID.get(e.id);
+      e.tds[5].textContent = ks ? ks.filter(s => !["throttle8"].includes(s.name) || true).map(s => s.name + " " + sigText(s, d)).join(" · ") : "";
+    }
+  }
+  $("#nIds").textContent = ids.size + " ID";
+  if (t - rateT >= 1 || rateT === 0){ rateVal = rateT ? rateN / (t - rateT) : 0; rateN = 0; rateT = t; }
+  $("#nRate").textContent = Math.round(rateVal) + " ramek/s";
+}
+function stateAt(e, t){
+  const r = e.ring; if (!r.n) return e.d;
+  let i = Math.min(r.n, CAP);
+  for (let k = r.n - 1, c = 0; c < i; k--, c++){
+    const j = ((k % CAP) + CAP) % CAP;
+    if (r.t[j] <= t) return r.d.subarray(j*8, j*8+8);
+  }
+  return r.d.subarray(((r.n - Math.min(r.n,CAP)) % CAP)*8).subarray(0,8);
+}
+
+// ── kafelki ──────────────────────────────────────────────────────────────────
+const TILES = [
+  { k:"Obroty", sig:"rpm", u:"obr/min", range:[0,11000] },
+  { k:"Bieg", sig:"gear", named:true },
+  { k:"Prędkość (koło)", sig:"speed_f", u:"km/h", range:[0,250] },
+  { k:"Przechył", sig:"lean", u:"°", range:[-60,60], center:true },
+  { k:"Gaz", fn:e => e && Math.min(100, e.d[2]/172*100), u:"%", range:[0,100], id:0x1A1 },
+  { k:"Płyn", sig:"temp_c", u:"°C", range:[0,130] },
+  { k:"Powietrze", sig:"air_c", u:"°C" },
+  { k:"Tryb jazdy", sig:"sdms", named:true },
+  { k:"TC", sig:"tc_level", named:true },
+  { k:"Zawieszenie", sig:"damp_mode", named:true },
+  { k:"Obciążenie", sig:"preload_mode", named:true },
+  { k:"Przebieg", sig:"odo_km", u:"km" },
+];
+function buildTiles(){
+  $("#tiles").innerHTML = TILES.map((t,i) => `<div class="tile na" id="tile${i}"><div class="k">${t.k}</div><div class="v">—</div>${t.range ? '<div class="bar"><i></i></div>' : ''}</div>`).join("");
+}
+function renderTiles(){
+  const t = viewT();
+  TILES.forEach((tl, i) => {
+    const el = $("#tile"+i); if (!el) return;
+    const sig = tl.sig ? KNOWN.find(s => s.name === tl.sig) : null;
+    const e = ids.get(sig ? sig.id : tl.id);
+    let txt = "—", val = NaN;
+    if (e && e.cnt){
+      const d = frozen ? stateAt(e, t) : e.d;
+      if (sig){ val = sigValue(sig, d); txt = tl.named ? NAMED[sig.name](val) : fmt(val, tl.sig === "lean" ? 1 : sig.name === "odo_km" ? 0 : null); }
+      else if (tl.fn){ val = tl.fn({d}); txt = fmt(val, 0); }
+    }
+    el.classList.toggle("na", txt === "—");
+    el.querySelector(".v").innerHTML = txt + (tl.u && txt !== "—" ? `<span class="u">${tl.u}</span>` : "");
+    if (tl.range){
+      const [lo, hi] = tl.range, f = x => Math.max(0, Math.min(1, (x - lo) / (hi - lo)));
+      const b = el.querySelector(".bar i");
+      if (tl.center) { const a = f(0), c = f(isFinite(val) ? val : 0); b.style.left = Math.min(a,c)*100 + "%"; b.style.width = Math.abs(c-a)*100 + "%"; }
+      else { b.style.left = "0"; b.style.width = (isFinite(val) ? f(val)*100 : 0) + "%"; }
+    }
+  });
+}
+
+// ── szczegóły ramki ──────────────────────────────────────────────────────────
+function select(id){ selected = id; detailKey = ""; renderDetail(true); }
+let detailKey = "";
+function renderDetail(force){
+  const e = ids.get(selected); const box = $("#detail");
+  if (!e){ return; }
+  const t = viewT(), d = frozen ? stateAt(e, t) : e.d;
+  if (force || detailKey !== "id"+selected){
+    detailKey = "id"+selected;
+    $("#dTitle").textContent = "Ramka " + hexId(e.id);
+    const ks = KNOWN_BY_ID.get(e.id) || [];
+    box.innerHTML = `
+      <h3>0x${hexId(e.id)} <small style="color:var(--dim);font-weight:400">${nameOf(e.id) || "nieznana — do odkrycia"}</small></h3>
+      <div class="bits" id="bits">${[0,1,2,3,4,5,6,7].map(i => `<div class="byte"><div class="h"><span>b${i}</span><span class="dc"></span></div><div class="hx"></div>
+        <div class="bitrow">${[7,6,5,4,3,2,1,0].map(b => `<div class="bit" data-b="${i*8+b}">${b}</div>`).join("")}</div></div>`).join("")}</div>
+      <div style="color:var(--dim);font-size:11px">Bity z żółtą obwódką zmieniły się w ostatnich 3 s. Kliknij, żeby dodać przebieg:</div>
+      <div class="quick" id="quick">${[0,1,2,3,4,5,6,7].map(i => `<button data-q="u8:${i}">b${i}</button>`).join("")}${[0,1,2,3,4,5,6].map(i => `<button data-q="u16:${i}">w${i}${i+1}</button>`).join("")}</div>
+      <div style="font-weight:600;margin:6px 0 2px">Znane sygnały</div>
+      <div id="known">${ks.length ? ks.map((s,i) => `<div class="sig" title="${s.note.replace(/"/g,"&quot;")}">
+          <button data-k="${i}" class="addk">＋ wykres</button><span><b>${s.name}</b> <small>b${s.byte} ${s.kind}${s.unit ? " · " + s.unit : ""}</small></span><span class="val" data-v="${i}"></span></div>`).join("") : '<div class="empty" style="padding:6px;text-align:left">Brak w tabeli — użyj przycisków powyżej albo formularza.</div>'}</div>
+      <div style="font-weight:600;margin:12px 0 2px">Własny sygnał</div>
+      <div class="form">
+        bajt <input id="fBy" type="number" min="0" max="7" value="0">
+        <select id="fKind"><option value="u8">u8</option><option value="u16">u16 BE</option><option value="u16le">u16 LE</option><option value="s16o">s16 (−32768)</option><option value="s8">s8</option><option value="hi4">górna połówka</option><option value="lo4">dolna połówka</option><option value="u20">u20</option></select>
+        × <input id="fScale" type="number" value="1" step="any"> + <input id="fOff" type="number" value="0" step="any">
+        <input id="fName" type="text" placeholder="nazwa (opcjonalnie)">
+        <button id="fAdd">＋ dodaj wykres</button>
+      </div>
+      <div style="margin-top:12px;color:var(--dim);font-size:11px" id="dMeta"></div>`;
+    $("#quick").onclick = ev => { const q = ev.target.dataset.q; if (!q) return; const [k, b] = q.split(":"); addTrace({id:e.id, byte:+b, kind:k, scale:1, offset:0, name:`${hexId(e.id)}.${k==="u8"?"b":"w"}${b}${k==="u16"?(+b+1):""}`, unit:""}); };
+    $("#known").onclick = ev => { const i = ev.target.dataset.k; if (i == null) return; const s = ks[+i]; addTrace({...s}); };
+    $("#fAdd").onclick = () => {
+      const kind = $("#fKind").value, byte = +$("#fBy").value;
+      addTrace({id:e.id, byte, kind, scale:+$("#fScale").value||1, offset:+$("#fOff").value||0, name:$("#fName").value || `${hexId(e.id)}.${kind}@${byte}`, unit:""});
+    };
+  }
+  const ks = KNOWN_BY_ID.get(e.id) || [];
+  box.querySelectorAll(".byte").forEach((el, i) => {
+    el.querySelector(".hx").textContent = hex2(d[i]);
+    el.querySelector(".dc").textContent = d[i];
+    el.querySelectorAll(".bit").forEach(bt => {
+      const b = +bt.dataset.b;
+      bt.classList.toggle("one", !!(d[i] & (1 << (b % 8))));
+      bt.classList.toggle("act", t - e.bitT[b] < 3);
+    });
+  });
+  box.querySelectorAll("[data-v]").forEach(el => { const s = ks[+el.dataset.v]; el.textContent = sigText(s, d); });
+  const m = $("#dMeta");
+  if (m) m.textContent = `${e.cnt} ramek · ${e.hz.toFixed(1)} Hz · ostatnia zmiana ${e.lastChg < 0 ? "—" : (t - e.lastChg).toFixed(1) + " s temu"}`;
+}
+
+// ── przebiegi ────────────────────────────────────────────────────────────────
+function addTrace(s){
+  if (traces.find(x => x.id === s.id && x.byte === s.byte && x.kind === s.kind && x.scale === s.scale && x.offset === s.offset)) return;
+  const tr = {...s, color: COLORS[traces.length % COLORS.length], uid: Math.random().toString(36).slice(2)};
+  traces.push(tr); buildLanes();
+}
+function removeTrace(uid){ traces = traces.filter(t => t.uid !== uid); buildLanes(); }
+function buildLanes(){
+  const box = $("#laneBox");
+  if (!traces.length){ box.innerHTML = '<div class="empty">Dodaj sygnał z panelu „Szczegóły” (przycisk ＋ wykres). Historia jest liczona wstecz, więc wykres od razu pokazuje to, co już było.</div>'; return; }
+  box.innerHTML = "";
+  for (const tr of traces){
+    const l = document.createElement("div"); l.className = "lane";
+    l.innerHTML = `<div class="meta"><button class="x">✕</button><b style="color:${tr.color}">${tr.name}</b><div class="cur">—</div><small></small></div><canvas></canvas>`;
+    l.querySelector(".x").onclick = () => removeTrace(tr.uid);
+    box.appendChild(l); tr.el = l; tr.cv = l.querySelector("canvas"); tr.cur = l.querySelector(".cur"); tr.sm = l.querySelector("small");
+  }
+}
+function drawLane(tr, t1, win, first, isLast){
+  const cv = tr.cv, dpr = window.devicePixelRatio || 1;
+  const W = cv.clientWidth, H = cv.clientHeight;
+  if (cv.width !== W*dpr || cv.height !== H*dpr){ cv.width = W*dpr; cv.height = H*dpr; }
+  const g = cv.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
+  const e = ids.get(tr.id); const t0 = t1 - win;
+  const css = getComputedStyle(document.documentElement);
+  g.strokeStyle = css.getPropertyValue("--line"); g.lineWidth = 1;
+  const step = win > 900 ? 120 : win > 300 ? 60 : win > 60 ? 30 : win > 20 ? 5 : 1;
+  g.font = "10px ui-monospace,Menlo,monospace";
+  for (let s = Math.ceil(t0 / step) * step; s <= t1; s += step){
+    const x = Math.round((s - t0)/win*W) + .5; g.beginPath(); g.moveTo(x,0); g.lineTo(x,H); g.stroke();
+    if (isLast && status.start && x > 48){ g.fillStyle = css.getPropertyValue("--dim"); g.fillText(clock(s, step < 60), x + 3, H - 3); }
+  }
+  if (!e || !e.ring.n){ tr.cur.textContent = "—"; return; }
+  const r = e.ring, n = Math.min(r.n, CAP);
+  const cols = new Float64Array(W*2).fill(NaN);       // min,max na kolumnę pikseli
+  let lo = Infinity, hi = -Infinity, last = NaN, steps = [];
+  const tmp = new Uint8Array(8);
+  const pts = [];
+  for (let k = r.n - 1, c = 0; c < n; k--, c++){
+    const j = k % CAP;
+    const t = r.t[j];
+    if (t > t1) continue;
+    if (t < t0) break;
+    const v = raw(tr.kind, r.d.subarray(j*8, j*8+8), tr.byte) * tr.scale + tr.offset;
+    pts.push(t, v);
+    if (v < lo) lo = v; if (v > hi) hi = v;
+  }
+  if (!pts.length){ tr.cur.textContent = "—"; return; }
+  // ostatnia wartość przed oknem może wyznaczać początek — pomijamy; rysujemy od pierwszej w oknie
+  last = pts[1];
+  if (lo === hi){ lo -= 1; hi += 1; }
+  const pad = (hi - lo) * .08; lo -= pad; hi += pad;
+  const y = v => H - 4 - (v - lo)/(hi - lo)*(H - 8);
+  g.strokeStyle = tr.color; g.lineWidth = 1.4; g.beginPath();
+  let started = false, px = -1, mn = 0, mx = 0, firstV = 0, lastV = 0;
+  const flush = () => { if (px < 0) return; if (!started){ g.moveTo(px, y(firstV)); started = true; } else g.lineTo(px, y(firstV)); if (mn !== mx){ g.lineTo(px, y(mn)); g.lineTo(px, y(mx)); } g.lineTo(px, y(lastV)); };
+  for (let i = pts.length - 2; i >= 0; i -= 2){           // od najstarszej
+    const x = Math.round((pts[i] - t0)/win*W) + .5, v = pts[i+1];
+    if (x !== px){ flush(); px = x; mn = mx = firstV = lastV = v; } else { if (v < mn) mn = v; if (v > mx) mx = v; lastV = v; }
+  }
+  flush(); g.stroke();
+  // znaczniki
+  g.fillStyle = css.getPropertyValue("--warn"); g.strokeStyle = css.getPropertyValue("--warn"); g.setLineDash([3,3]); g.font = "10px system-ui";
+  const all = $("#showEv").checked ? srvMarks.concat(marks) : marks;
+  let lastLabelX = -1e9;
+  for (const m of all){
+    if (m.t < t0 || m.t > t1) continue;
+    const x = Math.round((m.t - t0)/win*W)+.5;
+    const joy = m.src === "joy";
+    g.strokeStyle = joy ? "#c792ea" : m.src === "m" || !m.src ? css.getPropertyValue("--warn") : m.src === "tcp" ? "#4cc9f0" : m.src === "bt" ? "#5ee08a" : "#ff8fab";
+    g.globalAlpha = joy ? .5 : .9;
+    g.beginPath(); g.moveTo(x,0); g.lineTo(x,H); g.stroke();
+    if (first && x - lastLabelX > 60){ g.fillStyle = g.strokeStyle; g.fillText(m.text.slice(0, 48), x+3, 10 + (joy ? 12 : 0)); lastLabelX = x; }
+  }
+  g.globalAlpha = 1;
+  g.setLineDash([]);
+  g.fillStyle = css.getPropertyValue("--dim"); g.font = "10px ui-monospace,Menlo,monospace";
+  g.fillText(fmt(hi - pad), 3, 10); g.fillText(fmt(lo + pad), 3, H - 3);
+  tr.cur.textContent = (NAMED[tr.name] ? NAMED[tr.name](last) : fmt(last)) + (tr.unit && tr.unit !== "surowe" && tr.unit !== "bity" ? " " + tr.unit : "");
+  tr.cur.style.color = tr.color;
+  tr.sm.textContent = `${tr.id.toString(16).toUpperCase()} b${tr.byte} ${tr.kind} · min ${fmt(lo+pad)} max ${fmt(hi-pad)}`;
+}
+let lastLanes = 0;
+function renderLanes(now){
+  if (now - lastLanes < 50) return; lastLanes = now;
+  const win = +$("#win").value, t1 = viewT();
+  traces.forEach((tr, i) => drawLane(tr, t1, win, i === 0, i === traces.length - 1));
+}
+
+// ── sterowanie ───────────────────────────────────────────────────────────────
+async function post(url, body){ try { await fetch(url, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)}); } catch(e){} }
+async function loadFiles(){
+  const files = await (await fetch("/api/files")).json();
+  const sel = $("#src");
+  sel.innerHTML = '<option value="live">● Na żywo (płytka przez USB)</option>' +
+    files.map(f => `<option value="${f.path}">${f.path} (${(f.size/1048576).toFixed(1)} MB)</option>`).join("");
+}
+$("#src").onchange = async e => {
+  const v = e.target.value;
+  resetAll(); traces.forEach(t => {});
+  await post("/api/source", v === "live" ? {type:"live"} : {type:"replay", path:v});
+};
+$("#play").onclick = () => post("/api/ctl", {paused: !status.paused});
+$("#speed").onchange = e => post("/api/ctl", {speed:+e.target.value});
+$("#loop").onchange = e => post("/api/ctl", {loop:e.target.checked});
+$("#goto").onkeydown = e => {
+  if (e.key !== "Enter" || !status.start) return;
+  const m = e.target.value.trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+  if (!m){ e.target.style.borderColor = "var(--hot)"; return; }
+  e.target.style.borderColor = "";
+  const d = new Date(status.start * 1000);
+  d.setHours(+m[1], +m[2], +(m[3] || 0), 0);
+  post("/api/ctl", {seek: d.getTime() / 1000 - status.start});
+};
+let seeking = false;
+$("#seek").oninput = () => { seeking = true; };
+$("#seek").onchange = e => { post("/api/ctl", {seek: e.target.value/1000*(status.dur||0)}); seeking = false; };
+function setFrozen(f){ frozen = f; frozenT = tNow; $("#freeze").classList.toggle("on", f); $("#freeze").textContent = f ? "▶ Wznów widok" : "⏯ Zamroź"; }
+$("#freeze").onclick = () => setFrozen(!frozen);
+$("#mark").onclick = () => { const text = prompt("Opis znacznika (np. „sprzęgło wciśnięte”)", "") ; if (text !== null) marks.push({t: tNow, text: text || "●"}); };
+$("#base").onclick = () => { baseline = new Map(); for (const e of ids.values()) baseline.set(e.id, Uint8Array.from(e.d)); $("#base").classList.add("on"); setTimeout(() => $("#base").classList.remove("on"), 600); };
+$("#clear").onclick = () => { resetAll(); selected = null; $("#detail").innerHTML = '<div class="empty">Wybierz ramkę z tabeli.</div>'; };
+$("#clearTr").onclick = () => { traces = []; buildLanes(); };
+document.querySelectorAll("th[data-s]").forEach(th => th.onclick = () => { const k = th.dataset.s; if (sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = k === "hz" || k === "cnt" ? -1 : 1; } });
+window.addEventListener("keydown", e => {
+  if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+  if (e.code === "Space"){ e.preventDefault(); setFrozen(!frozen); }
+  if (e.key === "m" || e.key === "M") $("#mark").click();
+});
+
+function renderHeader(){
+  $("#clock").textContent = clock(viewT());
+  const live = status.mode === "live", rep = status.mode === "replay";
+  $("#dot").className = status.connected ? "live" : "";
+  $("#status").textContent = (status.info || "") + (live && status.board ? " · " + status.board.slice(0,80) : "");
+  $("#seekrow").style.display = rep ? "flex" : "none";
+  const want = rep ? status.info : (live ? "live" : null);
+  if (want && $("#src").value !== want && document.activeElement !== $("#src") && [...$("#src").options].some(o => o.value === want)) $("#src").value = want;
+  if (rep){
+    $("#play").textContent = status.paused ? "▶" : "⏸";
+    if (!seeking && status.dur) $("#seek").value = Math.round(status.pos / status.dur * 1000);
+    $("#pos").textContent = `${(status.pos||0).toFixed(1)} / ${(status.dur||0).toFixed(1)} s`;
+    if (document.activeElement !== $("#speed")) $("#speed").value = String(status.speed);
+  }
+}
+
+// ── znaczniki i trasa GPS (tylko log z apki) ────────────────────────────────
+async function loadExtras(){
+  try {
+    srvMarks = await (await fetch("/api/marks")).json();
+    track = await (await fetch("/api/track")).json();
+  } catch(e){ srvMarks = []; track = []; }
+  buildMap();
+}
+let map = null, trackLayer = null, posMarker = null, lastFollow = 0;
+function speedColor(k){
+  if (k == null) return "#7b8798";
+  const stops = [[0,"#4cc9f0"],[50,"#5ee08a"],[90,"#f9e45b"],[130,"#ffb454"],[170,"#ff5d73"]];
+  let c = stops[0][1]; for (const [v,col] of stops) if (k >= v) c = col; return c;
+}
+function buildMap(){
+  if (!window.L){ $("#trkInfo").textContent = "mapa niedostępna (brak internetu?)"; return; }
+  if (!map){
+    map = L.map("map", {preferCanvas:true}).setView([52.2, 21.0], 11);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {maxZoom:19, attribution:"© OpenStreetMap"}).addTo(map);
+  }
+  if (trackLayer){ trackLayer.remove(); trackLayer = null; }
+  if (posMarker){ posMarker.remove(); posMarker = null; }
+  if (!track.length){ $("#trkInfo").textContent = "brak GPS w tym nagraniu"; return; }
+  trackLayer = L.layerGroup().addTo(map);
+  // ciemna obwódka pod trasą — żeby była czytelna na kolorowej mapie
+  L.polyline(track.map(p => [p[1], p[2]]), {color:"#0b0e12", weight:9, opacity:.55}).addTo(trackLayer);
+  // odcinki kolorowane prędkością GPS
+  let seg = [[track[0][1], track[0][2]]], col = speedColor(track[0][3]);
+  for (let i = 1; i < track.length; i++){
+    const p = [track[i][1], track[i][2]], c = speedColor(track[i][3]);
+    seg.push(p);
+    if (c !== col || i === track.length - 1){ L.polyline(seg, {color:col, weight:5, opacity:.9}).addTo(trackLayer); seg = [p]; col = c; }
+  }
+  // szeroka niewidoczna linia do klikania
+  const hit = L.polyline(track.map(p => [p[1], p[2]]), {weight:18, opacity:0}).addTo(trackLayer);
+  hit.on("click", ev => {
+    let best = 0, bd = Infinity;
+    track.forEach((p, i) => { const d = (p[1]-ev.latlng.lat)**2 + (p[2]-ev.latlng.lng)**2; if (d < bd){ bd = d; best = i; } });
+    post("/api/ctl", {seek: track[best][0]});
+  });
+  posMarker = L.circleMarker([track[0][1], track[0][2]], {radius:8, color:"#fff", weight:3, fillColor:"#ff5d73", fillOpacity:1}).addTo(map);
+  map.fitBounds(L.latLngBounds(track.map(p => [p[1], p[2]])), {padding:[20,20]});
+  let km = 0; for (let i = 1; i < track.length; i++){ const a = track[i-1], b = track[i]; const dy = (b[1]-a[1])*111.2, dx = (b[2]-a[2])*111.2*Math.cos(a[1]*Math.PI/180); km += Math.hypot(dx, dy); }
+  $("#trkInfo").textContent = `${km.toFixed(1)} km · ${track.length} punktów`;
+}
+function renderMap(){
+  if (!map || !posMarker || !track.length) return;
+  const t = viewT();
+  let lo = 0, hi = track.length - 1;
+  while (lo < hi){ const mid = (lo + hi + 1) >> 1; if (track[mid][0] <= t) lo = mid; else hi = mid - 1; }
+  const a = track[lo], b = track[Math.min(lo + 1, track.length - 1)];
+  const f = b[0] > a[0] ? Math.max(0, Math.min(1, (t - a[0]) / (b[0] - a[0]))) : 0;
+  const ll = [a[1] + (b[1]-a[1])*f, a[2] + (b[2]-a[2])*f];
+  posMarker.setLatLng(ll);
+  const now = performance.now();
+  if ($("#follow").checked && now - lastFollow > 500 && !map.getBounds().pad(-0.2).contains(ll)){ map.panTo(ll); lastFollow = now; }
+}
+
+function frame(now){
+  renderHeader(); renderTable(now); renderTiles(); renderMap();
+  if (selected != null) renderDetail(false);
+  renderLanes(now);
+  requestAnimationFrame(frame);
+}
+
+(async function init(){
+  KNOWN = (await (await fetch("/api/known")).json()).concat(PHONE_SIGNALS);
+  for (const s of KNOWN){ if (!KNOWN_BY_ID.has(s.id)) KNOWN_BY_ID.set(s.id, []); KNOWN_BY_ID.get(s.id).push(s); }
+  buildTiles(); buildLanes();
+  await loadFiles();
+  connect();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
