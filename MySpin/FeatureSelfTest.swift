@@ -38,6 +38,7 @@ enum FeatureSelfTest {
         testVideoFrames()
         testRouteCloud()
         testObd()
+        testAppList()
 
         lines.append("")
         lines.append(failed == 0 ? "WYNIK: wszystko OK" : "WYNIK: \(failed) błędów")
@@ -258,6 +259,38 @@ enum FeatureSelfTest {
     // MARK: — Mostek CAN: pakiety w formacie firmware + plik logu
 
     /// Dekodowanie kodów błędów (te same bajty co w logu z 2026-10-25, ramka 0x441).
+    private static func testAppList() {
+        lines.append(""); lines.append("── AppList ──")
+        typealias E = MySpinPacketBuilder.AppListEntry
+        // Decode the recorded list and re-encode it — must match byte for byte
+        let legacy = [UInt8](MySpinPacketBuilder.legacyAppListPayload())
+        var p = 4, entries: [E] = []
+        func str() -> String {
+            let n = Int(legacy[p + 1]) | Int(legacy[p + 2]) << 8
+            defer { p += 3 + n }
+            return String(decoding: legacy[(p + 3)..<(p + 3 + n)], as: UTF8.self)
+        }
+        for _ in 0..<Int(legacy[0]) {
+            let pkg = str(), name = str(); p += 4
+            let vendor = str(); let kind = legacy[p + 8]; p += 13
+            entries.append(E(packageId: pkg, name: name, vendor: vendor, kind: kind))
+        }
+        check("AppList: stara lista rozkodowana do końca", p == legacy.count, "\(p)/\(legacy.count)")
+        check("AppList: koder odtwarza nagranie 1:1",
+              MySpinPacketBuilder.encodeAppList(entries) == Data(legacy))
+        let own = [UInt8](MySpinPacketBuilder.encodeAppList(MySpinPacketBuilder.ownAppList))
+        check("AppList: własna lista = 1 wpis, bez nazw z nagrania",
+              own[0] == 1 && !String(decoding: own, as: UTF8.self).lowercased().contains("bosch"))
+
+        let d = UserDefaults(suiteName: "featuretest.applist")!
+        d.removePersistentDomain(forName: "featuretest.applist")
+        let ownPkt = MySpinPacketBuilder.appList(defaults: d)
+        d.set(true, forKey: MySpinPacketBuilder.legacyAppListKey)
+        let legacyPkt = MySpinPacketBuilder.appList(defaults: d)
+        check("AppList: domyślnie własna, przełącznik → stara",
+              ownPkt.count < legacyPkt.count && legacyPkt.suffix(legacy.count) == Data(legacy))
+    }
+
     private static func testObd() {
         check("obd: C155 → U0155", Obd.dtc(0xC1, 0x55) == "U0155")
         check("obd: C073 → U0073", Obd.dtc(0xC0, 0x73) == "U0073")
