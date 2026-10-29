@@ -32,7 +32,7 @@ struct BusViewerView: View {
                         Button {
                             link.learnBaseline()
                         } label: {
-                            Label(link.busLearning ? "Uczę się tła…" : "Zapamiętaj stan (3 s)",
+                            Label(link.busLearning ? String(localized: "Uczę się tła…") : String(localized: "Zapamiętaj stan (3 s)"),
                                   systemImage: "scope")
                         }
                         .buttonStyle(.borderedProminent)
@@ -56,7 +56,7 @@ struct BusViewerView: View {
                             ForEach(0..<row.data.count, id: \.self) { i in
                                 if row.diff & (1 << i) != 0, let base = row.baseline, i < base.count {
                                     HStack {
-                                        Text(String(format: "%03X  bajt %d", row.id, i))
+                                        Text(String(format: String(localized: "%03X  bajt %d"), row.id, i))
                                             .font(.system(.body, design: .monospaced).weight(.semibold))
                                         Spacer()
                                         Text(String(format: "%d → %d", base[i], row.data[i]))
@@ -80,7 +80,7 @@ struct BusViewerView: View {
                 Section {
                     if link.busRows.isEmpty {
                         Text(link.state == .connected
-                             ? "Płytka połączona, ale magistrala milczy (zapłon wyłączony albo płytka nie jest wpięta)."
+                             ? String(localized: "Płytka połączona, ale magistrala milczy (zapłon wyłączony albo płytka nie jest wpięta).")
                              : link.state.label)
                             .font(.caption).foregroundColor(.secondary)
                     }
@@ -119,8 +119,7 @@ struct BusViewerView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(f.lastPathComponent)
                                     .font(.system(.footnote, design: .monospaced))
-                                Text(String(format: "%.1f MB", Double(BikeLinkManager.fileSize(f)) / 1_048_576)
-                                     + (f.lastPathComponent == link.logName && loggingOn ? " · nagrywany" : ""))
+                                Text(logSizeLabel(f))
                                     .font(.caption2).foregroundColor(.secondary)
                             }
                             Spacer()
@@ -132,9 +131,9 @@ struct BusViewerView: View {
                         Button("Usuń wszystkie logi", role: .destructive) { confirmDelete = true }
                     }
                 } header: {
-                    Text(String(format: "Logi · %.0f MB", Double(link.logTotalBytes) / 1_048_576))
+                    Text(String(format: String(localized: "Logi · %.0f MB"), Double(link.logTotalBytes) / 1_048_576))
                 } footer: {
-                    Text(String(format: "Limit %.0f MB — po przekroczeniu znikają najstarsze pliki.",
+                    Text(String(format: String(localized: "Limit %.0f MB — po przekroczeniu znikają najstarsze pliki."),
                                 Double(BikeLinkManager.logQuotaBytes) / 1_048_576))
                 }
             }
@@ -168,26 +167,41 @@ struct BusViewerView: View {
                   systemImage: "exclamationmark.triangle.fill")
                 .font(.caption).foregroundColor(.orange)
         }
-        signal("Obroty", t.engineFresh ? "\(t.rpm) obr/min" : "—")
+        signal("Obroty", t.engineFresh ? String(localized: "\(t.rpm) obr/min") : "—")
         signal("Bieg", t.engineFresh ? (t.gear == 0 ? "N" : "\(t.gear)") : "—")
-        signal("Gaz", t.engineFresh ? String(format: "%d (ok. %.0f%%)", t.throttle10,
+        signal("Gaz", t.engineFresh ? String(format: String(localized: "%d (ok. %.0f%%)"), t.throttle10,
                                              min(100, Double(t.throttle10) / 6.9)) : "—")
-        signal("Przechył", t.leanFresh ? String(format: "%.1f° %@", abs(t.leanDeg),
-                                                t.leanDeg < -0.5 ? "w lewo" : (t.leanDeg > 0.5 ? "w prawo" : "")) : "—")
+        signal("Przechył", t.leanFresh ? String(format: "%.1f° %@", abs(t.leanDeg), leanSide(t.leanDeg)) : "—")
         if t.leanFresh {
-            signal("Przechył wg telefonu", String(format: "%.1f° %@ · różnica %.1f°", abs(phoneLean),
-                                                  phoneLean < -0.5 ? "w lewo" : (phoneLean > 0.5 ? "w prawo" : ""),
+            signal("Przechył wg telefonu", String(format: String(localized: "%.1f° %@ · różnica %.1f°"), abs(phoneLean),
+                                                  leanSide(phoneLean),
                                                   abs(t.leanDeg - phoneLean)))
         }
-        signal("Przyspieszenia", t.accelFresh ? String(format: "wzdł. %+.2f g · pion %+.2f g · bok %+.2f g",
+        signal("Przyspieszenia", t.accelFresh ? String(format: String(localized: "wzdł. %+.2f g · pion %+.2f g · bok %+.2f g"),
                                                        t.accelG[0], t.accelG[1], t.accelG[2]) : "—")
-        signal("Licznik koła (próbnie)", link.wheelRate.map { String(format: "%.1f impulsów/s", $0) } ?? "—")
-        signal("Magistrala", "\(t.busFps) ramek/s")
-        signal("Program płytki", t.fwVersion == 0 ? "wersja sprzed numeracji"
-               : "v\(t.fwVersion)" + (t.fwVersion < BikeLinkManager.currentFirmware ? " (jest nowszy: v\(BikeLinkManager.currentFirmware))" : ""))
+        signal("Licznik koła (próbnie)", link.wheelRate.map { String(format: String(localized: "%.1f impulsów/s"), $0) } ?? "—")
+        signal("Magistrala", String(localized: "\(t.busFps) ramek/s"))
+        signal("Program płytki", firmwareLabel(t.fwVersion))
     }
 
-    private func signal(_ name: String, _ value: String) -> some View {
+    private func leanSide(_ deg: Double) -> String {
+        deg < -0.5 ? String(localized: "w lewo") : (deg > 0.5 ? String(localized: "w prawo") : "")
+    }
+
+    private func firmwareLabel(_ v: Int) -> String {
+        if v == 0 { return String(localized: "wersja sprzed numeracji") }
+        let newest = BikeLinkManager.currentFirmware
+        if v < newest { return String(localized: "v\(v) (jest nowszy: v\(newest))") }
+        return "v\(v)"
+    }
+
+    private func logSizeLabel(_ f: URL) -> String {
+        let size = String(format: "%.1f MB", Double(BikeLinkManager.fileSize(f)) / 1_048_576)
+        if f.lastPathComponent == link.logName && loggingOn { return String(localized: "\(size) · nagrywany") }
+        return size
+    }
+
+    private func signal(_ name: LocalizedStringKey, _ value: String) -> some View {
         HStack {
             Text(name).font(.subheadline)
             Spacer()

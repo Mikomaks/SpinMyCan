@@ -1,0 +1,6683 @@
+{
+  "sourceLanguage": "pl",
+  "strings": {
+    "  cyfra": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "  digit"
+          }
+        }
+      }
+    },
+    " · dane z silnika dla %.0f%% trasy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " · engine data for %.0f%% of the ride"
+          }
+        }
+      }
+    },
+    " · program płytki v%lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " · board firmware v%lld"
+          }
+        }
+      }
+    },
+    " · tylko w chmurze: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " · cloud only: %lld"
+          }
+        }
+      }
+    },
+    " · wbudowany": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " · built-in"
+          }
+        }
+      }
+    },
+    " · wysłane pliki: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " · files uploaded: %lld"
+          }
+        }
+      }
+    },
+    " · zgubione pakiety: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " · lost packets: %lld"
+          }
+        }
+      }
+    },
+    " · zwolnione z telefonu: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " · freed from phone: %lld"
+          }
+        }
+      }
+    },
+    "%.1f impulsów/s": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%.1f pulses/s"
+          }
+        }
+      }
+    },
+    "%.1f° %@ · różnica %.1f°": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%.1f° %@ · diff %.1f°"
+          }
+        }
+      }
+    },
+    "%03X  bajt %d": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%03X  byte %d"
+          }
+        }
+      }
+    },
+    "%@ · %lld zdjęć": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld photos"
+          }
+        }
+      }
+    },
+    "%@ · nagrywany": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · recording"
+          }
+        }
+      }
+    },
+    "%d (ok. %.0f%%)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d (approx. %.0f%%)"
+          }
+        }
+      }
+    },
+    "%lld OBR/MIN": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld RPM"
+          }
+        }
+      }
+    },
+    "%lld dni": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld days"
+          }
+        }
+      }
+    },
+    "%lld kanałów": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld channels"
+          }
+        }
+      }
+    },
+    "%lld obr/min": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld rpm"
+          }
+        }
+      }
+    },
+    "%lld ramek/s": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld frames/s"
+          }
+        }
+      }
+    },
+    "%lld ramek/s na magistrali": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld frames/s on the bus"
+          }
+        }
+      }
+    },
+    "%lld zdjęć": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld photos"
+          }
+        }
+      }
+    },
+    "%lld zdjęć z serduszkiem": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld photos with a heart"
+          }
+        }
+      }
+    },
+    "%lld. bieg": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gear %lld"
+          }
+        }
+      }
+    },
+    "(nie znalazłem albumów — sprawdź dostęp do Zdjęć)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "(no albums found — check Photos access)"
+          }
+        }
+      }
+    },
+    ", najdłuższa przerwa %lld ms": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ", longest gap %lld ms"
+          }
+        }
+      }
+    },
+    ", odstęp Bluetooth %.0f ms": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ", Bluetooth interval %.0f ms"
+          }
+        }
+      }
+    },
+    ", zgubione %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ", lost %lld"
+          }
+        }
+      }
+    },
+    "1. developer.spotify.com → utwórz app\n2. Redirect URI: wassup-myspin://spotify-callback\n3. Wklej Client ID poniżej": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1. developer.spotify.com → create an app\n2. Redirect URI: wassup-myspin://spotify-callback\n3. Paste the Client ID below"
+          }
+        }
+      }
+    },
+    "2× kliknięcie = %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2× click = %@"
+          }
+        }
+      }
+    },
+    "> podłącz płytkę CAN i włącz zapłon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "> connect CAN board, ignition on"
+          }
+        }
+      }
+    },
+    "AKTYWNY": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ACTIVE"
+          }
+        }
+      }
+    },
+    "Aktualizacja przerwana.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Update aborted."
+          }
+        }
+      }
+    },
+    "Anuluj": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
+    "Aplikacja": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App"
+          }
+        }
+      }
+    },
+    "Auto-nagrywanie jest wyłączone — trasę startujesz ręcznie.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-recording is off — you start rides manually."
+          }
+        }
+      }
+    },
+    "Auto-nagrywanie rusza tylko wtedy, gdy telefon jest połączony z motocyklem": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-recording starts only when the phone is connected to the motorcycle"
+          }
+        }
+      }
+    },
+    "BIEG": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GEAR"
+          }
+        }
+      }
+    },
+    "BT błąd: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BT error: %@"
+          }
+        }
+      }
+    },
+    "BT handshake: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BT handshake: %@"
+          }
+        }
+      }
+    },
+    "BT rozłączony": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BT disconnected"
+          }
+        }
+      }
+    },
+    "BT: sesja otwarta": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BT: session open"
+          }
+        }
+      }
+    },
+    "Back na motocyklu wychodzi z mySPIN — nie użyjemy go. Zamiast tego 2× szybko wybrany guzik.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back on the motorcycle exits mySPIN — we can't use it. Instead, quickly press the chosen button twice."
+          }
+        }
+      }
+    },
+    "Back: anuluj": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back: cancel"
+          }
+        }
+      }
+    },
+    "Back: wyjście": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back: exit"
+          }
+        }
+      }
+    },
+    "Bardzo wolne, rozmyte plamy koloru w tle ekranów": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Very slow, blurred color blobs in the screen background"
+          }
+        }
+      }
+    },
+    "Biblioteka tras": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ride library"
+          }
+        }
+      }
+    },
+    "Bieg": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gear"
+          }
+        }
+      }
+    },
+    "Biegi jako wykres kołowy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gears as a pie chart"
+          }
+        }
+      }
+    },
+    "Bluetooth OK": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth OK"
+          }
+        }
+      }
+    },
+    "Bluetooth motocykla": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Motorcycle Bluetooth"
+          }
+        }
+      }
+    },
+    "Bluetooth w telefonie jest wyłączony": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth is turned off on the phone"
+          }
+        }
+      }
+    },
+    "Bluetooth wył.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth off"
+          }
+        }
+      }
+    },
+    "Brak GPS": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No GPS"
+          }
+        }
+      }
+    },
+    "Brak GPS — nie mogę policzyć trasy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No GPS — can't calculate the route"
+          }
+        }
+      }
+    },
+    "Brak albumów (albo jeszcze się ładują)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No albums (or still loading)"
+          }
+        }
+      }
+    },
+    "Brak danych WiFi — uruchom BT najpierw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No WiFi data — start BT first"
+          }
+        }
+      }
+    },
+    "Brak danych — połącz TCP": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No data — connect TCP"
+          }
+        }
+      }
+    },
+    "Brak dostępu do Zdjęć — włącz w Ustawieniach": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No access to Photos — enable in Settings"
+          }
+        }
+      }
+    },
+    "Brak dostępu do folderu — wybierz go jeszcze raz.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No access to the folder — choose it again."
+          }
+        }
+      }
+    },
+    "Brak internetu — generuję planszę lokalnie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No internet — generating puzzle locally"
+          }
+        }
+      }
+    },
+    "Brak nagranych tras": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No recorded routes"
+          }
+        }
+      }
+    },
+    "Brak nagranych tras. Każda nagrana trasa pojawi się tutaj.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No recorded rides. Every recorded ride will appear here."
+          }
+        }
+      }
+    },
+    "Brak przejazdów. Wybierz ekran Pomiary, wystartuj ze stania.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No runs yet. Select the Runs screen and launch from a standstill."
+          }
+        }
+      }
+    },
+    "Brak sygnału": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No signal"
+          }
+        }
+      }
+    },
+    "Brak wyników": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No results"
+          }
+        }
+      }
+    },
+    "Brak zapisanych logów.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No saved logs."
+          }
+        }
+      }
+    },
+    "Brak załadowanej sesji": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No session loaded"
+          }
+        }
+      }
+    },
+    "Brak zdjęć w bibliotece": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No photos in library"
+          }
+        }
+      }
+    },
+    "Brak zgody": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No permission"
+          }
+        }
+      }
+    },
+    "Brak zgody na Bluetooth (Ustawienia → MySpin)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth permission denied (Settings → MySpin)"
+          }
+        }
+      }
+    },
+    "Błąd Bluetooth": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth error"
+          }
+        }
+      }
+    },
+    "Błąd zapisu w pamięci płytki. Stary program działa dalej.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Board memory write error. The old firmware keeps running."
+          }
+        }
+      }
+    },
+    "CSV": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CSV"
+          }
+        }
+      }
+    },
+    "CZAS  %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TIME  %@"
+          }
+        }
+      }
+    },
+    "CZAS NA BIEGACH": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TIME IN GEAR"
+          }
+        }
+      }
+    },
+    "Cały plakat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full poster"
+          }
+        }
+      }
+    },
+    "Cel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Destination"
+          }
+        }
+      }
+    },
+    "Cel z Apple Maps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Maps destination"
+          }
+        }
+      }
+    },
+    "Ciemna deska": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dark dashboard"
+          }
+        }
+      }
+    },
+    "Client ID (32 znaki hex)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Client ID (32 hex characters)"
+          }
+        }
+      }
+    },
+    "Codziennie: motocykl na nóżce + kierownica maksymalnie w lewo → 1 klik → po wyprostowaniu idealne zero.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily: motorcycle on the side stand + handlebars full left → 1 tap → perfect zero once upright."
+          }
+        }
+      }
+    },
+    "Czas jazdy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riding time"
+          }
+        }
+      }
+    },
+    "Czas na biegach": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time in gear"
+          }
+        }
+      }
+    },
+    "Czeka na potwierdzenie z GPS: ok. pół minuty równej jazdy powyżej 30 km/h. Do tego czasu deska pokazuje GPS.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for GPS confirmation: about half a minute of steady riding above 30 km/h. Until then the dashboard shows GPS."
+          }
+        }
+      }
+    },
+    "Czeka na zapłon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for ignition"
+          }
+        }
+      }
+    },
+    "Czekam na GPS / mapę…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for GPS / map…"
+          }
+        }
+      }
+    },
+    "Czekam na WiFi od motocykla...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for WiFi from the motorcycle..."
+          }
+        }
+      }
+    },
+    "Czekam na motocykl BT...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for bike BT..."
+          }
+        }
+      }
+    },
+    "Czekam na płytkę (włącz zapłon)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for the board (turn ignition on)"
+          }
+        }
+      }
+    },
+    "Czujniki telefonu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phone sensors"
+          }
+        }
+      }
+    },
+    "D-pad: kursor": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "D-pad: cursor"
+          }
+        }
+      }
+    },
+    "DESKA": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DISPLAY"
+          }
+        }
+      }
+    },
+    "DYSTANS": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DISTANCE"
+          }
+        }
+      }
+    },
+    "Dane na żywo 🟢": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live data 🟢"
+          }
+        }
+      }
+    },
+    "Dane płyną": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data flowing"
+          }
+        }
+      }
+    },
+    "Dane z motocykla": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Motorcycle data"
+          }
+        }
+      }
+    },
+    "Darmowe konto Apple podpisuje apkę na 7 dni. Odświeżenie na Macu: make refresh": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A free Apple account signs the app for 7 days. Refresh on the Mac: make refresh"
+          }
+        }
+      }
+    },
+    "Darmowe konto Apple podpisuje apkę tylko na 7 dni. Odśwież PRZED wyjazdem.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A free Apple account signs the app for only 7 days. Refresh BEFORE you ride."
+          }
+        }
+      }
+    },
+    "Deska na motocyklu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Motorcycle dashboard"
+          }
+        }
+      }
+    },
+    "Diagnostyka połączenia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connection diagnostics"
+          }
+        }
+      }
+    },
+    "Dnia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily"
+          }
+        }
+      }
+    },
+    "Dodaj": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add"
+          }
+        }
+      }
+    },
+    "Dodano „%@” (%@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Added “%@” (%@)"
+          }
+        }
+      }
+    },
+    "Dojechałeś do celu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You have arrived"
+          }
+        }
+      }
+    },
+    "Dojechałeś do celu 🏁": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You have arrived 🏁"
+          }
+        }
+      }
+    },
+    "Dokąd jedziemy?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where to?"
+          }
+        }
+      }
+    },
+    "Dołącz do WiFi motocykla": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Join the motorcycle WiFi"
+          }
+        }
+      }
+    },
+    "Dół": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Down"
+          }
+        }
+      }
+    },
+    "DŁUGOŚĆ": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LENGTH"
+          }
+        }
+      }
+    },
+    "EDYCJA": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "EDIT"
+          }
+        }
+      }
+    },
+    "Edytuj / zatwierdź (OK)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit / confirm (OK)"
+          }
+        }
+      }
+    },
+    "Ekran na desce": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dashboard screen"
+          }
+        }
+      }
+    },
+    "Ekrany na desce": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dashboard screens"
+          }
+        }
+      }
+    },
+    "Ekspert": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expert"
+          }
+        }
+      }
+    },
+    "Folder odłączony, wszystkie trasy są w telefonie.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder disconnected, all routes are on the phone."
+          }
+        }
+      }
+    },
+    "Folder: %@ · tras w chmurze: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder: %@ · routes in cloud: %lld"
+          }
+        }
+      }
+    },
+    "Format": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Format"
+          }
+        }
+      }
+    },
+    "Format: 26B header + JPEG (z pcapng)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Format: 26B header + JPEG (from pcapng)"
+          }
+        }
+      }
+    },
+    "GAZ": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "THR"
+          }
+        }
+      }
+    },
+    "GAZ (SUR.)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "THROTTLE (RAW)"
+          }
+        }
+      }
+    },
+    "Garaż (A)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garage (A)"
+          }
+        }
+      }
+    },
+    "Gaz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Throttle"
+          }
+        }
+      }
+    },
+    "Gdzie zaczęła się piosenka": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where the song started"
+          }
+        }
+      }
+    },
+    "Generuję planszę...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Generating puzzle..."
+          }
+        }
+      }
+    },
+    "Generuję...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Generating..."
+          }
+        }
+      }
+    },
+    "Góra": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Up"
+          }
+        }
+      }
+    },
+    "Góra/Dół:": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Up/Down:"
+          }
+        }
+      }
+    },
+    "Hasło: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Password: %@"
+          }
+        }
+      }
+    },
+    "Isle of Man TT — ładowanie…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isle of Man TT — loading…"
+          }
+        }
+      }
+    },
+    "JEDŹ PROSTO": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RIDE STRAIGHT"
+          }
+        }
+      }
+    },
+    "Jak w systemie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System default"
+          }
+        }
+      }
+    },
+    "Jazda": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riding"
+          }
+        }
+      }
+    },
+    "Jedź prosto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Go straight"
+          }
+        }
+      }
+    },
+    "Jest nowszy program płytki (v%lld). Ta wersja płytki nie umie jeszcze aktualizacji przez Bluetooth — raz trzeba wgrać kablem: make fw-flash": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Newer board firmware is available (v%lld). This board version can't update over Bluetooth yet — flash it once via cable: make fw-flash"
+          }
+        }
+      }
+    },
+    "Jeszcze jadę": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Still riding"
+          }
+        }
+      }
+    },
+    "Joystick: ◀ ▶ 10 s, OK pauza, 2× OK następny film.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Joystick: ◀ ▶ 10 s, OK pause, 2× OK next video."
+          }
+        }
+      }
+    },
+    "Język": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Language"
+          }
+        }
+      }
+    },
+    "Język w Ustawieniach iOS": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Language in iOS Settings"
+          }
+        }
+      }
+    },
+    "KILOMETRÓW": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "KILOMETERS"
+          }
+        }
+      }
+    },
+    "KODY BŁĘDÓW (FI)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FAULT CODES (FI)"
+          }
+        }
+      }
+    },
+    "Kalibracja dwupunktowa (garaż ↔ pion)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Two-point calibration (garage ↔ upright)"
+          }
+        }
+      }
+    },
+    "Kalibracja lean": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lean calibration"
+          }
+        }
+      }
+    },
+    "Kalibruj z garażu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibrate from garage"
+          }
+        }
+      }
+    },
+    "Kasuję kody…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clearing codes…"
+          }
+        }
+      }
+    },
+    "Każda trasa trafia do folderu zaraz po zapisaniu. Trasy starsze niż %lld dni znikają z telefonu, gdy iCloud potwierdzi kopię — dalej są w bibliotece, otwarcie ściąga je z chmury.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Each route goes to the folder right after it is saved. Routes older than %lld days are removed from the phone once iCloud confirms the copy — they stay in the library, and opening one downloads it from the cloud."
+          }
+        }
+      }
+    },
+    "Keybindy: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keybinds: %@"
+          }
+        }
+      }
+    },
+    "Klasyczny": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Classic"
+          }
+        }
+      }
+    },
+    "Klawisz %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Key %lld"
+          }
+        }
+      }
+    },
+    "Kliknij przycisk po prawej i wybierz z grafiki joysticka. Zapisuje się od razu, osobno dla każdego ekranu.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap the button on the right and pick from the joystick graphic. Saved instantly, separately for each screen."
+          }
+        }
+      }
+    },
+    "Kolejność": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Order"
+          }
+        }
+      }
+    },
+    "Kolejność ekranów: przeciągnij uchwyt ☰ po prawej. Dotknięcie wiersza wybiera ekran.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screen order: drag the ☰ handle on the right. Tapping a row selects the screen."
+          }
+        }
+      }
+    },
+    "Kontynuuj nagrywanie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep recording"
+          }
+        }
+      }
+    },
+    "Kontynuuj prosto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue straight"
+          }
+        }
+      }
+    },
+    "Kursor dół / cyfra −": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cursor down / digit −"
+          }
+        }
+      }
+    },
+    "Kursor góra / cyfra +": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cursor up / digit +"
+          }
+        }
+      }
+    },
+    "Kursor lewo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cursor left"
+          }
+        }
+      }
+    },
+    "Kursor prawo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cursor right"
+          }
+        }
+      }
+    },
+    "LEWO": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LEFT"
+          }
+        }
+      }
+    },
+    "Lean — przechył": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lean angle"
+          }
+        }
+      }
+    },
+    "Lewo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Left"
+          }
+        }
+      }
+    },
+    "Licznik koła (próbnie)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wheel counter (experimental)"
+          }
+        }
+      }
+    },
+    "Licznik przechyłu na cały ekran": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full-screen lean meter"
+          }
+        }
+      }
+    },
+    "Liczę trasę…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calculating route…"
+          }
+        }
+      }
+    },
+    "Limit %.0f MB — po przekroczeniu znikają najstarsze pliki.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limit %.0f MB — oldest files are deleted when exceeded."
+          }
+        }
+      }
+    },
+    "Link bez współrzędnych — użyj Udostępnij → MySpin Nawiguj": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link has no coordinates — use Share → MySpin Navigate"
+          }
+        }
+      }
+    },
+    "Lista piosenek": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Song list"
+          }
+        }
+      }
+    },
+    "Log telemetrii": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telemetry log"
+          }
+        }
+      }
+    },
+    "Logi · %.0f MB": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Logs · %.0f MB"
+          }
+        }
+      }
+    },
+    "Logo apki i prędkość w wyspie, a po rozwinięciu i na ekranie blokady bieg, obroty, płyn, przechył i stan deski. Pojawia się po otwarciu apki.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App logo and speed in the island, and when expanded and on the lock screen: gear, RPM, coolant, lean and dashboard status. Appears once the app is opened."
+          }
+        }
+      }
+    },
+    "Losowa": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Random"
+          }
+        }
+      }
+    },
+    "Losowa plansza lokalna (offline):": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Random local puzzle (offline):"
+          }
+        }
+      }
+    },
+    "MAX OBROTY": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MAX RPM"
+          }
+        }
+      }
+    },
+    "MAX P": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MAX R"
+          }
+        }
+      }
+    },
+    "Magistrala": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bus"
+          }
+        }
+      }
+    },
+    "Magistrala CAN": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CAN bus"
+          }
+        }
+      }
+    },
+    "Magistrala · %lld ID": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bus · %lld IDs"
+          }
+        }
+      }
+    },
+    "Mapa + deska": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map + dash"
+          }
+        }
+      }
+    },
+    "Mapa działa przez LTE (kafelki + trasa). Głos zapowiada manewry przez słuchawki/interkom.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The map works over LTE (tiles + route). Voice announces maneuvers through headphones/intercom."
+          }
+        }
+      }
+    },
+    "Max prędkość i przechył": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Max speed and lean"
+          }
+        }
+      }
+    },
+    "Max, średnia, przeciążenie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Max, average, G-force"
+          }
+        }
+      }
+    },
+    "Miks: zdjęcia z tego dnia w poprzednich latach, ulubione ❤️ i losowe z biblioteki. Uwaga: losowe obejmują też zrzuty ekranu.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mix: photos from this day in past years, favorites ❤️ and random ones from your library. Note: random ones include screenshots too."
+          }
+        }
+      }
+    },
+    "Mostek CAN": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CAN bridge"
+          }
+        }
+      }
+    },
+    "Motocykl czeka w sieci %@. Hasło skopiuję do schowka — wybierz tę sieć w ustawieniach i wklej.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The motorcycle is waiting on network %@. I'll copy the password to the clipboard — pick this network in Settings and paste."
+          }
+        }
+      }
+    },
+    "Motocykl jedzie albo pracuje silnik. Zgaś silnik i spróbuj ponownie.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The bike is moving or the engine is running. Turn off the engine and try again."
+          }
+        }
+      }
+    },
+    "Motocykl wyłączony od godziny, a trasa wciąż jest nagrywana. Zostanie automatycznie zapisana po 4 godzinach.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The motorcycle has been off for an hour and the ride is still recording. It will be saved automatically after 4 hours."
+          }
+        }
+      }
+    },
+    "Motocykl wyłączony od godziny. Zakończyć i zapisać trasę?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bike has been off for an hour. End and save the route?"
+          }
+        }
+      }
+    },
+    "Muzyka": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Music"
+          }
+        }
+      }
+    },
+    "NA STARCIE": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ON THE LINE"
+          }
+        }
+      }
+    },
+    "NAGRYWAJ": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RECORD"
+          }
+        }
+      }
+    },
+    "NAWIGACJA": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NAVIGATION"
+          }
+        }
+      }
+    },
+    "NIEAKTYWNY": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "INACTIVE"
+          }
+        }
+      }
+    },
+    "Na Macu:  make refresh": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On the Mac:  make refresh"
+          }
+        }
+      }
+    },
+    "Na mapie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On the map"
+          }
+        }
+      }
+    },
+    "Na wyświetlaczu motocykla · %lld klatek": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On the motorcycle display · %lld frames"
+          }
+        }
+      }
+    },
+    "Na żywo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live"
+          }
+        }
+      }
+    },
+    "Nagraj nowy odcinek": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record a new segment"
+          }
+        }
+      }
+    },
+    "Nagraj sesję jazdy z karty 'Sesja jazdy'. Po zatrzymaniu trasa zostanie zapisana automatycznie i pojawi się tutaj.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record a ride from the 'Ride session' card. When you stop, the route is saved automatically and appears here."
+          }
+        }
+      }
+    },
+    "Nagraj trasę": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record ride"
+          }
+        }
+      }
+    },
+    "Nagrywaj trasę automatycznie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record rides automatically"
+          }
+        }
+      }
+    },
+    "Nagrywam odcinek…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording segment…"
+          }
+        }
+      }
+    },
+    "Nagrywanie tras": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ride recording"
+          }
+        }
+      }
+    },
+    "Następny film": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next video"
+          }
+        }
+      }
+    },
+    "Nawigacja": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Navigation"
+          }
+        }
+      }
+    },
+    "Nawigacja + deska 🧭": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Navigation + dash 🧭"
+          }
+        }
+      }
+    },
+    "Nawigacja 🗺️": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Navigation 🗺️"
+          }
+        }
+      }
+    },
+    "Nazwa": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
+          }
+        }
+      }
+    },
+    "Nazwa odcinka": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segment name"
+          }
+        }
+      }
+    },
+    "Nic nie gra": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing playing"
+          }
+        }
+      }
+    },
+    "Nie da się zapamiętać folderu: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't remember the folder: %@"
+          }
+        }
+      }
+    },
+    "Nie masz jeszcze żadnego odcinka. Gdy go nagrasz, apka sama rozpozna każdy kolejny przejazd i pokaże na desce, ile jesteś przed albo za rekordem.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You don't have any segments yet. Once you record one, the app will recognize every later run by itself and show on the dash how far ahead or behind your record you are."
+          }
+        }
+      }
+    },
+    "Nie nagrywam": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not recording"
+          }
+        }
+      }
+    },
+    "Nie połączony": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not connected"
+          }
+        }
+      }
+    },
+    "Nie ruszaj niczego przez 3 sekundy — sprawdzam, które bajty zmieniają się same.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Don't touch anything for 3 seconds — checking which bytes change on their own."
+          }
+        }
+      }
+    },
+    "Nie udało się policzyć trasy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't calculate the route"
+          }
+        }
+      }
+    },
+    "Nie udało się: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Failed: %@"
+          }
+        }
+      }
+    },
+    "Nie znalazłem współrzędnych w linku": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No coordinates found in the link"
+          }
+        }
+      }
+    },
+    "Nie ściągnęło się %lld tras — folder zostaje podłączony. Sprawdź internet.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld routes failed to download — the folder stays connected. Check your internet connection."
+          }
+        }
+      }
+    },
+    "Niedostępny": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unavailable"
+          }
+        }
+      }
+    },
+    "Niepołączony": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not connected"
+          }
+        }
+      }
+    },
+    "Nieznana odpowiedź płytki 0x%02X.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown board response 0x%02X."
+          }
+        }
+      }
+    },
+    "Noc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Night"
+          }
+        }
+      }
+    },
+    "OBR/MIN": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RPM"
+          }
+        }
+      }
+    },
+    "OK: edytuj": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK: edit"
+          }
+        }
+      }
+    },
+    "OK: zatwierdź": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK: confirm"
+          }
+        }
+      }
+    },
+    "Obraz leci": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Streaming"
+          }
+        }
+      }
+    },
+    "Obroty": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RPM"
+          }
+        }
+      }
+    },
+    "Obroty i zmiany biegów": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RPM and gear shifts"
+          }
+        }
+      }
+    },
+    "Oczekiwanie na dane...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for data..."
+          }
+        }
+      }
+    },
+    "Odcinek": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segment"
+          }
+        }
+      }
+    },
+    "Odcinek %@ przerwany": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segment %@ aborted"
+          }
+        }
+      }
+    },
+    "Odcinek %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segment %lld"
+          }
+        }
+      }
+    },
+    "Odcinki": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segments"
+          }
+        }
+      }
+    },
+    "Odczytaj": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read"
+          }
+        }
+      }
+    },
+    "Odebrane: %lld  |  Niezerowe: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Received: %lld  |  Non-zero: %lld"
+          }
+        }
+      }
+    },
+    "Odtwarzanie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Playback"
+          }
+        }
+      }
+    },
+    "Odzyskaj i zapisz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recover and save"
+          }
+        }
+      }
+    },
+    "Odzyskaj przerwaną sesję": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recover interrupted session"
+          }
+        }
+      }
+    },
+    "Odłącz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disconnect"
+          }
+        }
+      }
+    },
+    "Odłączyć folder?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disconnect folder?"
+          }
+        }
+      }
+    },
+    "Otwórz ustawienia WiFi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open WiFi settings"
+          }
+        }
+      }
+    },
+    "PALIWO": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FUEL"
+          }
+        }
+      }
+    },
+    "POMIAR": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MEASURING"
+          }
+        }
+      }
+    },
+    "POMIARY": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PERFORMANCE"
+          }
+        }
+      }
+    },
+    "POWIETRZE": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AIR"
+          }
+        }
+      }
+    },
+    "PRAWO": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RIGHT"
+          }
+        }
+      }
+    },
+    "PRZECHYŁ": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LEAN"
+          }
+        }
+      }
+    },
+    "PRZECHYŁ L": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LEAN L"
+          }
+        }
+      }
+    },
+    "PRZECHYŁ P": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LEAN R"
+          }
+        }
+      }
+    },
+    "PRZECHYŁ W LEWO": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LEAN LEFT"
+          }
+        }
+      }
+    },
+    "PRZECHYŁ W PRAWO": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LEAN RIGHT"
+          }
+        }
+      }
+    },
+    "PRZECIĄŻENIE": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "G-FORCE"
+          }
+        }
+      }
+    },
+    "PUNKTÓW GPS": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPS POINTS"
+          }
+        }
+      }
+    },
+    "Pauza": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pause"
+          }
+        }
+      }
+    },
+    "Pion (B)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upright (B)"
+          }
+        }
+      }
+    },
+    "Piosenki z odtwarzacza w trakcie trasy: %lld.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Songs from the player during the route: %lld."
+          }
+        }
+      }
+    },
+    "Plakat trasy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Route poster"
+          }
+        }
+      }
+    },
+    "Plansza dnia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daily puzzle"
+          }
+        }
+      }
+    },
+    "Play": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play"
+          }
+        }
+      }
+    },
+    "Pobieram film z Galerii…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetching video from Photos…"
+          }
+        }
+      }
+    },
+    "Podgląd magistrali na żywo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live bus viewer"
+          }
+        }
+      }
+    },
+    "Podgląd — tak będzie wyglądać deska": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preview — this is how the dashboard will look"
+          }
+        }
+      }
+    },
+    "Podpis SpinMyCan @mikomaks_": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SpinMyCan @mikomaks_ signature"
+          }
+        }
+      }
+    },
+    "Podpis aplikacji ważny jeszcze": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App signature still valid for"
+          }
+        }
+      }
+    },
+    "Podpis aplikacji wygasł": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App signature expired"
+          }
+        }
+      }
+    },
+    "Podpis wygasa za %lld dni": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signature expires in %lld days"
+          }
+        }
+      }
+    },
+    "Podwójne kliknięcie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Double click"
+          }
+        }
+      }
+    },
+    "Pomarańczowy = zmienił się w ostatniej sekundzie, szary = szum tła, czerwony = różni się od zapamiętanego stanu.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orange = changed in the last second, gray = background noise, red = differs from the captured state."
+          }
+        }
+      }
+    },
+    "Pomiary": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Runs"
+          }
+        }
+      }
+    },
+    "Pomiary osiągów": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Performance runs"
+          }
+        }
+      }
+    },
+    "Pomiary — ładowanie...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Performance — loading..."
+          }
+        }
+      }
+    },
+    "Pomiary 🏁": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Performance 🏁"
+          }
+        }
+      }
+    },
+    "Pomijaj postój bez motocykla": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skip stops without the motorcycle"
+          }
+        }
+      }
+    },
+    "Poprzednia sesja została przerwana (crash lub zamknięcie apki). Czy chcesz ją odzyskać?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The previous session was interrupted (crash or app closed). Do you want to recover it?"
+          }
+        }
+      }
+    },
+    "Post 4:5": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Post 4:5"
+          }
+        }
+      }
+    },
+    "Postój z połączonym motocyklem (światła, korek) zapisuje się normalnie. Pomijany jest tylko postój bez połączenia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stops with the motorcycle connected (traffic lights, jams) are recorded normally. Only stops without a connection are skipped"
+          }
+        }
+      }
+    },
+    "Pozostało %.1f km · ≈ %d min": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%.1f km left · ≈ %d min"
+          }
+        }
+      }
+    },
+    "Połącz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect"
+          }
+        }
+      }
+    },
+    "Połącz TCP": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect TCP"
+          }
+        }
+      }
+    },
+    "Połączenie z płytką zerwane w trakcie komendy.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connection to the board lost during the command."
+          }
+        }
+      }
+    },
+    "Połączenie z płytką zerwane w trakcie wysyłania. Stary program działa dalej.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connection to the board lost while sending. The old firmware keeps running."
+          }
+        }
+      }
+    },
+    "Połączono": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connected"
+          }
+        }
+      }
+    },
+    "Połączony": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connected"
+          }
+        }
+      }
+    },
+    "Prawo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Right"
+          }
+        }
+      }
+    },
+    "Program płytki": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Board firmware"
+          }
+        }
+      }
+    },
+    "Przechył": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lean"
+          }
+        }
+      }
+    },
+    "Przechył wg telefonu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lean per phone"
+          }
+        }
+      }
+    },
+    "Przechył z czujnika motocykla": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lean from motorcycle sensor"
+          }
+        }
+      }
+    },
+    "Przejazdy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Runs"
+          }
+        }
+      }
+    },
+    "Przejdź do ekranu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Go to screen"
+          }
+        }
+      }
+    },
+    "Przejdź do ekranu (opcjonalne skróty):": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Go to screen (optional shortcuts):"
+          }
+        }
+      }
+    },
+    "Przelicz różnicę (B − A)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compute difference (B − A)"
+          }
+        }
+      }
+    },
+    "Przelicznik potwierdzony GPS-em (%.2f%% względem założenia). Reaguje od razu, działa w tunelu.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scale factor confirmed by GPS (%.2f%% off the assumption). Responds instantly, works in tunnels."
+          }
+        }
+      }
+    },
+    "Przerabiam „%@”…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Converting “%@”…"
+          }
+        }
+      }
+    },
+    "Przerabiam…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Converting…"
+          }
+        }
+      }
+    },
+    "Przerwij": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abort"
+          }
+        }
+      }
+    },
+    "Przesył obrazu (TCP)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Image transfer (TCP)"
+          }
+        }
+      }
+    },
+    "Przyspieszenia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acceleration"
+          }
+        }
+      }
+    },
+    "Przytrzymaj, aby usunąć trasę": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold to delete the ride"
+          }
+        }
+      }
+    },
+    "Prędkość": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speed"
+          }
+        }
+      }
+    },
+    "Prędkość z przedniego koła": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speed from the front wheel"
+          }
+        }
+      }
+    },
+    "Pytam sterowniki…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Querying controllers…"
+          }
+        }
+      }
+    },
+    "PŁYN": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "COOLANT"
+          }
+        }
+      }
+    },
+    "Płytka nadaje dane testowe (program symulacyjny) — nie wpinaj jej tak w motocykl.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The board is sending test data (simulator firmware) — don't plug it into the bike like this."
+          }
+        }
+      }
+    },
+    "Płytka nadaje dane testowe — nie wpinaj jej tak w motocykl.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The board is sending test data — don't wire it into the motorcycle like this."
+          }
+        }
+      }
+    },
+    "Płytka nie była gotowa na dane. Spróbuj ponownie.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The board was not ready for data. Try again."
+          }
+        }
+      }
+    },
+    "Płytka nie doczekała się danych. Stary program działa dalej.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The board timed out waiting for data. The old firmware keeps running."
+          }
+        }
+      }
+    },
+    "Płytka nie wróciła po restarcie. Włącz i wyłącz zapłon; jeśli wróci ze starą wersją, nic się nie stało.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The board did not come back after restart. Cycle the ignition; if it returns with the old version, no harm done."
+          }
+        }
+      }
+    },
+    "Płytka nie zakończyła komendy w 15 s.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The board did not finish the command within 15 s."
+          }
+        }
+      }
+    },
+    "Płytka nie zdołała nadać zapytania (nikt go nie potwierdził). Wróciła do samego nasłuchu.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The board could not send the request (nobody acknowledged it). Back to listen-only."
+          }
+        }
+      }
+    },
+    "Płytka niepołączona albo ma za stary program (potrzebny v9).": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Board not connected or its firmware is too old (v9 required)."
+          }
+        }
+      }
+    },
+    "Płytka odmówiła: silnik pracuje albo koło się kręci. Zgaś silnik, zapłon zostaw włączony.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The board refused: engine is running or the wheel is turning. Turn off the engine, leave the ignition on."
+          }
+        }
+      }
+    },
+    "Płytka odrzuciła dane aktualizacji (%@). Stary program działa dalej.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The board rejected the update data (%@). The old firmware keeps running."
+          }
+        }
+      }
+    },
+    "Płytka odrzuciła rozmiar programu.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The board rejected the firmware size."
+          }
+        }
+      }
+    },
+    "Płytka podała pozycję poza programem": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The board reported a position outside the firmware"
+          }
+        }
+      }
+    },
+    "Płytka połączona, ale magistrala milczy (zapłon wyłączony albo płytka nie jest wpięta).": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Board connected, but the bus is silent (ignition off or board not plugged in)."
+          }
+        }
+      }
+    },
+    "Płytka połączona, magistrala milczy (zapłon wyłączony albo nie wpięta)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Board connected, bus is silent (ignition off or not wired in)"
+          }
+        }
+      }
+    },
+    "Płytka przestała odpowiadać. Stary program działa dalej.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The board stopped responding. The old firmware keeps running."
+          }
+        }
+      }
+    },
+    "Płytka sprawdza podpis…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Board is verifying the signature…"
+          }
+        }
+      }
+    },
+    "Płytka uruchamia nowy program…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Board is starting the new firmware…"
+          }
+        }
+      }
+    },
+    "Płytka wróciła z wersją v%lld zamiast v%lld — nowy program nie został przyjęty.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The board came back with version v%lld instead of v%lld — the new firmware was not accepted."
+          }
+        }
+      }
+    },
+    "Płytka zajęta — spróbuj za kilka sekund.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Board busy — try again in a few seconds."
+          }
+        }
+      }
+    },
+    "Płytka zaktualizowana do v%lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Board updated to v%lld"
+          }
+        }
+      }
+    },
+    "REKORD": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RECORD"
+          }
+        }
+      }
+    },
+    "ROZWIĄZANE! 🎉": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SOLVED! 🎉"
+          }
+        }
+      }
+    },
+    "Relacja 9:16": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Story 9:16"
+          }
+        }
+      }
+    },
+    "Relacja i post mają stały rozmiar pod Instagrama — przy wielu blokach plakat jest zmniejszany, nic nie jest ucinane.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Story and post have a fixed Instagram size — with many blocks the poster is scaled down, nothing gets cropped."
+          }
+        }
+      }
+    },
+    "Reset": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset"
+          }
+        }
+      }
+    },
+    "Reset pomiaru": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset measurement"
+          }
+        }
+      }
+    },
+    "Rozdziel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Split"
+          }
+        }
+      }
+    },
+    "Rozwiązane! 🎉": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solved! 🎉"
+          }
+        }
+      }
+    },
+    "Rozwiązuję link…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resolving link…"
+          }
+        }
+      }
+    },
+    "Rozłącz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disconnect"
+          }
+        }
+      }
+    },
+    "Różnica Δ": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Difference Δ"
+          }
+        }
+      }
+    },
+    "SKALIBROWANO": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CALIBRATED"
+          }
+        }
+      }
+    },
+    "Silnik": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Engine"
+          }
+        }
+      }
+    },
+    "Silnik wyłączony — dane statyczne": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Engine off — static data"
+          }
+        }
+      }
+    },
+    "Skalibrowano": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibrated"
+          }
+        }
+      }
+    },
+    "Skasować kody błędów i lampkę FI?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear fault codes and the FI light?"
+          }
+        }
+      }
+    },
+    "Skasuj kody": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear codes"
+          }
+        }
+      }
+    },
+    "Snake — ładowanie...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snake — loading..."
+          }
+        }
+      }
+    },
+    "Spotify ✓ (token ok)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spotify ✓ (token ok)"
+          }
+        }
+      }
+    },
+    "Spotify: brak aktywnego urządzenia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spotify: no active device"
+          }
+        }
+      }
+    },
+    "Spotify: brak kodu OAuth": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spotify: no OAuth code"
+          }
+        }
+      }
+    },
+    "Spotify: logowanie anulowane": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spotify: sign-in cancelled"
+          }
+        }
+      }
+    },
+    "Spotify: nic nie gra": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spotify: nothing playing"
+          }
+        }
+      }
+    },
+    "Spotify: odświeżam token...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spotify: refreshing token..."
+          }
+        }
+      }
+    },
+    "Spotify: otwieranie okna logowania...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spotify: opening sign-in window..."
+          }
+        }
+      }
+    },
+    "Spotify: rate limit (429)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spotify: rate limit (429)"
+          }
+        }
+      }
+    },
+    "Spotify: rozłączono": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spotify: disconnected"
+          }
+        }
+      }
+    },
+    "Spotify: token wygasł — zaloguj ponownie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spotify: token expired — sign in again"
+          }
+        }
+      }
+    },
+    "Stan WiFi: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi state: %@"
+          }
+        }
+      }
+    },
+    "Start po połączeniu z motocyklem, pauza gdy połączenie zniknie, wznowienie po powrocie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starts when connected to the motorcycle, pauses when the connection drops, resumes when it returns"
+          }
+        }
+      }
+    },
+    "Sterowanie joystickiem: d-pad rusza kursorem, OK edytuje komórkę, Góra/Dół zmienia cyfrę, Back wychodzi. Stan zapisuje się automatycznie. Plansza dnia działa offline (ta sama dla wszystkich danego dnia).": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Joystick controls: d-pad moves the cursor, OK edits a cell, Up/Down changes the digit, Back exits. Progress is saved automatically. The daily puzzle works offline (the same for everyone on a given day)."
+          }
+        }
+      }
+    },
+    "Stój by zacząć": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop to arm"
+          }
+        }
+      }
+    },
+    "Sudoku — ładowanie...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sudoku — loading..."
+          }
+        }
+      }
+    },
+    "Symulacja": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulation"
+          }
+        }
+      }
+    },
+    "Synchronizuj": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync"
+          }
+        }
+      }
+    },
+    "Szukaj (np. RPM, Gear)...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search (e.g. RPM, Gear)..."
+          }
+        }
+      }
+    },
+    "Szukam…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Searching…"
+          }
+        }
+      }
+    },
+    "Szukanie sygnału": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signal hunting"
+          }
+        }
+      }
+    },
+    "Szyna CAN milczy — włącz zapłon.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CAN bus is silent — turn the ignition on."
+          }
+        }
+      }
+    },
+    "TCP błąd: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TCP error: %@"
+          }
+        }
+      }
+    },
+    "TCP: POŁĄCZONY ✓": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TCP: CONNECTED ✓"
+          }
+        }
+      }
+    },
+    "TCP: handshake %lld/7": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TCP: handshake %lld/7"
+          }
+        }
+      }
+    },
+    "TCP: rozłączony": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TCP: disconnected"
+          }
+        }
+      }
+    },
+    "TCP: łączę...": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TCP: connecting..."
+          }
+        }
+      }
+    },
+    "TELEFON": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PHONE"
+          }
+        }
+      }
+    },
+    "TRAKCJA": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TRACTION"
+          }
+        }
+      }
+    },
+    "TRYB": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MODE"
+          }
+        }
+      }
+    },
+    "Ta trasa nie ma danych z płytki CAN.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This route has no data from the CAN board."
+          }
+        }
+      }
+    },
+    "Tapnij na początku odcinka, przejedź go i tapnij „Zakończ”. Postój na starcie i mecie sam się przytnie.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap at the start of the segment, ride it, and tap “Finish”. Standing time at the start and finish is trimmed automatically."
+          }
+        }
+      }
+    },
+    "Tego dnia · %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On this day · %lld"
+          }
+        }
+      }
+    },
+    "Telemetria": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telemetry"
+          }
+        }
+      }
+    },
+    "Teraz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Now"
+          }
+        }
+      }
+    },
+    "Teraz wciśnij hamulec, sprzęgło, przełącznik… Tu pojawi się bajt, który zareagował.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Now press the brake, clutch, a switch… The byte that reacted will show up here."
+          }
+        }
+      }
+    },
+    "Teraz: czujnik motocykla": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Now: motorcycle sensor"
+          }
+        }
+      }
+    },
+    "Teraz: telefon (przejmuje sam, gdy płytka milczy)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Now: phone (takes over automatically when the board is silent)"
+          }
+        }
+      }
+    },
+    "Terminal": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terminal"
+          }
+        }
+      }
+    },
+    "To urządzenie nie obsługuje Bluetooth LE": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This device does not support Bluetooth LE"
+          }
+        }
+      }
+    },
+    "Trasa": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ride"
+          }
+        }
+      }
+    },
+    "Trasa nadal nagrywana": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Route still recording"
+          }
+        }
+      }
+    },
+    "Trasa usunięta ✓": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ride deleted ✓"
+          }
+        }
+      }
+    },
+    "Trasa zacznie się nagrywać sama po połączeniu z motocyklem.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The ride will start recording by itself once connected to the motorcycle."
+          }
+        }
+      }
+    },
+    "Trasy w iCloud Drive": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Routes in iCloud Drive"
+          }
+        }
+      }
+    },
+    "Trasy, których nie ma w telefonie, najpierw zostaną ściągnięte z chmury. Kopie w folderze zostają.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Routes that are not on the phone will first be downloaded from the cloud. Copies in the folder stay."
+          }
+        }
+      }
+    },
+    "Trudny": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hard"
+          }
+        }
+      }
+    },
+    "Trwa ok. minuty. Trzymaj telefon przy motocyklu i nie wyłączaj zapłonu.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Takes about a minute. Keep the phone near the motorcycle and don't turn off the ignition."
+          }
+        }
+      }
+    },
+    "Trzymaj apkę na wierzchu do końca przeróbki.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep the app in the foreground until conversion finishes."
+          }
+        }
+      }
+    },
+    "Twoje albumy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your albums"
+          }
+        }
+      }
+    },
+    "Twoje odcinki": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your segments"
+          }
+        }
+      }
+    },
+    "Tylko wybrany album. Zdjęcia grupowane po dniach, po 1-3 obok siebie.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected album only. Photos grouped by day, 1-3 side by side."
+          }
+        }
+      }
+    },
+    "Uczę się tła…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Learning background…"
+          }
+        }
+      }
+    },
+    "Udostępnij": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share"
+          }
+        }
+      }
+    },
+    "Ulubione": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favorites"
+          }
+        }
+      }
+    },
+    "Ulubione · %lld zdjęć": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favorites · %lld photos"
+          }
+        }
+      }
+    },
+    "Ustaw cel w karcie Nawigacja (w apce)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set a destination in the app's Navigation tab"
+          }
+        }
+      }
+    },
+    "Ustawienia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        }
+      }
+    },
+    "Ustawienia i diagnostyka": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings & diagnostics"
+          }
+        }
+      }
+    },
+    "Usunąć odcinek razem z historią przejazdów?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete the segment along with its run history?"
+          }
+        }
+      }
+    },
+    "Usunąć wszystkie zapisane logi magistrali?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete all saved bus logs?"
+          }
+        }
+      }
+    },
+    "Usunąć „%@” z playlisty?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove “%@” from the playlist?"
+          }
+        }
+      }
+    },
+    "Usuń": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
+          }
+        }
+      }
+    },
+    "Usuń odcinek": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete segment"
+          }
+        }
+      }
+    },
+    "Usuń wszystkie logi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete all logs"
+          }
+        }
+      }
+    },
+    "Utwór trasy (grał najdłużej)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ride song (played longest)"
+          }
+        }
+      }
+    },
+    "W RUCHU": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MOVING"
+          }
+        }
+      }
+    },
+    "W RUCHU  %@   ·   ŁĄCZNIE  %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MOVING  %@   ·   TOTAL  %@"
+          }
+        }
+      }
+    },
+    "W tej trasie nie zapisały się piosenki (zapis od wersji 1.18.0).": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No songs were recorded on this route (recording since version 1.18.0)."
+          }
+        }
+      }
+    },
+    "Wciśnij kierunek joystickiem aby zacząć": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push the joystick to start"
+          }
+        }
+      }
+    },
+    "WiFi motocykla": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Motorcycle WiFi"
+          }
+        }
+      }
+    },
+    "WiFi motocykla: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bike WiFi: %@"
+          }
+        }
+      }
+    },
+    "Wideo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video"
+          }
+        }
+      }
+    },
+    "Wideo — playlista": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video — playlist"
+          }
+        }
+      }
+    },
+    "Wideo 🎬": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video 🎬"
+          }
+        }
+      }
+    },
+    "Wklej link z Apple Maps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste Apple Maps link"
+          }
+        }
+      }
+    },
+    "Wróć": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back"
+          }
+        }
+      }
+    },
+    "Wskaż folder na iCloud Drive (np. utwórz „MySpin”), a apka będzie tam kopiować trasy i zwalniać miejsce w telefonie.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick a folder in iCloud Drive (e.g. create “MySpin”) and the app will copy routes there and free up space on your phone."
+          }
+        }
+      }
+    },
+    "Wspomnienia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memories"
+          }
+        }
+      }
+    },
+    "Wspomnienia — ładowanie…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memories — loading…"
+          }
+        }
+      }
+    },
+    "Wspomnienia — źródło zdjęć": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memories — photo source"
+          }
+        }
+      }
+    },
+    "Wspomnienia 📸": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memories 📸"
+          }
+        }
+      }
+    },
+    "Wszystkie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
+          }
+        }
+      }
+    },
+    "Wszystkie (tego dnia + ulubione + losowe)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All (this day + favorites + random)"
+          }
+        }
+      }
+    },
+    "Wszystkie kanały (%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All channels (%lld)"
+          }
+        }
+      }
+    },
+    "Wszystkie kanały = 'not supported' — niekompatybilny motocykl?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All channels = 'not supported' — incompatible bike?"
+          }
+        }
+      }
+    },
+    "Wszystkie odcinki i przejazdy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All segments and runs"
+          }
+        }
+      }
+    },
+    "Wszystkie ramki + GPS i przechył telefonu, ok. 50 MB na godzinę jazdy. Logi starsze niż 14 dni znikają same. Zajęte: %.0f MB z %.0f.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All frames + phone GPS and lean, about 50 MB per hour of riding. Logs older than 14 days are deleted automatically. Used: %.0f MB of %.0f."
+          }
+        }
+      }
+    },
+    "Wszystkie zapisane trasy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All saved rides"
+          }
+        }
+      }
+    },
+    "Wszystko": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
+          }
+        }
+      }
+    },
+    "Wybierz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select"
+          }
+        }
+      }
+    },
+    "Wybierz folder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose folder"
+          }
+        }
+      }
+    },
+    "Wybierz przycisk": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a button"
+          }
+        }
+      }
+    },
+    "Wybierz trasy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select routes"
+          }
+        }
+      }
+    },
+    "Wybrano: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected: %lld"
+          }
+        }
+      }
+    },
+    "Wybrany album": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected album"
+          }
+        }
+      }
+    },
+    "Wybrany album jest pusty — zmień źródło w apce": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected album is empty — change the source in the app"
+          }
+        }
+      }
+    },
+    "Wyczyść": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear"
+          }
+        }
+      }
+    },
+    "Wyjście do klasycznego": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exit to classic"
+          }
+        }
+      }
+    },
+    "Wymaga bezpłatnego Spotify Developer Account:": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requires a free Spotify Developer Account:"
+          }
+        }
+      }
+    },
+    "Wynik %lld  •  OK = zagraj ponownie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Score %lld  •  OK = play again"
+          }
+        }
+      }
+    },
+    "Wynik: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Score: %lld"
+          }
+        }
+      }
+    },
+    "Wyniki tylko z motocyklem": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Results only with the motorcycle"
+          }
+        }
+      }
+    },
+    "Wysyłam program: %.0f%%": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sending firmware: %.0f%%"
+          }
+        }
+      }
+    },
+    "Wyzeruj przechył": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zero lean"
+          }
+        }
+      }
+    },
+    "Wyłącz na pełne słońce — jasne tło, ciemne cyfry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn off in full sun — light background, dark digits"
+          }
+        }
+      }
+    },
+    "Wyłączony": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Off"
+          }
+        }
+      }
+    },
+    "Wyślij logi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send logs"
+          }
+        }
+      }
+    },
+    "Wąż: dół": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snake: down"
+          }
+        }
+      }
+    },
+    "Wąż: góra": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snake: up"
+          }
+        }
+      }
+    },
+    "Wąż: lewo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snake: left"
+          }
+        }
+      }
+    },
+    "Wąż: prawo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snake: right"
+          }
+        }
+      }
+    },
+    "Z Galerii": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From Photos"
+          }
+        }
+      }
+    },
+    "Z Plików": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From Files"
+          }
+        }
+      }
+    },
+    "Z internetu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From the web"
+          }
+        }
+      }
+    },
+    "ZATRZYMAJ": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "STOP"
+          }
+        }
+      }
+    },
+    "ZMIANY BIEGÓW": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GEAR SHIFTS"
+          }
+        }
+      }
+    },
+    "Za krótki odcinek — potrzeba co najmniej %lld m jazdy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segment too short — at least %lld m of riding needed"
+          }
+        }
+      }
+    },
+    "Zagraj ponownie (OK)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play again (OK)"
+          }
+        }
+      }
+    },
+    "Zakończ i zapisz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finish and save"
+          }
+        }
+      }
+    },
+    "Zakończ i zapisz trasę": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End and save route"
+          }
+        }
+      }
+    },
+    "Zakończ nawigację": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End navigation"
+          }
+        }
+      }
+    },
+    "Zakończyć trasę?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "End the ride?"
+          }
+        }
+      }
+    },
+    "Zaktualizuj płytkę do v%lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Update board to v%lld"
+          }
+        }
+      }
+    },
+    "Zapamiętaj stan (3 s)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capture state (3 s)"
+          }
+        }
+      }
+    },
+    "Zapamiętaj stan spoczynkowy, a potem rusz jedną rzeczą naraz — zobaczysz, który bajt na nią reaguje.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capture the resting state, then operate one thing at a time — you'll see which byte reacts."
+          }
+        }
+      }
+    },
+    "Zapis ramek do rozszyfrowania": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frame log for decoding"
+          }
+        }
+      }
+    },
+    "Zapisz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
+          }
+        }
+      }
+    },
+    "Zapomnij płytkę": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forget board"
+          }
+        }
+      }
+    },
+    "Zapowiedzi głosowe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voice guidance"
+          }
+        }
+      }
+    },
+    "Zapytań wysłanych %lld, bez potwierdzenia %lld, licznik błędów nadawania %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requests sent %lld, unacknowledged %lld, transmit error counter %lld"
+          }
+        }
+      }
+    },
+    "Zapłon włączony, silnik ZGASZONY, motocykl stoi. Płytka na kilka sekund zacznie nadawać na szynę, potem wraca do samego nasłuchu. Jeśli usterka nadal jest, kod i lampka wrócą.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ignition on, engine OFF, motorcycle stationary. The board will transmit on the bus for a few seconds, then go back to listen-only. If the fault is still present, the code and light will return."
+          }
+        }
+      }
+    },
+    "Zapłon włączony, silnik zgaszony. Odczyt niczego nie zmienia.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ignition on, engine off. Reading changes nothing."
+          }
+        }
+      }
+    },
+    "Zapłon włączony, silnik zgaszony. Odczyt niczego nie zmienia; kasowanie odblokuje się, gdy motocykl odpowie kodami.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ignition on, engine off. Reading changes nothing; clearing unlocks once the motorcycle responds with codes."
+          }
+        }
+      }
+    },
+    "Zatrzymaj i podsumuj": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop and summarize"
+          }
+        }
+      }
+    },
+    "Zatrzymaj się i rusz aby zmierzyć": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop and launch to measure"
+          }
+        }
+      }
+    },
+    "Zatrzymaj się i rusz — pomiar startuje automatycznie. GPS + akcelerometr telefonu, zero zależności od motocykla.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop and go — the run starts automatically. Phone GPS + accelerometer, no dependence on the motorcycle."
+          }
+        }
+      }
+    },
+    "Zaznacz 2+ trasy do połączenia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select 2+ routes to merge"
+          }
+        }
+      }
+    },
+    "Zero z garażu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zero from garage"
+          }
+        }
+      }
+    },
+    "Zero za %lld s": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zero in %lld s"
+          }
+        }
+      }
+    },
+    "Zeruj MAX": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset MAX"
+          }
+        }
+      }
+    },
+    "Zeruj kąt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zero angle"
+          }
+        }
+      }
+    },
+    "Zgaś silnik — płytka przyjmuje nowy program tylko na postoju.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn off the engine — the board only accepts new firmware when stationary."
+          }
+        }
+      }
+    },
+    "Zmian biegów: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gear shifts: %lld"
+          }
+        }
+      }
+    },
+    "Zmierz garaż (A)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measure garage (A)"
+          }
+        }
+      }
+    },
+    "Zmierz pion (B)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measure upright (B)"
+          }
+        }
+      }
+    },
+    "Zmień folder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change folder"
+          }
+        }
+      }
+    },
+    "Zmień nazwę": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rename"
+          }
+        }
+      }
+    },
+    "Znacznik w logu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log marker"
+          }
+        }
+      }
+    },
+    "Znaczniki trafiają do pliku logu — włącz „Zapis ramek” i poczekaj na pierwsze ramki.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markers go into the log file — enable “Frame logging” and wait for the first frames."
+          }
+        }
+      }
+    },
+    "Znaczników w tym logu: %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markers in this log: %lld"
+          }
+        }
+      }
+    },
+    "Znane sygnały": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Known signals"
+          }
+        }
+      }
+    },
+    "Zsynchronizowano %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synced %@"
+          }
+        }
+      }
+    },
+    "Zły podpis programu — płytka go odrzuciła. Stary program działa dalej.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bad firmware signature — the board rejected it. The old firmware keeps running."
+          }
+        }
+      }
+    },
+    "Zły port": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bad port"
+          }
+        }
+      }
+    },
+    "albo wklej link z Apple Maps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "or paste an Apple Maps link"
+          }
+        }
+      }
+    },
+    "brak GPS": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no GPS"
+          }
+        }
+      }
+    },
+    "brak klatek": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no frames"
+          }
+        }
+      }
+    },
+    "brak tekstu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no lyrics"
+          }
+        }
+      }
+    },
+    "brak zapisanych kodów": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no stored codes"
+          }
+        }
+      }
+    },
+    "brak łączności z ABS": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no communication with ABS"
+          }
+        }
+      }
+    },
+    "brak łączności z czujnikiem ruchu (IMU)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no communication with motion sensor (IMU)"
+          }
+        }
+      }
+    },
+    "brak łączności z zegarami": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no communication with instrument cluster"
+          }
+        }
+      }
+    },
+    "brak łączności ze sterownikiem silnika": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no communication with engine controller"
+          }
+        }
+      }
+    },
+    "brak łączności ze sterownikiem zawieszenia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "no communication with suspension controller"
+          }
+        }
+      }
+    },
+    "deszcz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rain"
+          }
+        }
+      }
+    },
+    "film za długi (limit 3 h)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "video too long (limit 3 h)"
+          }
+        }
+      }
+    },
+    "iOS nie pozwolił: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS didn't allow it: %@"
+          }
+        }
+      }
+    },
+    "iOS przestanie uruchamiać apkę. Podłącz telefon do Maca i odśwież.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS will stop launching the app. Connect the phone to your Mac and refresh."
+          }
+        }
+      }
+    },
+    "instrumental 🎸": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "instrumental 🎸"
+          }
+        }
+      }
+    },
+    "jeszcze %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ left"
+          }
+        }
+      }
+    },
+    "kody skasowane": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "codes cleared"
+          }
+        }
+      }
+    },
+    "mżawka": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "drizzle"
+          }
+        }
+      }
+    },
+    "nie da się odczytać filmu (%@)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "can't read the video (%@)"
+          }
+        }
+      }
+    },
+    "nieznana odpowiedź": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "unknown response"
+          }
+        }
+      }
+    },
+    "np. Przełęcz Salmopolska": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. Stelvio Pass"
+          }
+        }
+      }
+    },
+    "np. temperatura na zegarach 92": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "e.g. cluster temperature 92"
+          }
+        }
+      }
+    },
+    "odmowa 0x%02X": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "refused 0x%02X"
+          }
+        }
+      }
+    },
+    "odmowa: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "refused: %@"
+          }
+        }
+      }
+    },
+    "odpowiada na OBD": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "responds to OBD"
+          }
+        }
+      }
+    },
+    "podpis %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "signed %@"
+          }
+        }
+      }
+    },
+    "przechyl poprawnie zamontowany telefon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "lean with the phone mounted correctly"
+          }
+        }
+      }
+    },
+    "przejazd": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "run"
+          }
+        }
+      }
+    },
+    "przejazdów": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "runs"
+          }
+        }
+      }
+    },
+    "przerwane — apka zeszła w tło?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "interrupted — did the app go to the background?"
+          }
+        }
+      }
+    },
+    "przetwarzam…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "processing…"
+          }
+        }
+      }
+    },
+    "ramka: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "frame: %@"
+          }
+        }
+      }
+    },
+    "rekord": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "record"
+          }
+        }
+      }
+    },
+    "session.merge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Merge"
+          }
+        }
+      }
+    },
+    "silnik (7E8)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "engine (7E8)"
+          }
+        }
+      }
+    },
+    "sterownik %03X": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "controller %03X"
+          }
+        }
+      }
+    },
+    "sterownik %08X (29-bit)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "controller %08X (29-bit)"
+          }
+        }
+      }
+    },
+    "sucho do celu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dry to destination"
+          }
+        }
+      }
+    },
+    "sucho przez %.0f km": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dry for %.0f km"
+          }
+        }
+      }
+    },
+    "sucho przez %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dry for %@"
+          }
+        }
+      }
+    },
+    "sucho za %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dry in %@"
+          }
+        }
+      }
+    },
+    "szukam tekstu…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "searching lyrics…"
+          }
+        }
+      }
+    },
+    "szyna CAN wyłączona (bus off)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CAN bus disabled (bus off)"
+          }
+        }
+      }
+    },
+    "ta funkcja nieobsługiwana": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "function not supported"
+          }
+        }
+      }
+    },
+    "ta usługa nieobsługiwana": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "service not supported"
+          }
+        }
+      }
+    },
+    "tego dnia + ulubione + losowe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "this day + favorites + random"
+          }
+        }
+      }
+    },
+    "ulewa": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "downpour"
+          }
+        }
+      }
+    },
+    "v%lld (jest nowszy: v%lld)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "v%lld (newer available: v%lld)"
+          }
+        }
+      }
+    },
+    "vmax %.0f · przechył L %.0f° / P %.0f°": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vmax %.0f · lean L %.0f° / R %.0f°"
+          }
+        }
+      }
+    },
+    "w lewo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "left"
+          }
+        }
+      }
+    },
+    "w pliku nie ma obrazu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "the file has no video track"
+          }
+        }
+      }
+    },
+    "w prawo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "right"
+          }
+        }
+      }
+    },
+    "warunki niespełnione (np. silnik pracuje)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "conditions not met (e.g. engine running)"
+          }
+        }
+      }
+    },
+    "wersja sprzed numeracji": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pre-numbering version"
+          }
+        }
+      }
+    },
+    "wygasł": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "expired"
+          }
+        }
+      }
+    },
+    "wymaga zabezpieczenia serwisowego": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "requires service security access"
+          }
+        }
+      }
+    },
+    "wzdł. %+.2f g · pion %+.2f g · bok %+.2f g": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "long. %+.2f g · vert. %+.2f g · lat. %+.2f g"
+          }
+        }
+      }
+    },
+    "z lewej": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "from left"
+          }
+        }
+      }
+    },
+    "z prawej": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "from right"
+          }
+        }
+      }
+    },
+    "zapytanie poza zakresem": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "request out of range"
+          }
+        }
+      }
+    },
+    "zdjęcia oznaczone serduszkiem": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "photos marked with a heart"
+          }
+        }
+      }
+    },
+    "¼ mili": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¼ mile"
+          }
+        }
+      }
+    },
+    "Łatwy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Easy"
+          }
+        }
+      }
+    },
+    "ŁĄCZNIE": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TOTAL"
+          }
+        }
+      }
+    },
+    "Łącze: %lld pakietów/s": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link: %lld packets/s"
+          }
+        }
+      }
+    },
+    "Łączę się z płytką…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecting to the board…"
+          }
+        }
+      }
+    },
+    "Łączę…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecting…"
+          }
+        }
+      }
+    },
+    "ŚR. KM/H": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AVG KM/H"
+          }
+        }
+      }
+    },
+    "ŚR. RPM": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AVG RPM"
+          }
+        }
+      }
+    },
+    "ŚRED. OBROTY W RUCHU": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AVG RPM MOVING"
+          }
+        }
+      }
+    },
+    "ŚREDNIA": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AVERAGE"
+          }
+        }
+      }
+    },
+    "Ściągam trasy z chmury…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downloading routes from the cloud…"
+          }
+        }
+      }
+    },
+    "Średni": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medium"
+          }
+        }
+      }
+    },
+    "Źródło zdjęć": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo source"
+          }
+        }
+      }
+    },
+    "Żaden sterownik nie odpowiedział na OBD.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No controller responded to OBD."
+          }
+        }
+      }
+    },
+    "Żywe tło": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live background"
+          }
+        }
+      }
+    },
+    "← odebrane = nie 'not supported'": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "← received = not 'not supported'"
+          }
+        }
+      }
+    },
+    "⊙ Kalibracja": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⊙ Calibration"
+          }
+        }
+      }
+    },
+    "⊙ Kalibracja (OK)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⊙ Calibrate (OK)"
+          }
+        }
+      }
+    },
+    "⏭ Następne zdjęcie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⏭ Next photo"
+          }
+        }
+      }
+    },
+    "⏭ Następny": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⏭ Next"
+          }
+        }
+      }
+    },
+    "⏭ Następny utwór": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⏭ Next track"
+          }
+        }
+      }
+    },
+    "⏮ Poprzedni": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⏮ Previous"
+          }
+        }
+      }
+    },
+    "⏮ Poprzedni utwór": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⏮ Previous track"
+          }
+        }
+      }
+    },
+    "⏮ Poprzednie zdjęcie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⏮ Previous photo"
+          }
+        }
+      }
+    },
+    "⏯ Pauza / dalej (OK)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⏯ Pause / resume (OK)"
+          }
+        }
+      }
+    },
+    "⏯ Play / Pause": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⏯ Play / Pause"
+          }
+        }
+      }
+    },
+    "⏯ Play / Pause (OK)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⏯ Play / Pause (OK)"
+          }
+        }
+      }
+    },
+    "⏱ %@ — przerwany": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⏱ %@ — aborted"
+          }
+        }
+      }
+    },
+    "▲ Poprzedni ekran": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "▲ Previous screen"
+          }
+        }
+      }
+    },
+    "▶ 10 s do przodu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "▶ Forward 10 s"
+          }
+        }
+      }
+    },
+    "▼ Następny ekran": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "▼ Next screen"
+          }
+        }
+      }
+    },
+    "◀ 10 s do tyłu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "◀ Back 10 s"
+          }
+        }
+      }
+    },
+    "● ODCINEK %.1f km": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "● SEGMENT %.1f km"
+          }
+        }
+      }
+    },
+    "● ODCINEK 0.0 km": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "● SEGMENT 0.0 km"
+          }
+        }
+      }
+    },
+    "☔ %@ tuż przed tobą": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "☔ %@ right ahead"
+          }
+        }
+      }
+    },
+    "☔ %@ za %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "☔ %@ in %@"
+          }
+        }
+      }
+    },
+    "☔ %@ za %@ · %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "☔ %@ in %@ · %@"
+          }
+        }
+      }
+    },
+    "☔ pada": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "☔ raining"
+          }
+        }
+      }
+    },
+    "☔ pada · %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "☔ raining · %@"
+          }
+        }
+      }
+    },
+    "♪  UTWÓR TRASY": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "♪  RIDE SONG"
+          }
+        }
+      }
+    },
+    "⚠️ Rozłącz i połącz Spotify ponownie (brak uprawnienia modify)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚠️ Disconnect and reconnect Spotify (missing modify permission)"
+          }
+        }
+      }
+    },
+    "⚠️ Uwagi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚠️ Warnings"
+          }
+        }
+      }
+    },
+    "⚠️ Wprowadź Client ID z Spotify Developer Dashboard": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⚠️ Enter the Client ID from the Spotify Developer Dashboard"
+          }
+        }
+      }
+    },
+    "✅ Hasło w schowku — wybierz %@ i wklej": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "✅ Password on clipboard — select %@ and paste"
+          }
+        }
+      }
+    },
+    "✅ Połączono %lld tras → %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "✅ Merged %lld routes → %@"
+          }
+        }
+      }
+    },
+    "✅ Skopiowano hasło": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "✅ Password copied"
+          }
+        }
+      }
+    },
+    "❌ Błąd łączenia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "❌ Merge failed"
+          }
+        }
+      }
+    },
+    "💡 Rozłącz i połącz ponownie — potrzebne nowe uprawnienie do sterowania odtwarzaniem": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "💡 Disconnect and reconnect — a new permission for playback control is needed"
+          }
+        }
+      }
+    },
+    "🔄 Zmiany": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🔄 Changes"
+          }
+        }
+      }
+    },
+    "🔌 Połączenie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🔌 Connection"
+          }
+        }
+      }
+    },
+    "🟢 Niezerowe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🟢 Non-zero"
+          }
+        }
+      }
+    },
+    "🟢 Wartości": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🟢 Values"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

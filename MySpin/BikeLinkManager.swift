@@ -360,17 +360,17 @@ struct FirmwareSender {
             acked = offset
             return acked == image.data.count ? .end : .pump
         case 0x23:      // dziura w danych — płytka podaje, od której pozycji chce dalej
-            guard offset <= image.data.count else { return .failed("Płytka podała pozycję poza programem") }
+            guard offset <= image.data.count else { return .failed(String(localized: "Płytka podała pozycję poza programem")) }
             sent = offset; acked = offset; lastProgress = now
             return .pump
         case 0x12: return .restarting
-        case 0x20: return .failed("Motocykl jedzie albo pracuje silnik. Zgaś silnik i spróbuj ponownie.")
-        case 0x21: return .failed("Płytka odrzuciła rozmiar programu.")
-        case 0x22: return .failed("Błąd zapisu w pamięci płytki. Stary program działa dalej.")
-        case 0x24: return .failed("Zły podpis programu — płytka go odrzuciła. Stary program działa dalej.")
-        case 0x25: return .failed("Płytka nie doczekała się danych. Stary program działa dalej.")
-        case 0x26: return .failed("Płytka nie była gotowa na dane. Spróbuj ponownie.")
-        case 0x27: return .failed("Aktualizacja przerwana.")
+        case 0x20: return .failed(String(localized: "Motocykl jedzie albo pracuje silnik. Zgaś silnik i spróbuj ponownie."))
+        case 0x21: return .failed(String(localized: "Płytka odrzuciła rozmiar programu."))
+        case 0x22: return .failed(String(localized: "Błąd zapisu w pamięci płytki. Stary program działa dalej."))
+        case 0x24: return .failed(String(localized: "Zły podpis programu — płytka go odrzuciła. Stary program działa dalej."))
+        case 0x25: return .failed(String(localized: "Płytka nie doczekała się danych. Stary program działa dalej."))
+        case 0x26: return .failed(String(localized: "Płytka nie była gotowa na dane. Spróbuj ponownie."))
+        case 0x27: return .failed(String(localized: "Aktualizacja przerwana."))
         default:   return .wait
         }
     }
@@ -379,7 +379,7 @@ struct FirmwareSender {
     mutating func stalled(now: CFTimeInterval) -> Step {
         guard now - lastProgress > Self.stallSeconds else { return .wait }
         rewinds += 1
-        if rewinds > Self.maxRewinds { return .failed("Płytka przestała odpowiadać. Stary program działa dalej.") }
+        if rewinds > Self.maxRewinds { return .failed(String(localized: "Płytka przestała odpowiadać. Stary program działa dalej.")) }
         sent = acked
         lastProgress = now
         return acked == image.data.count ? .end : .pump
@@ -670,13 +670,13 @@ final class BikeLinkManager: NSObject, ObservableObject {
 
         var label: String {
             switch self {
-            case .off:          return "Wyłączony"
-            case .bluetoothOff: return "Bluetooth w telefonie jest wyłączony"
-            case .unauthorized: return "Brak zgody na Bluetooth (Ustawienia → MySpin)"
-            case .unsupported:  return "To urządzenie nie obsługuje Bluetooth LE"
-            case .searching:    return "Czekam na płytkę (włącz zapłon)"
-            case .connecting:   return "Łączę…"
-            case .connected:    return "Połączono"
+            case .off:          return String(localized: "Wyłączony")
+            case .bluetoothOff: return String(localized: "Bluetooth w telefonie jest wyłączony")
+            case .unauthorized: return String(localized: "Brak zgody na Bluetooth (Ustawienia → MySpin)")
+            case .unsupported:  return String(localized: "To urządzenie nie obsługuje Bluetooth LE")
+            case .searching:    return String(localized: "Czekam na płytkę (włącz zapłon)")
+            case .connecting:   return String(localized: "Łączę…")
+            case .connected:    return String(localized: "Połączono")
             }
         }
     }
@@ -1131,7 +1131,7 @@ final class BikeLinkManager: NSObject, ObservableObject {
             if let p = self.peripheral, let ch = self.otaChar, p.state == .connected {
                 p.writeValue(FirmwareSender.abortMessage, for: ch, type: .withResponse)
             }
-            self.finishUpdate(.failed("Aktualizacja przerwana."))
+            self.finishUpdate(.failed(String(localized: "Aktualizacja przerwana.")))
         }
     }
 
@@ -1202,7 +1202,7 @@ final class BikeLinkManager: NSObject, ObservableObject {
         let now = CACurrentMediaTime()
         if otaWaitingRestart {
             if now > otaDeadline {
-                finishUpdate(.failed("Płytka nie wróciła po restarcie. Włącz i wyłącz zapłon; jeśli wróci ze starą wersją, nic się nie stało."))
+                finishUpdate(.failed(String(localized: "Płytka nie wróciła po restarcie. Włącz i wyłącz zapłon; jeśli wróci ze starą wersją, nic się nie stało.")))
             }
             return
         }
@@ -1334,7 +1334,7 @@ final class BikeLinkManager: NSObject, ObservableObject {
         if otaWaitingRestart, otaSawDisconnect {
             finishUpdate(t.fwVersion == otaTarget
                 ? .done(otaTarget)
-                : .failed("Płytka wróciła z wersją v\(t.fwVersion) zamiast v\(otaTarget) — nowy program nie został przyjęty."))
+                : .failed(String(localized: "Płytka wróciła z wersją v\(t.fwVersion) zamiast v\(otaTarget) — nowy program nie został przyjęty.")))
         }
         // W połowie zmiany biegu zostaje ostatni pełny bieg — żadnych wartości pośrednich na ekranie.
         if t.gearInTransit { t.gear = lastGear } else { lastGear = t.gear }
@@ -1520,13 +1520,13 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
         rawOn = false
         otaChar = nil
         diagChar = nil
-        if diagOp != nil { diagFinish(.failed("Połączenie z płytką zerwane w trakcie komendy.")) }
+        if diagOp != nil { diagFinish(.failed(String(localized: "Połączenie z płytką zerwane w trakcie komendy."))) }
         qSeq = nil; qLastAt = 0; qWindow = 0; qCount = 0; qLost = 0; qLate = 0; qMaxGap = 0
         DispatchQueue.main.async { self.updateSupported = false; self.diagSupported = false; self.quality = LinkQuality() }
         if otaWaitingRestart {
             otaSawDisconnect = true          // spodziewane: płytka startuje nowy program
         } else if sender != nil {
-            finishUpdate(.failed("Połączenie z płytką zerwane w trakcie wysyłania. Stary program działa dalej."))
+            finishUpdate(.failed(String(localized: "Połączenie z płytką zerwane w trakcie wysyłania. Stary program działa dalej.")))
         }
         clearLatest()
         seek()
@@ -1540,7 +1540,7 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
         q.async { [self] in
             guard diagOp == nil else { return }
             guard let p = peripheral, let ch = diagChar, p.state == .connected else {
-                DispatchQueue.main.async { self.diagState = .failed("Płytka niepołączona albo ma za stary program (potrzebny v9).") }
+                DispatchQueue.main.async { self.diagState = .failed(String(localized: "Płytka niepołączona albo ma za stary program (potrzebny v9).")) }
                 return
             }
             diagOp = op
@@ -1548,7 +1548,7 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
             DispatchQueue.main.async { self.diagState = .running(op) }
             p.writeValue(Data([op.rawValue, addr.rawValue]), for: ch, type: .withResponse)
             let t = DispatchWorkItem { [weak self] in
-                self?.diagFinish(.failed("Płytka nie zakończyła komendy w 15 s."))
+                self?.diagFinish(.failed(String(localized: "Płytka nie zakończyła komendy w 15 s.")))
             }
             diagTimeout = t
             q.asyncAfter(deadline: .now() + 15, execute: t)
@@ -1586,11 +1586,11 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
                 DispatchQueue.main.async { self.diagClearAddr = addr }
             }
             diagFinish(.finished(op, replies, tx))
-        case 0x20: diagFinish(.failed("Płytka odmówiła: silnik pracuje albo koło się kręci. Zgaś silnik, zapłon zostaw włączony."))
-        case 0x21: diagFinish(.failed("Płytka zajęta — spróbuj za kilka sekund."))
-        case 0x22: diagFinish(.failed("Szyna CAN milczy — włącz zapłon."))
-        case 0x23: diagFinish(.failed("Płytka nie zdołała nadać zapytania (nikt go nie potwierdził). Wróciła do samego nasłuchu."))
-        default:   diagFinish(.failed(String(format: "Nieznana odpowiedź płytki 0x%02X.", b[0])))
+        case 0x20: diagFinish(.failed(String(localized: "Płytka odmówiła: silnik pracuje albo koło się kręci. Zgaś silnik, zapłon zostaw włączony.")))
+        case 0x21: diagFinish(.failed(String(localized: "Płytka zajęta — spróbuj za kilka sekund.")))
+        case 0x22: diagFinish(.failed(String(localized: "Szyna CAN milczy — włącz zapłon.")))
+        case 0x23: diagFinish(.failed(String(localized: "Płytka nie zdołała nadać zapytania (nikt go nie potwierdził). Wróciła do samego nasłuchu.")))
+        default:   diagFinish(.failed(String(format: String(localized: "Nieznana odpowiedź płytki 0x%02X."), b[0])))
         }
     }
 
@@ -1653,7 +1653,7 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
     func peripheral(_ p: CBPeripheral, didWriteValueFor ch: CBCharacteristic, error: Error?) {
         guard ch.uuid == Self.otaUUID, sender != nil else { return }
         if let error {
-            finishUpdate(.failed("Płytka odrzuciła dane aktualizacji (\(error.localizedDescription)). Stary program działa dalej."))
+            finishUpdate(.failed(String(localized: "Płytka odrzuciła dane aktualizacji (\(error.localizedDescription)). Stary program działa dalej.")))
             return
         }
         otaWriteInFlight = false

@@ -109,9 +109,9 @@ final class TelemetryStore: ObservableObject {
 
     /// Czytelny status dla UI
     var statusLabel: String {
-        if !hasData       { return "Oczekiwanie na dane..." }
-        if engineOn       { return "Dane na żywo 🟢" }
-        return "Silnik wyłączony — dane statyczne"
+        if !hasData       { return String(localized: "Oczekiwanie na dane...") }
+        if engineOn       { return String(localized: "Dane na żywo 🟢") }
+        return String(localized: "Silnik wyłączony — dane statyczne")
     }
 
     /// Kolor wskaźnika statusu
