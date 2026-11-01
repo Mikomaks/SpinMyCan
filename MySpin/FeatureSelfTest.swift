@@ -261,34 +261,20 @@ enum FeatureSelfTest {
     /// Dekodowanie kodów błędów (te same bajty co w logu z 2026-10-25, ramka 0x441).
     private static func testAppList() {
         lines.append(""); lines.append("── AppList ──")
-        typealias E = MySpinPacketBuilder.AppListEntry
-        // Decode the recorded list and re-encode it — must match byte for byte
-        let legacy = [UInt8](MySpinPacketBuilder.legacyAppListPayload())
-        var p = 4, entries: [E] = []
-        func str() -> String {
-            let n = Int(legacy[p + 1]) | Int(legacy[p + 2]) << 8
-            defer { p += 3 + n }
-            return String(decoding: legacy[(p + 3)..<(p + 3 + n)], as: UTF8.self)
-        }
-        for _ in 0..<Int(legacy[0]) {
-            let pkg = str(), name = str(); p += 4
-            let vendor = str(); let kind = legacy[p + 8]; p += 13
-            entries.append(E(packageId: pkg, name: name, vendor: vendor, kind: kind))
-        }
-        check("AppList: stara lista rozkodowana do końca", p == legacy.count, "\(p)/\(legacy.count)")
-        check("AppList: koder odtwarza nagranie 1:1",
-              MySpinPacketBuilder.encodeAppList(entries) == Data(legacy))
+        // Hand-built expected bytes for one entry: u32 count, str pkg, str name, u32 0, str vendor, 13 flag bytes
+        let e = MySpinPacketBuilder.AppListEntry(packageId: "a.b", name: "N", vendor: "V", kind: 2)
+        let expected: [UInt8] = [1, 0, 0, 0,
+                                 1, 3, 0, 0x61, 0x2E, 0x62,
+                                 1, 1, 0, 0x4E,
+                                 0, 0, 0, 0,
+                                 1, 1, 0, 0x56,
+                                 1, 0, 0, 1, 1, 0, 0, 0, 2, 1, 0x65, 0x6E, 0x67]
+        check("AppList: koder = format z handshake'u", [UInt8](MySpinPacketBuilder.encodeAppList([e])) == expected)
         let own = [UInt8](MySpinPacketBuilder.encodeAppList(MySpinPacketBuilder.ownAppList))
-        check("AppList: własna lista = 1 wpis, bez nazw z nagrania",
-              own[0] == 1 && !String(decoding: own, as: UTF8.self).lowercased().contains("bosch"))
-
-        let d = UserDefaults(suiteName: "featuretest.applist")!
-        d.removePersistentDomain(forName: "featuretest.applist")
-        let ownPkt = MySpinPacketBuilder.appList(defaults: d)
-        d.set(true, forKey: MySpinPacketBuilder.legacyAppListKey)
-        let legacyPkt = MySpinPacketBuilder.appList(defaults: d)
-        check("AppList: domyślnie własna, przełącznik → stara",
-              ownPkt.count < legacyPkt.count && legacyPkt.suffix(legacy.count) == Data(legacy))
+        check("AppList: własna lista = 1 wpis SpinMyCan",
+              own[0] == 1 && String(decoding: own, as: UTF8.self).contains("SpinMyCan"))
+        check("AppList: pakiet = typ 70 + własna lista",
+              MySpinPacketBuilder.appList().suffix(own.count) == Data(own))
     }
 
     private static func testObd() {
