@@ -70,7 +70,6 @@ struct ContentView: View {
     private let graceAutoSaveSec: TimeInterval = 4 * 3600 // 4h → auto-zapis
 
 
-    @AppStorage(MySpinPacketBuilder.legacyAppListKey) private var useLegacyAppList = false
     @State private var spotifyClientID: String = ""
 
     /// Stan joysticka — ref-type żeby closure onEvent zawsze widziała aktualną wartość
@@ -609,16 +608,6 @@ struct ContentView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(session.tcpState.isConnected ? .red : .blue)
             }
-
-            // TEMPORARY (test/own-app-list): fallback to the recorded app list if the bike rejects ours
-            Toggle(isOn: $useLegacyAppList) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(verbatim: "Stara lista aplikacji (test)").font(.caption.bold())
-                    Text(verbatim: "Włącz, jeśli deska się nie łączy. Działa od następnego połączenia.")
-                        .font(.caption2).foregroundColor(.secondary)
-                }
-            }
-            .tint(.orange)
 
             // Format klatki — ustalony z pcapng (26-byte header + JPEG)
             HStack {
