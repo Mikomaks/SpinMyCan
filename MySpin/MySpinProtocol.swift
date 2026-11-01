@@ -189,13 +189,10 @@ struct MySpinPacketBuilder {
         var kind: UInt8 = 1
     }
 
-    /// Our own list (one entry). Default since 1.21.0 — needs confirming on the bike.
+    /// Our own list (one entry) — confirmed on the bike in 1.21.0.
     static let ownAppList: [AppListEntry] = [
         AppListEntry(packageId: "com.spinmycan.dash", name: "SpinMyCan", vendor: "SpinMyCan"),
     ]
-
-    /// UserDefaults key: true → send the legacy recorded list (fallback while testing).
-    static let legacyAppListKey = "appList.useLegacy"
 
     static func encodeAppList(_ entries: [AppListEntry]) -> Data {
         func u16(_ v: Int) -> [UInt8] { [UInt8(v & 0xFF), UInt8((v >> 8) & 0xFF)] }
@@ -208,37 +205,8 @@ struct MySpinPacketBuilder {
         return Data(out)
     }
 
-    static func appList(defaults: UserDefaults = .standard) -> Data {
-        let payload = defaults.bool(forKey: legacyAppListKey) ? legacyAppListPayload() : encodeAppList(ownAppList)
-        return build(type: .appList, payload: payload)
-    }
-
-    /// TEMPORARY (test/own-app-list): the list recorded from the original app.
-    /// Delete together with the toggle once the own list is confirmed on the bike.
-    static func legacyAppListPayload() -> Data {
-        let hex =
-            "00000000" +
-            "" +
-            "" +
-            "" +
-            "" +
-            "" +
-            "" +
-            "" +
-            "" +
-            "" +
-            "" +
-            "" +
-            "" +
-            ""
-        var payload = Data()
-        var i = hex.startIndex
-        while i < hex.endIndex {
-            let j = hex.index(i, offsetBy: 2)
-            if let byte = UInt8(hex[i..<j], radix: 16) { payload.append(byte) }
-            i = j
-        }
-        return payload
+    static func appList() -> Data {
+        build(type: .appList, payload: encodeAppList(ownAppList))
     }
 
     // ── Pakiety runtime ──
