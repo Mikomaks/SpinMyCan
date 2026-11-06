@@ -44,6 +44,8 @@ enum BTState: Equatable {
 final class BTManager: NSObject, ObservableObject, StreamDelegate {
 
     static let protocolString = "com.bosch.myspin.pairing"
+    /// TEST (test/bt-own-channel): our own channel, the only one declared in Info.plist on this branch.
+    static let ownProtocolString = "com.spinmycan.dash"
 
     @Published var state: BTState = .idle {
         didSet { stateChangedAt = Date() }   // do watchdoga zablokowanego handshake'u
@@ -96,6 +98,7 @@ final class BTManager: NSObject, ObservableObject, StreamDelegate {
         for acc in accessories {
             appendMessage(direction: .system,
                           text: "Akcesorium: \(acc.name) | protokoły: \(acc.protocolStrings.joined(separator: ", "))")
+            probeChannels(acc)
             tryOpen(acc)
         }
     }
@@ -178,6 +181,7 @@ final class BTManager: NSObject, ObservableObject, StreamDelegate {
     @objc private func didConnect(_ n: Notification) {
         guard let acc = n.userInfo?[EAAccessoryKey] as? EAAccessory else { return }
         appendMessage(direction: .system, text: "Podłączono akcesorium: \(acc.name)")
+        probeChannels(acc)
         tryOpen(acc)
     }
 
@@ -193,6 +197,22 @@ final class BTManager: NSObject, ObservableObject, StreamDelegate {
         }
         appendMessage(direction: .system, text: "Czekam na ponowne podłączenie motocykla...")
         DispatchQueue.main.async { self.state = .waitingForAccessory }
+    }
+
+    // MARK: — Channel test (test/bt-own-channel)
+
+    /// Logs everything iOS reports about the accessory and tries to open a session on our own channel.
+    private func probeChannels(_ acc: EAAccessory) {
+        appendMessage(direction: .system, text: "🧪 TEST kanału: \(acc.manufacturer) / \(acc.modelNumber) / fw \(acc.firmwareRevision) / hw \(acc.hardwareRevision)")
+        appendMessage(direction: .system, text: "🧪 Kanały ogłoszone przez motocykl (\(acc.protocolStrings.count)): \(acc.protocolStrings)")
+        let declared = Bundle.main.object(forInfoDictionaryKey: "UISupportedExternalAccessoryProtocols") as? [String] ?? []
+        appendMessage(direction: .system, text: "🧪 Kanały zadeklarowane w apce: \(declared)")
+        if let s = EASession(accessory: acc, forProtocol: Self.ownProtocolString) {
+            appendMessage(direction: .system, text: "🧪 ✅ Własny kanał \(Self.ownProtocolString) OTWARTY")
+            s.inputStream?.close(); s.outputStream?.close()
+        } else {
+            appendMessage(direction: .system, text: "🧪 ❌ Własny kanał \(Self.ownProtocolString) — EASession nil")
+        }
     }
 
     // MARK: — Session
