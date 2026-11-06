@@ -39,6 +39,7 @@ enum FeatureSelfTest {
         testRouteCloud()
         testObd()
         testAppList()
+        testSkippedTracks()
 
         lines.append("")
         lines.append(failed == 0 ? "WYNIK: wszystko OK" : "WYNIK: \(failed) błędów")
@@ -259,6 +260,19 @@ enum FeatureSelfTest {
     // MARK: — Mostek CAN: pakiety w formacie firmware + plik logu
 
     /// Dekodowanie kodów błędów (te same bajty co w logu z 2026-10-25, ramka 0x441).
+    private static func testSkippedTracks() {
+        lines.append(""); lines.append("── Pominięte utwory ──")
+        let t0 = Date(timeIntervalSince1970: 1_800_000_000)
+        func tr(_ s: Double, _ title: String) -> SessionTrack { SessionTrack(time: t0 + s, title: title, artist: "X") }
+        // A 60 s, B skipped after 3 s, A again 100 s, C 9 s at the very end
+        let raw = [tr(0, "A"), tr(60, "B"), tr(63, "A"), tr(163, "C")]
+        let p = SessionTrack.played(raw, until: t0 + 172)
+        check("utwory: pominięty (<10 s) nie liczy się, A+A scalone", p.map(\.title) == ["A"], "\(p.map(\.title))")
+        let q = SessionTrack.played([tr(0, "A"), tr(10, "B")], until: t0 + 25)
+        check("utwory: dokładnie 10 s się liczy", q.map(\.title) == ["A", "B"], "\(q.map(\.title))")
+        check("utwory: pusta lista", SessionTrack.played([], until: t0).isEmpty)
+    }
+
     private static func testAppList() {
         lines.append(""); lines.append("── AppList ──")
         // Hand-built expected bytes for one entry: u32 count, str pkg, str name, u32 0, str vendor, 13 flag bytes
