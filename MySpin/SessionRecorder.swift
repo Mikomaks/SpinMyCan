@@ -39,6 +39,22 @@ struct SessionTrack: Codable, Equatable {
     let artist: String
 
     var label: String { artist.isEmpty ? title : "\(artist) — \(title)" }
+
+    /// A track counts toward the ride only if it played at least this long (skips don't count).
+    static let minPlaySec: TimeInterval = 10
+
+    /// Drops tracks played shorter than `minPlaySec` (until the next track or `end`),
+    /// then merges neighbours left identical (A, skipped B, A → one A).
+    static func played(_ raw: [SessionTrack], until end: Date) -> [SessionTrack] {
+        var out: [SessionTrack] = []
+        for (i, t) in raw.enumerated() {
+            let stop = i + 1 < raw.count ? raw[i + 1].time : end
+            guard stop.timeIntervalSince(t.time) >= minPlaySec else { continue }
+            if let last = out.last, last.title == t.title, last.artist == t.artist { continue }
+            out.append(t)
+        }
+        return out
+    }
 }
 
 // MARK: — Podsumowanie sesji
@@ -225,10 +241,12 @@ final class SessionRecorder: ObservableObject {
         let movingPts = snapshot.points.filter { $0.isMoving }
         let avgSpeed  = movingPts.isEmpty ? 0.0
             : movingPts.reduce(0) { $0 + $1.speedKmh } / Double(movingPts.count)
+        let end = snapshot.points.last?.timestamp ?? Date()
+        let snapPlayed = SessionTrack.played(snapshot.tracks ?? [], until: end)
         let summary = SessionSummary(
             id:           snapshot.sessionId,
             startTime:    snapshot.startTime,
-            endTime:      snapshot.points.last?.timestamp ?? Date(),
+            endTime:      end,
             totalDistKm:  snapshot.currentDistKm,
             maxSpeedKmh:  snapshot.maxSpeedKmh,
             avgSpeedKmh:  avgSpeed,
@@ -236,7 +254,7 @@ final class SessionRecorder: ObservableObject {
             maxLeanRight: snapshot.maxLeanRight,
             maxGforce:    snapshot.maxGforce,
             points:       snapshot.points,
-            tracks:       snapshot.tracks
+            tracks:       snapPlayed.isEmpty ? nil : snapPlayed
         )
         clearInterruptedSession()
         try? SessionStorage.shared.save(summary)
@@ -346,10 +364,12 @@ final class SessionRecorder: ObservableObject {
         let avgSpeed     = movingPoints.isEmpty ? 0
             : movingPoints.reduce(0) { $0 + $1.speedKmh } / Double(movingPoints.count)
 
+        let endTime = Date()
+        let played = SessionTrack.played(tracks, until: endTime)
         let summary = SessionSummary(
             id:           sessionId,
             startTime:    startTime,
-            endTime:      Date(),
+            endTime:      endTime,
             totalDistKm:  currentDistKm,
             maxSpeedKmh:  maxSpeedKmh,
             avgSpeedKmh:  avgSpeed,
@@ -357,7 +377,7 @@ final class SessionRecorder: ObservableObject {
             maxLeanRight: maxLeanRight,
             maxGforce:    maxGforce,
             points:       points,
-            tracks:       tracks.isEmpty ? nil : tracks
+            tracks:       played.isEmpty ? nil : played
         )
         // Auto-save na dysk — sesja jest dostępna w bibliotece nawet po restarcie app
         try? SessionStorage.shared.save(summary)

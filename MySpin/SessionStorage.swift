@@ -101,8 +101,13 @@ final class SessionStorage: ObservableObject {
     func load(id: UUID) -> SessionSummary? {
         let url = fileURL(for: id)
         guard let data = (try? Data(contentsOf: url)) ?? RouteCloudSync.shared.cloudData(url.lastPathComponent),
-              let summary = try? decoder.decode(SessionSummary.self, from: data)
+              var summary = try? decoder.decode(SessionSummary.self, from: data)
         else { return nil }
+        // Routes saved before 1.22.0 kept skipped tracks — filter them on read (file untouched)
+        if let t = summary.tracks {
+            let played = SessionTrack.played(t, until: summary.endTime)
+            summary.tracks = played.isEmpty ? nil : played
+        }
         return summary
     }
 
