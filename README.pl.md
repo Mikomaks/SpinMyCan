@@ -56,6 +56,8 @@ z czujnika motocykla.
 - **Plakat trasy** do relacji / posta na Instagram — konfigurowalny, z biegami i „utworem trasy”
 - **Wideo**: własne filmy na desce (grają też przy zablokowanym telefonie)
 - **Terminal CAN** — surowe ramki szyny z dekodowaniem na żywo
+- **Kody błędów**: odczyt zapisanych kodów i kasowanie (lampka FI) — apka sama sprawdza
+  wynik ([jak to działa](docs/DIAGNOSTICS.md), po angielsku)
 - **Gra**: wąż 🐍 z rekordem (na postoju, proszę)
 - **Dynamic Island** i ekran blokady z prędkością i biegiem
 - Jasny i ciemny motyw (skrót ▲▼▲▼ na joysticku), ostra pikselowa czcionka 1:1 z wyświetlaczem
@@ -141,9 +143,10 @@ i panel w przeglądarce `make can-panel` (ramki na żywo albo z logu, trasa GPS 
 
 - **Używasz na własne ryzyko** — oprogramowanie jest „tak jak jest”, bez gwarancji ([LICENSE](LICENSE)).
 - **Nie obsługuj telefonu w czasie jazdy.** Patrz na drogę, nie na deskę.
-- Płytka wysyła cokolwiek na szynę wyłącznie przy **diagnostyce** (odczyt / kasowanie kodów
-  błędów): tylko na postoju, z wyłączonym silnikiem, jedna komenda naraz. Skasowanie kodu
-  **nie naprawia usterki** — jeśli kontrolka wraca, jedź do serwisu.
+- Płytka wysyła cokolwiek na szynę wyłącznie przy **kasowaniu kodów błędów** (i teście OBD):
+  tylko na postoju, z wyłączonym silnikiem, jedna komenda naraz. Sam odczyt kodów tylko słucha.
+  Skasowanie kodu **nie naprawia usterki** — jeśli kontrolka wraca, jedź do serwisu.
+  Szczegóły: [docs/DIAGNOSTICS.md](docs/DIAGNOSTICS.md).
 - Przed podłączeniem do złącza **sprawdź piny miernikiem** (wtyczka z naprzeciwka to lustrzane
   odbicie gniazda), zapewnij wspólną masę i nie zwieraj CAN-H z CAN-L — chwilowe zwarcie
   potrafi zapalić FI / E-SUS.

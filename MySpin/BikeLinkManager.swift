@@ -739,8 +739,6 @@ final class BikeLinkManager: NSObject, ObservableObject {
     /// Płytka umie odczytać/skasować kody błędów (program od wersji 9).
     @Published private(set) var diagSupported = false
     @Published private(set) var diagState: DiagState = .idle
-    /// Adresowanie, na które motocykl odpowiedział kodami (z ostatniego odczytu) — tym kasujemy.
-    @Published private(set) var diagClearAddr: DiagAddr?
     // Podgląd magistrali — odświeżany tylko, gdy jest otwarty.
     @Published private(set) var busRows: [BusRow] = []
     @Published private(set) var busLearning = false
@@ -760,6 +758,13 @@ final class BikeLinkManager: NSObject, ObservableObject {
     private var diagOp: DiagOp?
     private var diagReplies: [DiagReply] = []
     private var diagTimeout: DispatchWorkItem?
+    private var diagRunning = false                 // a read / clear / test is in progress
+    private var diagGen = 0                         // changes when it ends: late timers of an old run do nothing
+    private var diagCommandDone: ((DiagCommandResult) -> Void)?
+    private var diagLastCommandAt: CFTimeInterval = 0
+    private var diagCollector: StoredCodeCollector? // non-nil = listening for frame 0x441
+    private var diagListenDone: ((StoredCodes?) -> Void)?
+    private var diagListenID = 0
     private var sender: FirmwareSender?
     private var otaTimer: DispatchSourceTimer?
     private var otaWaitingRestart = false       // płytka przyjęła program, czekamy na powrót
@@ -1217,7 +1222,7 @@ final class BikeLinkManager: NSObject, ObservableObject {
 
     /// Strumień surowy jest potrzebny tylko do zapisu logu i do otwartego podglądu.
     private func updateRawSubscription() {
-        let want = (wantLog || viewerActive || hackerActive) && sender == nil     // w trakcie aktualizacji całe łącze dla niej
+        let want = (wantLog || viewerActive || hackerActive || diagCollector != nil) && sender == nil     // w trakcie aktualizacji całe łącze dla niej
         guard let p = peripheral, let ch = rawChar, p.state == .connected, want != rawOn else { return }
         rawOn = want
         p.setNotifyValue(want, for: ch)
@@ -1298,6 +1303,7 @@ final class BikeLinkManager: NSObject, ObservableObject {
 
     private func handleRaw(_ d: Data) {
         guard let p = CanRawPacket.parse(d) else { return }
+        if diagCollector != nil { diagIngest(p) }
         bus.ingest(p, at: CACurrentMediaTime())
         publishBus()
         if hackerActive { feedHacker(p) }
@@ -1520,7 +1526,7 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
         rawOn = false
         otaChar = nil
         diagChar = nil
-        if diagOp != nil { diagFinish(.failed(String(localized: "Połączenie z płytką zerwane w trakcie komendy."))) }
+        if diagRunning { diagEnd(.failed(String(localized: "Połączenie z płytką zerwane w trakcie komendy."))) }
         qSeq = nil; qLastAt = 0; qWindow = 0; qCount = 0; qLost = 0; qLate = 0; qMaxGap = 0
         DispatchQueue.main.async { self.updateSupported = false; self.diagSupported = false; self.quality = LinkQuality() }
         if otaWaitingRestart {
@@ -1532,41 +1538,229 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
         seek()
     }
 
-    // MARK: — Kody błędów (OBD przez płytkę)
+    // MARK: — Trouble codes (docs/DIAGNOSTICS.md)
 
-    /// Odczyt albo skasowanie kodów błędów. Płytka sama odmówi, gdy silnik pracuje
-    /// albo koło się kręci, i wraca do samego nasłuchu najpóźniej po kilku sekundach.
-    func runDiagnostic(_ op: DiagOp, addr: DiagAddr = .func11) {
+    private enum DiagCommandResult {
+        case done([DiagReply], DiagTx)
+        case board(UInt8)            // the board refused or failed (status from diag_core.h)
+        case failed(String)
+    }
+
+    /// The board accepts a command at most every 3 s (diag_core.h, MIN_GAP_MS).
+    private static let diagGap: CFTimeInterval = 3.4
+
+    /// Reads the list of stored codes the bike broadcasts (frame 0x441). Sends nothing to the
+    /// bus, so it also works with the engine running.
+    func readStoredCodes() {
         q.async { [self] in
-            guard diagOp == nil else { return }
-            guard let p = peripheral, let ch = diagChar, p.state == .connected else {
-                DispatchQueue.main.async { self.diagState = .failed(String(localized: "Płytka niepołączona albo ma za stary program (potrzebny v9).")) }
-                return
+            guard diagBegin(.listening) else { return }
+            diagListen(seconds: 6) { [self] list in
+                diagEnd(.finished(DiagReport(kind: .read, before: list)))
             }
-            diagOp = op
-            diagReplies = []
-            DispatchQueue.main.async { self.diagState = .running(op) }
-            p.writeValue(Data([op.rawValue, addr.rawValue]), for: ch, type: .withResponse)
-            let t = DispatchWorkItem { [weak self] in
-                self?.diagFinish(.failed(String(localized: "Płytka nie zakończyła komendy w 15 s.")))
+        }
+    }
+
+    /// Clears the codes from start to finish: reads the list, sends the clear request (up to
+    /// three ways of addressing, until a control unit confirms), then reads the list again —
+    /// the result says what really happened. The board itself refuses when the engine runs
+    /// or a wheel turns, and always goes back to listen-only.
+    func clearCodes() {
+        q.async { [self] in
+            guard diagBegin(.listening) else { return }
+            diagListen(seconds: 4) { [self] list in
+                var report = DiagReport(kind: .clear)
+                report.before = list
+                diagClearAttempt(0, report)
             }
-            diagTimeout = t
-            q.asyncAfter(deadline: .now() + 15, execute: t)
+        }
+    }
+
+    /// OBD test: the read request (service 03) sent three ways; shows who answers and what.
+    func probeObd() {
+        q.async { [self] in
+            guard diagBegin(.probing) else { return }
+            diagCommand(.probe, .func11) { [self] result in
+                switch result {
+                case .failed(let msg): diagEnd(.failed(msg))
+                case .board(let status): diagEnd(.failed(Obd.boardError(status)))
+                case .done(let replies, let tx):
+                    diagEnd(.finished(DiagReport(kind: .probe, replies: replies, tx: tx)))
+                }
+            }
         }
     }
 
     func clearDiagnosticResult() {
         q.async { [self] in
-            guard diagOp == nil else { return }
+            guard !diagRunning else { return }
             DispatchQueue.main.async { self.diagState = .idle }
         }
     }
 
-    /// Powiadomienie płytki (od v10): [0x00][op][ID 4 B, bit 0x80 = 29-bit][len][dane]
-    /// albo [status][op][liczba][wysłane][odrzucone][licznik błędów nadawania].
+    private func diagBegin(_ step: DiagStep) -> Bool {
+        guard !diagRunning else { return false }
+        guard let p = peripheral, p.state == .connected, rawChar != nil else {
+            DispatchQueue.main.async { self.diagState = .failed(String(localized: "Płytka niepołączona.")) }
+            return false
+        }
+        diagRunning = true
+        diagGen += 1
+        diagStep(step)
+        return true
+    }
+
+    private func diagStep(_ step: DiagStep) {
+        writeLink(String(format: "E,%.3f,diag,%@", CACurrentMediaTime(), "\(step)"))
+        DispatchQueue.main.async { self.diagState = .running(step) }
+    }
+
+    private func diagEnd(_ state: DiagState) {
+        diagRunning = false
+        diagGen += 1
+        diagTimeout?.cancel()
+        diagTimeout = nil
+        diagOp = nil
+        diagCommandDone = nil
+        diagCollector = nil
+        diagListenDone = nil
+        updateRawSubscription()
+        writeLink(String(format: "E,%.3f,diag,%@", CACurrentMediaTime(), Self.diagLogLine(state)))
+        DispatchQueue.main.async { self.diagState = state }
+    }
+
+    /// One line for the link log, so a failed attempt can be understood afterwards.
+    private static func diagLogLine(_ state: DiagState) -> String {
+        func list(_ l: StoredCodes?) -> String { l.map { "\($0.total):" + $0.codes.joined(separator: "+") } ?? "?" }
+        switch state {
+        case .finished(let r):
+            let replies = r.replies.map { String(format: "%X=", $0.ecu) + $0.bytes.map { String(format: "%02X", $0) }.joined() }.joined(separator: "+")
+            return "end \(r.kind) before=\(list(r.before)) after=\(list(r.after)) confirmed=\(r.confirmed) refusal=\(r.refusal.map { String(format: "%02X", $0) } ?? "-") tx=\(r.tx.sent)/\(r.tx.failed)/\(r.tx.errorCounter) replies=\(replies)"
+        case .failed(let msg): return "failed \(msg.replacingOccurrences(of: ",", with: ";"))"
+        default: return "\(state)"
+        }
+    }
+
+    // Listening for 0x441
+
+    private func diagListen(seconds: Double, done: @escaping (StoredCodes?) -> Void) {
+        diagCollector = StoredCodeCollector()
+        diagListenDone = done
+        diagListenID += 1
+        updateRawSubscription()
+        let id = diagListenID
+        q.asyncAfter(deadline: .now() + seconds) { [weak self] in
+            guard let self, self.diagListenID == id, let c = self.diagCollector else { return }
+            self.diagListenFinish(c.partial)
+        }
+    }
+
+    private func diagIngest(_ p: CanRawPacket) {
+        // count == 0: no new frame since the previous dump — an old value, not news.
+        for r in p.records where r.id == StoredCodeCollector.frameID && r.count > 0 {
+            diagCollector?.ingest(r.data)
+        }
+        if let list = diagCollector?.result { diagListenFinish(list) }
+    }
+
+    private func diagListenFinish(_ list: StoredCodes?) {
+        guard let done = diagListenDone else { return }
+        diagCollector = nil
+        diagListenDone = nil
+        diagListenID += 1
+        updateRawSubscription()
+        done(list)
+    }
+
+    // Clearing
+
+    private func diagClearAttempt(_ i: Int, _ report: DiagReport) {
+        guard i < Obd.clearOrder.count else { diagVerify(report); return }
+        diagStep(.clearing(i + 1))
+        diagCommand(.clear, Obd.clearOrder[i]) { [self] result in
+            var report = report
+            switch result {
+            case .failed(let msg): diagEnd(.failed(msg))
+            case .board(let status): diagEnd(.failed(Obd.boardError(status)))
+            case .done(let replies, let tx):
+                report.tx.sent += tx.sent
+                report.tx.failed += tx.failed
+                report.tx.errorCounter = tx.errorCounter
+                if !replies.isEmpty { report.replies = replies }
+                switch Obd.clearOutcome(replies) {
+                case .confirmed:
+                    report.confirmed = true
+                    diagVerify(report)
+                case .refused(let nrc):
+                    report.refusal = nrc
+                    if Obd.refusalIsFinal(nrc) { diagVerify(report) } else { diagClearAttempt(i + 1, report) }
+                case .silent:
+                    diagClearAttempt(i + 1, report)
+                }
+            }
+        }
+    }
+
+    /// Reads the list again; a moment later, so the bike has time to rebuild it.
+    private func diagVerify(_ report: DiagReport) {
+        diagStep(.verifying)
+        let gen = diagGen
+        q.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+            guard let self, self.diagGen == gen else { return }
+            self.diagListen(seconds: 6) { [self] list in
+                var report = report
+                report.after = list
+                self.diagEnd(.finished(report))
+            }
+        }
+    }
+
+    // One command to the board
+
+    /// Sends [op][addressing] and calls `done` with the outcome. Waits out the board's pause
+    /// between commands and repeats when the board still says "busy".
+    private func diagCommand(_ op: DiagOp, _ addr: DiagAddr, busyTries: Int = 3, done: @escaping (DiagCommandResult) -> Void) {
+        let gen = diagGen
+        let wait = max(0, diagLastCommandAt + Self.diagGap - CACurrentMediaTime())
+        q.asyncAfter(deadline: .now() + wait) { [weak self] in
+            guard let self, self.diagGen == gen else { return }
+            guard let p = self.peripheral, let ch = self.diagChar, p.state == .connected else {
+                done(.failed(String(localized: "Płytka niepołączona albo ma za stary program (potrzebny v9).")))
+                return
+            }
+            self.diagLastCommandAt = CACurrentMediaTime()
+            self.diagOp = op
+            self.diagReplies = []
+            self.diagCommandDone = { [weak self] result in
+                if case .board(0x21) = result, busyTries > 0, let self {
+                    self.diagCommand(op, addr, busyTries: busyTries - 1, done: done)
+                } else {
+                    done(result)
+                }
+            }
+            p.writeValue(Data([op.rawValue, addr.rawValue]), for: ch, type: .withResponse)
+            let t = DispatchWorkItem { [weak self] in
+                guard let self, self.diagGen == gen else { return }
+                self.diagCommandFinish(.failed(String(localized: "Płytka nie zakończyła komendy w 15 s.")))
+            }
+            self.diagTimeout = t
+            self.q.asyncAfter(deadline: .now() + 15, execute: t)
+        }
+    }
+
+    private func diagCommandFinish(_ result: DiagCommandResult) {
+        diagTimeout?.cancel()
+        diagTimeout = nil
+        diagOp = nil
+        guard let done = diagCommandDone else { return }
+        diagCommandDone = nil
+        done(result)
+    }
+
+    /// Board notification (from v10): [0x00][op][ID 4 B, bit 0x80 = 29-bit][len][data]
+    /// or [status][op][count][frames delivered][lost attempts][transmit error counter].
     private func handleDiag(_ d: Data) {
         let b = [UInt8](d)
-        guard let op = diagOp, b.count >= 3 else { return }
+        guard diagOp != nil, b.count >= 3 else { return }
         switch b[0] {
         case 0x00:
             guard b.count >= 7 else { return }
@@ -1574,31 +1768,17 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
             let id = UInt32(b[2]) | UInt32(b[3]) << 8 | UInt32(b[4]) << 16 | UInt32(b[5] & 0x1F) << 24
             let n = min(Int(b[6]), b.count - 7)
             let reply = DiagReply(ecu: id, ext: ext, bytes: Array(b[7 ..< 7 + n]))
-            // Ostatnia odpowiedź każdego sterownika (po „przetwarzam…” przychodzi właściwa).
+            // The last reply of each control unit (after "processing…" comes the real one).
             diagReplies.removeAll { $0.ecu == id && $0.ext == ext }
             diagReplies.append(reply)
         case 0x30:
             var tx = DiagTx()
             if b.count >= 6 { tx = DiagTx(sent: Int(b[3]), failed: Int(b[4]), errorCounter: Int(b[5])) }
             let replies = diagReplies.sorted { ($0.isObd ? 0 : 1, $0.ecu) < ($1.isObd ? 0 : 1, $1.ecu) }
-            if op == .probe || op == .read {
-                let addr = replies.lazy.compactMap { Obd.clearAddr(for: $0) }.first
-                DispatchQueue.main.async { self.diagClearAddr = addr }
-            }
-            diagFinish(.finished(op, replies, tx))
-        case 0x20: diagFinish(.failed(String(localized: "Płytka odmówiła: silnik pracuje albo koło się kręci. Zgaś silnik, zapłon zostaw włączony.")))
-        case 0x21: diagFinish(.failed(String(localized: "Płytka zajęta — spróbuj za kilka sekund.")))
-        case 0x22: diagFinish(.failed(String(localized: "Szyna CAN milczy — włącz zapłon.")))
-        case 0x23: diagFinish(.failed(String(localized: "Płytka nie zdołała nadać zapytania (nikt go nie potwierdził). Wróciła do samego nasłuchu.")))
-        default:   diagFinish(.failed(String(format: String(localized: "Nieznana odpowiedź płytki 0x%02X."), b[0])))
+            diagCommandFinish(.done(replies, tx))
+        default:
+            diagCommandFinish(.board(b[0]))
         }
-    }
-
-    private func diagFinish(_ state: DiagState) {
-        diagTimeout?.cancel()
-        diagTimeout = nil
-        diagOp = nil
-        DispatchQueue.main.async { self.diagState = state }
     }
 
     func peripheral(_ p: CBPeripheral, didDiscoverServices error: Error?) {

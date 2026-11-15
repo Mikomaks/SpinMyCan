@@ -349,9 +349,56 @@ enum FeatureSelfTest {
         check("obd: 29-bit 18DAF110 to odpowiedź OBD", DiagReply(ecu: 0x18DAF110, ext: true, bytes: [0x43, 0]).isObd)
         check("obd: 0x7A1 to nie odpowiedź OBD", !DiagReply(ecu: 0x7A1, bytes: [1]).isObd)
         check("obd: surowa ramka pokazana w hex", Obd.summary(.probe, DiagReply(ecu: 0x7A1, bytes: [0xAB, 0x01])) == "ramka: AB 01")
-        check("obd: kasowanie 11-bit → 7E0", Obd.clearAddr(for: DiagReply(ecu: 0x7E8, bytes: [0x43, 0])) == .phys11)
-        check("obd: kasowanie 29-bit → 29-bit", Obd.clearAddr(for: DiagReply(ecu: 0x18DAF110, ext: true, bytes: [0x43, 0])) == .func29)
-        check("obd: odmowa nie odblokowuje kasowania", Obd.clearAddr(for: DiagReply(ecu: 0x7E8, bytes: [0x7F, 0x03, 0x11])) == nil)
+        // List of stored codes from frame 0x441
+        func f441(_ code: (UInt8, UInt8), count: UInt8, pos: UInt8, counter: UInt8 = 0) -> [UInt8] {
+            [0, code.0, code.1, count, pos, 0, counter, 0]
+        }
+        var col = StoredCodeCollector()
+        check("441: bez ramek brak wyniku", col.result == nil && col.partial == nil)
+        col.ingest(f441((0, 0), count: 0, pos: 0, counter: 9))
+        check("441: jedna pusta ramka to jeszcze nie pewność", col.result == nil && col.partial == StoredCodes())
+        col.ingest(f441((0, 0), count: 0, pos: 0, counter: 10))
+        check("441: dwie puste ramki = brak kodów", col.result == StoredCodes())
+        col = StoredCodeCollector()
+        col.ingest(f441((0xC1, 0x55), count: 3, pos: 1))
+        col.ingest(f441((0x16, 0x40), count: 3, pos: 3))
+        col.ingest(f441((0xC1, 0x55), count: 3, pos: 1))
+        check("441: niepełna lista czeka", col.result == nil && col.partial == StoredCodes(total: 3, codes: ["U0155", "P1640"]))
+        col.ingest(f441((0xC0, 0x73), count: 3, pos: 2))
+        check("441: pełna lista w kolejności pozycji", col.result == StoredCodes(total: 3, codes: ["U0155", "U0073", "P1640"]))
+        col.ingest(f441((0, 0), count: 0, pos: 0)); col.ingest(f441((0, 0), count: 0, pos: 0))
+        check("441: po skasowaniu lista pusta", col.result == StoredCodes())
+        col = StoredCodeCollector()
+        col.ingest(f441((0xC1, 0x55), count: 2, pos: 1)); col.ingest(f441((0xC1, 0x23), count: 1, pos: 1))
+        check("441: zmiana liczby kodów zaczyna od nowa", col.result == StoredCodes(total: 1, codes: ["U0123"]))
+        col.ingest([1, 2, 3]); col.ingest(f441((0xC1, 0x23), count: 1, pos: 5))
+        check("441: krótka ramka i pozycja spoza listy pominięte", col.result == StoredCodes(total: 1, codes: ["U0123"]))
+
+        // Outcome of a clear request
+        let e = DiagReply(ecu: 0x7E8, bytes: [0x44])
+        check("kasowanie: 44 = potwierdzone", Obd.clearOutcome([DiagReply(ecu: 0x7A1, bytes: [0x44]), e]) == .confirmed)
+        check("kasowanie: surowa ramka 44 to nie potwierdzenie", Obd.clearOutcome([DiagReply(ecu: 0x7A1, bytes: [0x44])]) == .silent)
+        check("kasowanie: odmowa 22", Obd.clearOutcome([DiagReply(ecu: 0x7E8, bytes: [0x7F, 0x04, 0x22])]) == .refused(0x22))
+        check("kasowanie: samo „przetwarzam” to cisza", Obd.clearOutcome([DiagReply(ecu: 0x7E8, bytes: [0x7F, 0x04, 0x78])]) == .silent)
+        check("kasowanie: brak odpowiedzi", Obd.clearOutcome([]) == .silent)
+        check("kasowanie: odmowa 22 kończy próby, 11 nie", Obd.refusalIsFinal(0x22) && !Obd.refusalIsFinal(0x11))
+        check("kasowanie: najpierw adres bezpośredni 7E0", Obd.clearOrder == [.phys11, .func11, .func29])
+
+        // Verdicts
+        let two = StoredCodes(total: 2, codes: ["U0155", "U0073"])
+        func clear(_ before: StoredCodes?, _ after: StoredCodes?, confirmed: Bool = false, refusal: UInt8? = nil, sent: Int = 1) -> (text: String, ok: Bool) {
+            Obd.verdict(DiagReport(kind: .clear, before: before, after: after, confirmed: confirmed, refusal: refusal, tx: DiagTx(sent: sent)))
+        }
+        check("werdykt: odczyt bez ramki 441", !Obd.verdict(DiagReport(kind: .read)).ok)
+        check("werdykt: odczyt bez kodów", Obd.verdict(DiagReport(kind: .read, before: StoredCodes())).ok)
+        check("werdykt: odczyt z kodami", !Obd.verdict(DiagReport(kind: .read, before: two)).ok)
+        check("werdykt: skasowane i lista pusta", clear(two, StoredCodes(), confirmed: true).ok)
+        check("werdykt: potwierdzone, ale kody wróciły", !clear(two, two, confirmed: true).ok)
+        check("werdykt: potwierdzone bez listy", clear(two, nil, confirmed: true).ok)
+        check("werdykt: lista pusta bez potwierdzenia", clear(two, StoredCodes()).ok)
+        check("werdykt: odmowa", !clear(two, two, refusal: 0x22).ok && clear(two, two, refusal: 0x22).text.contains("warunki"))
+        check("werdykt: nic nie wyszło na szynę", !clear(two, two, sent: 0).ok && clear(two, two, sent: 0).text != clear(two, two).text)
+        check("werdykt: cisza przy pustej liście to nie sukces", !clear(StoredCodes(), StoredCodes()).ok)
     }
 
     /// Trasa pokazowa (pętla pod Krakowem, 20 min): silnik z mostka CAN i 4 piosenki — do zrzutów plakatu.

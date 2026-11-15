@@ -53,6 +53,8 @@ temperatures, suspension, odometer and the exact lean angle from the bike's own 
 - **Ride poster** for an Instagram story / post — configurable, with gears and the "ride's song"
 - **Video**: your own videos on the dash (they keep playing with the phone locked)
 - **CAN Terminal** — raw bus frames with live decoding
+- **Trouble codes**: read the stored codes and clear them (FI light) — the app checks the
+  result itself ([how it works](docs/DIAGNOSTICS.md))
 - **Game**: snake 🐍 with a high score (when parked, please)
 - **Dynamic Island** and Lock Screen with speed and gear
 - Light and dark theme (▲▼▲▼ joystick shortcut), crisp pixel font rendered 1:1 with the display
@@ -140,9 +142,10 @@ GPS track on a map).
 
 - **Use at your own risk** — the software is provided "as is", without warranty ([LICENSE](LICENSE)).
 - **Don't handle your phone while riding.** Watch the road, not the dash.
-- The board only ever transmits on the bus during **diagnostics** (reading / clearing fault
-  codes): parked only, engine off, one command at a time. Clearing a code **does not fix the
-  fault** — if the warning light comes back, see a mechanic.
+- The board only ever transmits on the bus when you **clear trouble codes** (or run the OBD
+  test): parked only, engine off, one command at a time. Reading the codes only listens.
+  Clearing a code **does not fix the fault** — if the warning light comes back, see a mechanic.
+  Details: [docs/DIAGNOSTICS.md](docs/DIAGNOSTICS.md).
 - Before plugging in, **check the pins with a multimeter** (the plug seen face-on is a mirror
   image of the socket), make sure the board and the bike share ground, and never short CAN-H
   to CAN-L — even a brief short can light up FI / E-SUS.

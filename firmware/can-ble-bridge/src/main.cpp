@@ -270,6 +270,8 @@ static bool canStart(twai_mode_t mode = TWAI_MODE_LISTEN_ONLY) {
     twai_general_config_t g = TWAI_GENERAL_CONFIG_DEFAULT(CAN_TX, CAN_RX, mode);
     // Szyna niesie ok. 2000 ramek/s; 256 miejsc to ponad 100 ms zapasu na zajętą pętlę.
     g.rx_queue_len = 256;
+    // During a diagnostic command we need to know whether each single-shot frame got out.
+    if (mode == TWAI_MODE_NORMAL) g.alerts_enabled = TWAI_ALERT_TX_SUCCESS | TWAI_ALERT_TX_FAILED;
     twai_timing_config_t t = TWAI_TIMING_CONFIG_500KBITS();
     twai_filter_config_t f = TWAI_FILTER_CONFIG_ACCEPT_ALL();
     if (twai_driver_install(&g, &t, &f) != ESP_OK) return false;
@@ -326,7 +328,10 @@ static void diagFinish(uint8_t status, uint8_t op, uint8_t count, uint8_t txErr 
     diagNotify(m, sizeof(m));
 }
 
-// Jednorazowe wysłanie ramki (bez powtórek, gdy nikt nie potwierdzi).
+// Sends one frame single-shot. A frame that lost arbitration or was not acknowledged is
+// repeated a few times; the number of repeats and of all transmissions in a command is
+// limited in diag_core.h (MAX_TRIES, takeTx). Blocks for at most MAX_TRIES × 15 ms —
+// the receive queue (256 frames, about 130 ms of traffic) holds that.
 static bool diagSend(const bridge::diag::Frame &f) {
     twai_message_t m = {};
     m.identifier = f.id;
@@ -334,9 +339,23 @@ static bool diagSend(const bridge::diag::Frame &f) {
     m.data_length_code = 8;
     m.ss = 1;
     memcpy(m.data, f.data, 8);
-    bool ok = twai_transmit(&m, pdMS_TO_TICKS(20)) == ESP_OK;
-    if (ok) diagTxOk++; else diagTxFail++;
-    return ok;
+    for (uint8_t attempt = 0; attempt < bridge::diag::MAX_TRIES; attempt++) {
+        if (!diag.takeTx()) return false;
+        uint32_t alerts = 0;
+        twai_read_alerts(&alerts, 0);                     // forget results of earlier frames
+        if (twai_transmit(&m, pdMS_TO_TICKS(20)) != ESP_OK) { diagTxFail++; return false; }
+        bool known = false, ok = false;
+        uint32_t t0 = millis();
+        while (!known && millis() - t0 < 15) {
+            if (twai_read_alerts(&alerts, pdMS_TO_TICKS(2)) != ESP_OK) continue;
+            if (alerts & TWAI_ALERT_TX_SUCCESS) { known = true; ok = true; }
+            else if (alerts & TWAI_ALERT_TX_FAILED) known = true;
+        }
+        if (ok) { diagTxOk++; return true; }
+        diagTxFail++;
+        if (!known) return false;                         // fate unknown — do not risk a duplicate
+    }
+    return false;
 }
 
 // Powrót do samego nasłuchu — zawsze, czymkolwiek skończyła się komenda.
@@ -387,7 +406,6 @@ static void diagPoll(uint32_t now, bool busAlive, bool moving) {
         uint8_t txErr = 0;
         if (canRunning && twai_get_status_info(&st) == ESP_OK) {
             txErr = st.tx_error_counter > 255 ? 255 : uint8_t(st.tx_error_counter);
-            diagTxFail += uint8_t(st.tx_failed_count);      // jednorazowe ramki bez potwierdzenia
         }
         diagBackToListen();
         diagFinish(bridge::diag::DONE, op, count, txErr);
