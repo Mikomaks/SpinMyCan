@@ -38,13 +38,6 @@ extension DashboardScreen {
             .init(id: "snake.right",   label: String(localized: "Wąż: prawo"),        defaultKey: 0x21),
             .init(id: "snake.restart", label: String(localized: "Zagraj ponownie (OK)"), defaultKey: 0x0C),
         ]
-        case .sudoku: return [
-            .init(id: "sudoku.up",    label: String(localized: "Kursor góra / cyfra +"),  defaultKey: 0x1E),
-            .init(id: "sudoku.down",  label: String(localized: "Kursor dół / cyfra −"),   defaultKey: 0x1F),
-            .init(id: "sudoku.left",  label: String(localized: "Kursor lewo"),            defaultKey: 0x20),
-            .init(id: "sudoku.right", label: String(localized: "Kursor prawo"),           defaultKey: 0x21),
-            .init(id: "sudoku.ok",    label: String(localized: "Edytuj / zatwierdź (OK)"), defaultKey: 0x0C),
-        ]
         case .navigation: return [
             .init(id: "nav.screenPrev", label: String(localized: "▲ Poprzedni ekran"), defaultKey: 0x1E),
             .init(id: "nav.screenNext", label: String(localized: "▼ Następny ekran"),  defaultKey: 0x1F),
@@ -140,13 +133,13 @@ enum KeyBindings {
 
     // ── Reset ──
     /// Jednorazowo (v1.18.1, prośba użytkownika): bez skrótów „Przejdź do ekranu” i ▲▼ =
-    /// poprzedni / następny ekran wszędzie poza grami (w wężu i sudoku ▲▼ sterują grą).
+    /// poprzedni / następny ekran wszędzie poza grami (w wężu ▲▼ sterują grą).
     /// Inne akcje przypięte do ▲▼ wracają na swój domyślny przycisk.
     static func clearShortcutsOnce(defaults d: UserDefaults = .standard) {
         let flag = "migr.clearShortcuts.v1"
         guard !d.bool(forKey: flag) else { return }
         for k in d.dictionaryRepresentation().keys where k.hasPrefix("goto.") { d.removeObject(forKey: k) }
-        for screen in DashboardScreen.allCases where screen != .snake && screen != .sudoku {
+        for screen in DashboardScreen.allCases where screen != .snake {
             for a in screen.actions {
                 let screenKey = a.id.hasSuffix(".screenPrev") || a.id.hasSuffix(".screenNext")
                 if screenKey || [0x1E, 0x1F].contains(key(for: a, defaults: d)) {

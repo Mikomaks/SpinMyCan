@@ -147,19 +147,6 @@ extension FrameRenderer {
                                             gameOver: false, started: true)
         save(snake, "still_snake")
 
-        let sudoku = base(.sudoku)
-        var givens = [Int](repeating: 0, count: 81), entries = [Int](repeating: 0, count: 81)
-        for r in 0..<9 { for c in 0..<9 {
-            let v = (r * 3 + r / 3 + c) % 9 + 1           // poprawna plansza
-            if (r * 7 + c * 5) % 3 == 0 { givens[r * 9 + c] = v; entries[r * 9 + c] = v }
-            else if (r + c) % 4 == 0 { entries[r * 9 + c] = v }
-        } }
-        sudoku.sudokuSnapshot = SudokuSnapshot(givens: givens, entries: entries, cursor: 40, editing: false,
-                                               conflicts: [], completed: [], solved: false, generating: false,
-                                               difficulty: "Średni", filled: entries.filter { $0 > 0 }.count,
-                                               source: "Dnia")
-        save(sudoku, "still_sudoku")
-
         // ── Nawigacja z prawdziwą mapą (Apple Maps, asynchronicznie) ──
         let opts = MKMapSnapshotter.Options()
         opts.size = CGSize(width: 494, height: 320)

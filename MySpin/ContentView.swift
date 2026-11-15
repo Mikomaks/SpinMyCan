@@ -24,7 +24,6 @@ struct ContentView: View {
     @StateObject private var replay      = ReplayManager()
     @StateObject private var weather     = WeatherManager()
     @StateObject private var snakeGame   = SnakeGame()
-    @StateObject private var sudoku      = SudokuGame()
     @StateObject private var mapSnap     = MapSnapshotManager()
     @StateObject private var perfMeter   = PerfMeter()
     @StateObject private var navManager  = NavManager()
@@ -181,7 +180,6 @@ struct ContentView: View {
                         liveCard.id("live")
 
                         screenStrip.id("screens")
-                        if activeScreen == DashboardScreen.sudoku.rawValue { sudokuCard }
                         if activeScreen == DashboardScreen.performance.rawValue { perfCard }
                         if activeScreen == DashboardScreen.navigation.rawValue
                             || activeScreen == DashboardScreen.navClassic.rawValue { navCard }
@@ -1031,73 +1029,6 @@ struct ContentView: View {
             .frame(height: CGFloat(screens.count) * 54 + 6)
             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             .tint(AppStyle.accent)
-        }
-        .card()
-    }
-
-    // MARK: — Sudoku Card (nowa gra + trudność)
-
-    var sudokuCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                CardHeader("Sudoku", icon: "square.grid.3x3")
-                Spacer()
-                let s = sudoku.display
-                if s.generating {
-                    Text("Generuję...").font(.caption).foregroundColor(.orange)
-                } else if s.solved {
-                    Text("Rozwiązane! 🎉").font(.caption.bold()).foregroundColor(.green)
-                } else {
-                    Text("\(s.filled)/81").font(.system(.caption, design: .monospaced)).foregroundColor(.secondary)
-                }
-            }
-
-            // Plansza dnia + online
-            HStack(spacing: 6) {
-                Button {
-                    sudoku.dailyGame()
-                } label: {
-                    Label("Plansza dnia", systemImage: "calendar")
-                        .font(.system(size: 12, weight: .semibold))
-                        .frame(maxWidth: .infinity).padding(.vertical, 7)
-                }
-                .buttonStyle(.borderedProminent).tint(AppStyle.accent)
-
-                Button {
-                    sudoku.fetchOnline()
-                } label: {
-                    Label("Z internetu", systemImage: "globe")
-                        .font(.system(size: 12, weight: .semibold))
-                        .frame(maxWidth: .infinity).padding(.vertical, 7)
-                }
-                .buttonStyle(.bordered).tint(.secondary)
-            }
-
-            if !sudoku.note.isEmpty {
-                Text(sudoku.note).font(.caption).foregroundColor(.orange)
-            }
-
-            Text("Losowa plansza lokalna (offline):")
-                .font(.caption).foregroundColor(.secondary)
-
-            HStack(spacing: 6) {
-                ForEach(SudokuDifficulty.allCases, id: \.self) { diff in
-                    Button {
-                        sudoku.newGame(diff)
-                    } label: {
-                        Text(diff.title)
-                            .font(.system(size: 12, weight: .semibold))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 7)
-                    }
-                    .buttonStyle(.bordered)
-                    .tint(sudoku.difficulty == diff ? AppStyle.accent : .gray)
-                }
-            }
-
-            Text("Sterowanie joystickiem: d-pad rusza kursorem, OK edytuje komórkę, Góra/Dół zmienia cyfrę, Back wychodzi. Stan zapisuje się automatycznie. Plansza dnia działa offline (ta sama dla wszystkich danego dnia).")
-                .font(.system(size: 10))
-                .foregroundColor(.secondary)
         }
         .card()
     }
@@ -2169,7 +2100,6 @@ struct ContentView: View {
         case .classic:     return String(localized: "Klasyczny")
         case .lean:        return String(localized: "Przechył")
         case .snake:       return "Snake"
-        case .sudoku:      return "Sudoku"
         case .navigation:  return String(localized: "Nawigacja")
         case .performance: return String(localized: "Pomiary")
         case .video:       return String(localized: "Wideo")
@@ -2428,7 +2358,6 @@ struct ContentView: View {
         renderer.calibrationCountdown  = motion.calibrationCountdown
         renderer.activeScreen   = activeScreen
         renderer.snakeSnapshot  = snakeGame.snapshot()
-        renderer.sudokuSnapshot = sudoku.snapshot()
         renderer.mapImage       = mapSnap.mapImage
         renderer.perfSnapshot   = perfMeter.snapshot()
         renderer.navActive            = navManager.isActive
@@ -2738,7 +2667,7 @@ struct ContentView: View {
 
         // Frame provider — każde wywołanie aktualizuje renderer danymi z telefonu
         // i zwraca JPEG 864×320 wysyłany na wyświetlacz motocykla (15 fps)
-        session.frameProvider = { [weak renderer, weak motion, weak nowPlaying, weak spotify, weak weather, weak snakeGame, weak sudoku, weak mapSnap, weak perfMeter, weak navManager, weak videoProvider, weak recorder, weak lyrics, weak memories, weak segments, weak bikeLink] in
+        session.frameProvider = { [weak renderer, weak motion, weak nowPlaying, weak spotify, weak weather, weak snakeGame, weak mapSnap, weak perfMeter, weak navManager, weak videoProvider, weak recorder, weak lyrics, weak memories, weak segments, weak bikeLink] in
             guard let r = renderer, let m = motion else { return nil }
             let screen = UserDefaults.standard.integer(forKey: "activeScreen")
             r.activeScreen = screen
@@ -2749,7 +2678,6 @@ struct ContentView: View {
                 return r.render()   // placeholder zanim pierwsza klatka gotowa
             }
             r.snakeSnapshot  = snakeGame?.snapshot()
-            r.sudokuSnapshot = sudoku?.snapshot()
             r.mapImage       = mapSnap?.mapImage
             r.perfSnapshot   = perfMeter?.snapshot()
             r.navActive            = navManager?.isActive ?? false
@@ -2837,7 +2765,6 @@ struct ContentView: View {
         joyState.motion  = motion
         joyState.spotify = spotify
         joyState.snake   = snakeGame
-        joyState.sudoku  = sudoku
         joyState.perf    = perfMeter
         joyState.memories = memories
         joyState.video    = videoProvider
@@ -2855,6 +2782,8 @@ struct ContentView: View {
         motion.onSpeedUpdate = { [weak perfMeter] kmh, t in
             perfMeter?.feed(speedKmh: kmh, at: t)
         }
+        // A saved screen that no longer exists (e.g. the removed Sudoku) falls back to the classic one.
+        if DashboardScreen(rawValue: activeScreen) == nil { activeScreen = DashboardScreen.classic.rawValue }
         // Uruchom odpowiedni ekran od razu po starcie
         if activeScreen == DashboardScreen.snake.rawValue { snakeGame.start() }
         if activeScreen == DashboardScreen.navigation.rawValue
@@ -3169,7 +3098,6 @@ final class JoystickState: ObservableObject {
     weak var motion:  MotionManager?
     weak var spotify: SpotifyWebManager?
     weak var snake:   SnakeGame?
-    weak var sudoku:  SudokuGame?
     weak var perf:    PerfMeter?
     weak var memories: MemoriesManager?
     weak var video:   VideoFrameProvider?
@@ -3227,7 +3155,7 @@ final class JoystickState: ObservableObject {
     func doubleAction(_ s: DashboardScreen) -> String? {
         switch s {
         case .classic:        return "__calibrate"
-        case .snake, .sudoku: return "__exit"
+        case .snake:          return "__exit"
         case .video:          return "__nextVideo"
         default:              return nil   // lean (single OK już kalibruje), perf, nav
         }
@@ -3347,12 +3275,6 @@ final class JoystickState: ObservableObject {
         case "snake.right":   snake?.turn(( 1, 0))
         case "snake.restart": snake?.okPressed()
 
-        // Sudoku
-        case "sudoku.up":    sudoku?.up()
-        case "sudoku.down":  sudoku?.down()
-        case "sudoku.left":  sudoku?.left()
-        case "sudoku.right": sudoku?.right()
-        case "sudoku.ok":    sudoku?.okPressed()
 
         default: break
         }

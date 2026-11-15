@@ -105,7 +105,6 @@ final class FrameRenderer: ObservableObject {
     // Aktywny ekran + stan gier/mapy
     var activeScreen:   Int             = 0
     var snakeSnapshot:  SnakeSnapshot?  = nil
-    var sudokuSnapshot: SudokuSnapshot? = nil
     var mapImage:       UIImage?        = nil
     var perfSnapshot:   PerfSnapshot?   = nil
 
@@ -326,7 +325,6 @@ final class FrameRenderer: ObservableObject {
             paintSlots(slots(for: screen, l) ?? [])
         case .lean:    paintLeanScreen(l)
         case .snake:   paintSnakeScreen(l)
-        case .sudoku:  paintSudokuScreen(l)
         case .navigation: paintNavScreen(l)
         case .performance: paintPerfScreen(l)
         case .disco: paintDisco(l)
@@ -871,6 +869,9 @@ final class FrameRenderer: ObservableObject {
         // Pasek wyniku
         write("SNAKE", x: 14, y: topBar/2, size: 16, color: GREEN, bold: true)
         writeR(String(localized: "Wynik: \(g.score)"), x: W - 14, y: topBar/2, size: 16, color: WHITE, bold: true)
+        if g.best > 0 {
+            writeCtr(String(localized: "Rekord: \(g.best)"), x: W/2, y: topBar/2, size: 14, color: GRAY, bold: true)
+        }
 
         // Plansza
         BG_DARK.setFill()
@@ -900,155 +901,14 @@ final class FrameRenderer: ObservableObject {
             let bx = CGRect(x: W/2 - 170, y: H/2 - 38, width: 340, height: 76)
             BG.withAlphaComponent(0.85).setFill()
             UIBezierPath(roundedRect: bx, cornerRadius: 10).fill()
-            RED.setStroke()
-            let bp = UIBezierPath(roundedRect: bx, cornerRadius: 10); bp.lineWidth = 2; bp.stroke()
-            writeCtr("GAME OVER", x: W/2, y: H/2 - 12, size: 26, color: RED, bold: true)
+            let bp = UIBezierPath(roundedRect: bx, cornerRadius: 10); bp.lineWidth = 2
+            let record = g.newRecord
+            let title = g.won ? String(localized: "WYGRANA!") : record ? String(localized: "NOWY REKORD!") : "GAME OVER"
+            writeCtr(title, x: W/2, y: H/2 - 12, size: 26, color: g.won || record ? GREEN : RED, bold: true)
+            (g.won || record ? GREEN : RED).setStroke(); bp.stroke()
             writeCtr(String(localized: "Wynik \(g.score)  •  OK = zagraj ponownie"), x: W/2, y: H/2 + 18, size: 14, color: WHITE)
         } else if !g.started {
             writeCtr(String(localized: "Wciśnij kierunek joystickiem aby zacząć"), x: W/2, y: oy + gridH/2, size: 16, color: WHITE, bold: true)
-        }
-    }
-
-    // MARK: — Ekran SUDOKU
-
-    func paintSudokuScreen(_ l: Layout) {
-        guard let s = sudokuSnapshot else {
-            writeCtr(String(localized: "Sudoku — ładowanie..."), x: l.W/2, y: l.H/2, size: 20, color: GRAY)
-            return
-        }
-        let W = l.W, H = l.H
-        let topBar: CGFloat = 26
-        let cell: CGFloat = 31
-        let grid = cell * 9                       // 279
-        let ox = (W - grid) / 2
-        let oy = topBar + (H - topBar - grid) / 2
-
-        // Pasek górny
-        let srcName: String
-        switch s.source {
-        case "Dnia": srcName = String(localized: "Dnia")
-        case "Online": srcName = "Online"
-        default: srcName = String(localized: "Losowa")
-        }
-        write("SUDOKU", x: 14, y: topBar/2, size: 15, color: BLUE, bold: true)
-        writeCtr("\(srcName) · \(s.difficulty)", x: W/2, y: topBar/2, size: 13, color: GRAY, bold: true)
-        writeR("\(s.filled)/81", x: W - 14, y: topBar/2, size: 14, color: WHITE, bold: true)
-
-        if s.generating {
-            writeCtr(String(localized: "Generuję planszę..."), x: W/2, y: H/2, size: 22, color: GRAY, bold: true)
-            return
-        }
-
-        // Dedykowane kolory Sudoku — wysoki kontrast w obu trybach,
-        // linie wyraźnie różne od cyfr (fix: w dark GRAY ≈ białe cyfry → zlewanie).
-        let boardBG   = isDarkMode ? UIColor(white: 0.16, alpha: 1) : UIColor.white
-        let gridThin  = isDarkMode ? UIColor(white: 0.45, alpha: 1) : UIColor(white: 0.70, alpha: 1)
-        let gridThick = isDarkMode ? UIColor(white: 0.80, alpha: 1) : UIColor(white: 0.30, alpha: 1)
-        let givenCol  = isDarkMode ? UIColor.white                  : UIColor(white: 0.08, alpha: 1)
-        let playerCol = isDarkMode ? UIColor(red: 0.45, green: 0.80, blue: 1.0, alpha: 1)
-                                   : UIColor(red: 0.05, green: 0.35, blue: 0.85, alpha: 1)
-        let hlNeutral = isDarkMode ? UIColor.white : UIColor.black
-
-        // Tło planszy
-        boardBG.setFill()
-        UIRectFill(CGRect(x: ox, y: oy, width: grid, height: grid))
-
-        let curR = s.cursor / 9, curC = s.cursor % 9
-        let curVal = s.entries[s.cursor]
-
-        // Podświetlenie wiersza/kolumny/boxa kursora + tych samych cyfr
-        for idx in 0..<81 {
-            let r = idx/9, c = idx%9
-            let sameRCB = r == curR || c == curC || (r/3 == curR/3 && c/3 == curC/3)
-            let sameVal = curVal != 0 && s.entries[idx] == curVal
-            if sameRCB || sameVal {
-                if sameVal { playerCol.withAlphaComponent(isDarkMode ? 0.28 : 0.16).setFill() }
-                else       { hlNeutral.withAlphaComponent(isDarkMode ? 0.10 : 0.06).setFill() }
-                UIRectFill(CGRect(x: ox + CGFloat(c)*cell, y: oy + CGFloat(r)*cell, width: cell, height: cell))
-            }
-        }
-
-        // Ukończone wiersze/kolumny/boxy — pulsujące zielone tło (pomoc wizualna)
-        if !s.completed.isEmpty {
-            let pulse = 0.5 + 0.5 * sin(CACurrentMediaTime() * 3.2)   // 0..1
-            let gAlpha = CGFloat(0.18 + 0.34 * pulse)
-            GREEN.withAlphaComponent(gAlpha).setFill()
-            for idx in s.completed {
-                let r = idx/9, c = idx%9
-                UIRectFill(CGRect(x: ox + CGFloat(c)*cell, y: oy + CGFloat(r)*cell, width: cell, height: cell))
-            }
-        }
-
-        // Komórka kursora — podświetlenie (pomarańcz=edycja, żółty=nawigacja)
-        let curCol: UIColor = s.editing ? ORANGE : .systemYellow
-        curCol.withAlphaComponent(s.editing ? 0.50 : 0.32).setFill()
-        UIRectFill(CGRect(x: ox + CGFloat(curC)*cell, y: oy + CGFloat(curR)*cell, width: cell, height: cell))
-
-        // Cyfry
-        for idx in 0..<81 {
-            let v = s.entries[idx]
-            guard v != 0 else { continue }
-            let r = idx/9, c = idx%9
-            let cx = ox + CGFloat(c)*cell + cell/2
-            let cy = oy + CGFloat(r)*cell + cell/2
-            let col: UIColor
-            if s.conflicts.contains(idx)      { col = RED }
-            else if s.givens[idx] != 0        { col = givenCol }   // podpowiedź
-            else                              { col = playerCol }  // wpis gracza
-            // W dark mode pogrubiamy też wpisy gracza — lepsza czytelność na ciemnym tle.
-            let isBold = s.givens[idx] != 0 || isDarkMode
-            writeCtr("\(v)", x: cx, y: cy, size: 21, color: col, bold: isBold)
-        }
-
-        // Linie siatki — kolory dedykowane, wyraźnie różne od cyfr
-        for i in 0...9 {
-            let thick = i % 3 == 0
-            (thick ? gridThick : gridThin).setStroke()
-            let lw: CGFloat = thick ? 2 : 0.75
-            let vx = ox + CGFloat(i)*cell
-            let v = UIBezierPath(); v.move(to: CGPoint(x: vx, y: oy)); v.addLine(to: CGPoint(x: vx, y: oy+grid))
-            v.lineWidth = lw; v.stroke()
-            let hy = oy + CGFloat(i)*cell
-            let h = UIBezierPath(); h.move(to: CGPoint(x: ox, y: hy)); h.addLine(to: CGPoint(x: ox+grid, y: hy))
-            h.lineWidth = lw; h.stroke()
-        }
-
-        // Panel "Teraz gra" po lewej (puste pole obok planszy)
-        let leftW = ox - 16
-        if leftW > 120 {
-            drawNowPlayingBox(px: 8, py: oy, pw: leftW, ph: grid)
-        }
-
-        // Panel sterowania po prawej (kompaktowy)
-        let hintX = ox + grid + 20
-        if hintX < W - 20 {
-            let hints = s.editing
-                ? [String(localized: "EDYCJA"), String(localized: "Góra/Dół:"), String(localized: "  cyfra"), String(localized: "OK: zatwierdź"), String(localized: "Back: anuluj")]
-                : [String(localized: "NAWIGACJA"), String(localized: "D-pad: kursor"), String(localized: "OK: edytuj"), String(localized: "Back: wyjście")]
-            for (i, line) in hints.enumerated() {
-                write(line, x: hintX, y: oy + 16 + CGFloat(i)*20,
-                      size: i == 0 ? 13 : 11, color: i == 0 ? (s.editing ? ORANGE : GRAY) : DIM, bold: i == 0)
-            }
-        }
-
-        // Watermark SpinMyCan @mikomaks_ — subtelny, prawy dolny róg
-        let wmAttrs: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 10, weight: .medium),
-            .foregroundColor: GRAY.withAlphaComponent(0.5)
-        ]
-        let wm = "SpinMyCan @mikomaks_" as NSString
-        let wmSz = wm.size(withAttributes: wmAttrs)
-        wm.draw(at: CGPoint(x: W - wmSz.width - 12, y: H - wmSz.height - 7), withAttributes: wmAttrs)
-
-        // Wygrana
-        if s.solved {
-            let bw: CGFloat = 280, bh: CGFloat = 64
-            let bx = CGRect(x: W/2 - bw/2, y: H/2 - bh/2, width: bw, height: bh)
-            BG.withAlphaComponent(0.9).setFill()
-            UIBezierPath(roundedRect: bx, cornerRadius: 10).fill()
-            GREEN.setStroke()
-            let bp = UIBezierPath(roundedRect: bx, cornerRadius: 10); bp.lineWidth = 2; bp.stroke()
-            writeCtr(String(localized: "ROZWIĄZANE! 🎉"), x: W/2, y: H/2, size: 24, color: GREEN, bold: true)
         }
     }
 
@@ -1224,7 +1084,7 @@ final class FrameRenderer: ObservableObject {
     // MARK: — Now Playing Panel (prawy, 210px)
     // Gdy npTitle pusty → fallback do statystyk
 
-    /// Panel "Teraz gra" w dowolnym prostokącie (używany na ekranie Sudoku po lewej).
+    /// Panel "Teraz gra" w dowolnym prostokącie (używany na ekranie nawigacji).
     func drawNowPlayingBox(px: CGFloat, py: CGFloat, pw: CGFloat, ph: CGFloat) {
         let cx = px + pw / 2
 
