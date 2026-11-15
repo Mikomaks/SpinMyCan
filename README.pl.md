@@ -56,6 +56,9 @@ z czujnika motocykla.
 - **Plakat trasy** do relacji / posta na Instagram — konfigurowalny, z biegami i „utworem trasy”
 - **Wideo**: własne filmy na desce (grają też przy zablokowanym telefonie)
 - **Terminal CAN** — surowe ramki szyny z dekodowaniem na żywo
+- **Powiadomienia z telefonu** na desce (eksperymentalne, wymaga płytki): połączenia i wiadomości
+  w szklanym banerze, OK rozwija treść ([jak to działa](docs/NOTIFICATIONS.md), po angielsku)
+- **Szybkie menu**: 2× OK — motyw, czcionka, wyciszenie i inne bez dotykania telefonu
 - **Kody błędów**: odczyt zapisanych kodów i kasowanie (lampka FI) — apka sama sprawdza
   wynik ([jak to działa](docs/DIAGNOSTICS.md), po angielsku)
 - **Gra**: wąż 🐍 z rekordem (na postoju, proszę)
@@ -70,7 +73,8 @@ z czujnika motocykla.
 | <img src="docs/media/lean.gif" width="420"><br>**Przechył** | <img src="docs/media/still_nav.png" width="420"><br>**Nawigacja + deska** |
 | <img src="docs/media/still_disco.png" width="420"><br>**Disco** — okładka i tekst | <img src="docs/media/still_nav_full.png" width="420"><br>**Nawigacja** na cały ekran |
 | <img src="docs/media/still_classic_can_light.png" width="420"><br>**Jasny motyw** na pełne słońce | <img src="docs/media/still_perf.png" width="420"><br>**Pomiary** 0–100, ¼ mili |
-| <img src="docs/media/still_snake.png" width="420"><br>**Wąż** | |
+| <img src="docs/media/still_snake.png" width="420"><br>**Wąż** | <img src="docs/media/still_quick_menu.png" width="420"><br>**Szybkie menu** (2× OK) |
+| <img src="docs/media/still_notification.png" width="420"><br>**Powiadomienie** | <img src="docs/media/still_notification_open.png" width="420"><br>**Powiadomienie rozwinięte** przez OK |
 
 ### 🟩 Terminal CAN
 

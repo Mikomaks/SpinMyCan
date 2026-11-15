@@ -738,6 +738,17 @@
         }
       }
     },
+    "Będę za 10 minut. Kupić coś po drodze? Mogę wziąć pieczywo i coś na kolację.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I'll be there in 10 minutes. Need anything on the way? I can grab bread and something for dinner."
+          }
+        }
+      }
+    },
     "Błąd Bluetooth": {
       "extractionState": "manual",
       "localizations": {
@@ -837,6 +848,17 @@
         }
       }
     },
+    "Ciemny": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dark"
+          }
+        }
+      }
+    },
     "Client ID (32 znaki hex)": {
       "extractionState": "manual",
       "localizations": {
@@ -877,6 +899,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Time in gear"
+          }
+        }
+      }
+    },
+    "Czcionka": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Font"
           }
         }
       }
@@ -1145,6 +1178,17 @@
         }
       }
     },
+    "Działa — powiadomienia trafiają na deskę.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Working — notifications go to the dash."
+          }
+        }
+      }
+    },
     "Dół": {
       "extractionState": "manual",
       "localizations": {
@@ -1167,6 +1211,17 @@
         }
       }
     },
+    "Ekipa na niedzielę": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sunday crew"
+          }
+        }
+      }
+    },
     "Ekran na desce": {
       "extractionState": "manual",
       "localizations": {
@@ -1185,6 +1240,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dashboard screens"
+          }
+        }
+      }
+    },
+    "Eksperymentalne. Płytka paruje się z telefonem i przekazuje jego powiadomienia; na desce OK rozwija treść, ◀ zamyka.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimental. The board pairs with the phone and passes its notifications on; on the dash OK opens the text, ◀ closes."
           }
         }
       }
@@ -1343,6 +1409,17 @@
         }
       }
     },
+    "Jasny": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light"
+          }
+        }
+      }
+    },
     "Jazda": {
       "extractionState": "manual",
       "localizations": {
@@ -1453,7 +1530,7 @@
         }
       }
     },
-    "Kalibracja lean": {
+    "Kalibracja przechyłu": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -1904,6 +1981,17 @@
         }
       }
     },
+    "Motyw": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Theme"
+          }
+        }
+      }
+    },
     "Muzyka": {
       "extractionState": "manual",
       "localizations": {
@@ -2212,6 +2300,17 @@
         }
       }
     },
+    "Nie udało się włączyć powiadomień.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not turn notifications on."
+          }
+        }
+      }
+    },
     "Nie udało się: %@": {
       "extractionState": "manual",
       "localizations": {
@@ -2289,6 +2388,17 @@
         }
       }
     },
+    "Nikt nie zaakceptował parowania. Wyłącz i włącz przełącznik, potem potwierdź na telefonie.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nobody accepted the pairing. Turn the switch off and on, then confirm on the phone."
+          }
+        }
+      }
+    },
     "Noc": {
       "extractionState": "manual",
       "localizations": {
@@ -2307,6 +2417,39 @@
           "stringUnit": {
             "state": "translated",
             "value": "RPM"
+          }
+        }
+      }
+    },
+    "OK pokaż": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK open"
+          }
+        }
+      }
+    },
+    "OK zwiń": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK fold"
+          }
+        }
+      }
+    },
+    "OK ✓  ▲▼ ✕": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK ✓  ▲▼ ✕"
           }
         }
       }
@@ -2542,6 +2685,17 @@
         }
       }
     },
+    "POWIADOMIENIA NA DESCE": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NOTIFICATIONS ON THE DASH"
+          }
+        }
+      }
+    },
     "POWIETRZE": {
       "extractionState": "manual",
       "localizations": {
@@ -2637,6 +2791,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "GPS POINTS"
+          }
+        }
+      }
+    },
+    "Parowanie odrzucone albo nieudane. Wyłącz i włącz przełącznik; jeśli to nie pomoże, usuń płytkę w Ustawienia → Bluetooth i spróbuj ponownie.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pairing refused or failed. Turn the switch off and on; if that does not help, remove the board in Settings → Bluetooth and try again."
           }
         }
       }
@@ -2795,6 +2960,17 @@
         }
       }
     },
+    "Pokaż próbne powiadomienie": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show a test notification"
+          }
+        }
+      }
+    },
     "Pomarańczowy = zmienił się w ostatniej sekundzie, szary = szum tła, czerwony = różni się od zapamiętanego stanu.": {
       "extractionState": "manual",
       "localizations": {
@@ -2894,6 +3070,28 @@
         }
       }
     },
+    "Powiadomienia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications"
+          }
+        }
+      }
+    },
+    "Powiadomienia z telefonu": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phone notifications"
+          }
+        }
+      }
+    },
     "Pozostało %.1f km · ≈ %d min": {
       "extractionState": "manual",
       "localizations": {
@@ -2923,6 +3121,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Connect TCP"
+          }
+        }
+      }
+    },
+    "Połączenie przychodzące": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incoming call"
           }
         }
       }
@@ -3275,6 +3484,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "The board could not send the request (nobody acknowledged it). Back to listen-only."
+          }
+        }
+      }
+    },
+    "Płytka niepołączona albo ma za stary program (potrzebny v12).": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Board not connected or its firmware is too old (v12 needed)."
           }
         }
       }
@@ -3884,6 +4104,17 @@
         }
       }
     },
+    "Szybkie menu na desce": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick menu on the dash"
+          }
+        }
+      }
+    },
     "Szyna CAN milczy — włącz zapłon.": {
       "extractionState": "manual",
       "localizations": {
@@ -4016,6 +4247,28 @@
         }
       }
     },
+    "Telefon": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phone"
+          }
+        }
+      }
+    },
+    "Telefon nie udostępnia płytce powiadomień. W Ustawienia → Bluetooth → MySpin-CAN (i) włącz „Udostępniaj powiadomienia systemowe”.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The phone does not share notifications with the board. In Settings → Bluetooth → MySpin-CAN (i) turn on “Share System Notifications”."
+          }
+        }
+      }
+    },
     "Telemetria": {
       "extractionState": "manual",
       "localizations": {
@@ -4100,6 +4353,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "This device does not support Bluetooth LE"
+          }
+        }
+      }
+    },
+    "Tomek: Wyjazd o 9:00 spod stacji, trasa na Zakopane przez Nowy Targ. Kto jedzie?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tom: Leaving at 9:00 from the petrol station, heading for the mountains. Who's in?"
           }
         }
       }
@@ -4210,6 +4474,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Your segments"
+          }
+        }
+      }
+    },
+    "Tylko połączenia i wiadomości": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calls and messages only"
           }
         }
       }
@@ -4452,6 +4727,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bike WiFi: %@"
+          }
+        }
+      }
+    },
+    "Wiadomości": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Messages"
           }
         }
       }
@@ -4731,6 +5017,17 @@
         }
       }
     },
+    "Wyciszone": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muted"
+          }
+        }
+      }
+    },
     "Wyczyść": {
       "extractionState": "manual",
       "localizations": {
@@ -4742,13 +5039,13 @@
         }
       }
     },
-    "Wyjście do klasycznego": {
+    "Wyjdź z gry": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Exit to classic"
+            "value": "Exit game"
           }
         }
       }
@@ -4819,6 +5116,17 @@
         }
       }
     },
+    "Wył.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Off"
+          }
+        }
+      }
+    },
     "Wyłącz na pełne słońce — jasne tło, ciemne cyfry": {
       "extractionState": "manual",
       "localizations": {
@@ -4826,6 +5134,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Turn off in full sun — light background, dark digits"
+          }
+        }
+      }
+    },
+    "Wyłączone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Off."
           }
         }
       }
@@ -4896,6 +5215,17 @@
         }
       }
     },
+    "Wł.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On"
+          }
+        }
+      }
+    },
     "Z Galerii": {
       "extractionState": "manual",
       "localizations": {
@@ -4947,6 +5277,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Segment too short — at least %lld m of riding needed"
+          }
+        }
+      }
+    },
+    "Zaakceptuj prośbę o parowanie na telefonie…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accept the pairing request on the phone…"
           }
         }
       }
@@ -6084,6 +6425,17 @@
         }
       }
     },
+    "Łączę z powiadomieniami telefonu…": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecting to the phone's notifications…"
+          }
+        }
+      }
+    },
     "Łączę…": {
       "extractionState": "manual",
       "localizations": {
@@ -6377,6 +6729,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "◀ Back 10 s"
+          }
+        }
+      }
+    },
+    "◀ zamknij": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "◀ close"
           }
         }
       }

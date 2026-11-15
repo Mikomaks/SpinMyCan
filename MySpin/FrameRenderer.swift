@@ -33,6 +33,9 @@ final class FrameRenderer: ObservableObject {
     var isDarkMode: Bool = true
     /// Font of the dashboard, chosen in the app. The CAN terminal screen always stays pixel.
     var dashFont: DashFont = .pixel
+    /// What lies on top of the dashboard this frame: notification banner, quick menu (DashOverlayPaint.swift).
+    var overlay: DashOverlay.Snapshot? = nil
+    var quickItems: [QuickItem] = []
 
     // MARK: — Dane do renderowania (ustawiaj z MotionManager przed każdym render())
     var speedKmh:     Double = 0
@@ -150,6 +153,21 @@ final class FrameRenderer: ObservableObject {
         // autoreleasepool — render + JPEG enkodowane co klatkę na wątku tła;
         // drenaż tymczasów CoreGraphics zapobiega narastaniu pamięci (Jetsam).
         autoreleasepool { renderImage(scale: streamScale).jpegData(compressionQuality: jpegQuality) }
+    }
+
+    /// A ready JPEG frame (video) with the overlay drawn on top — only while a banner or the
+    /// quick menu is visible, so normally video frames still bypass the renderer.
+    func render(over frame: Data) -> Data? {
+        autoreleasepool {
+            guard let img = UIImage(data: frame) else { return nil }
+            let sz = CGSize(width: width, height: height)
+            let fmt = UIGraphicsImageRendererFormat.default()
+            fmt.scale = streamScale
+            return UIGraphicsImageRenderer(size: sz, format: fmt).image { [self] _ in
+                img.draw(in: CGRect(origin: .zero, size: sz))
+                paintOverlay(Layout(W: sz.width, H: sz.height))
+            }.jpegData(compressionQuality: jpegQuality)
+        }
     }
 
     /// UIImage — do podglądu w aplikacji (bez JPEG roundtrip). Bez podanej skali
@@ -343,6 +361,7 @@ final class FrameRenderer: ObservableObject {
         if calibrationCountdown != -1 {
             drawCalibrationOverlay(l)
         }
+        paintOverlay(l)
     }
 
     // MARK: — Ekran DISCO (🪩 duża okładka + motyw z albumu + karaoke)
