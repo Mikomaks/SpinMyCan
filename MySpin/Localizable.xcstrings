@@ -133,6 +133,17 @@
         }
       }
     },
+    "%@ – %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ – %@"
+          }
+        }
+      }
+    },
     "%d (ok. %.0f%%)": {
       "extractionState": "manual",
       "localizations": {
@@ -738,6 +749,17 @@
         }
       }
     },
+    "Brak śladu GPS": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No GPS track"
+          }
+        }
+      }
+    },
     "Będę za 10 minut. Kupić coś po drodze? Mogę wziąć pieczywo i coś na kolację.": {
       "extractionState": "manual",
       "localizations": {
@@ -877,6 +899,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Daily: motorcycle on the side stand + handlebars full left → 1 tap → perfect zero once upright."
+          }
+        }
+      }
+    },
+    "Czas": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time"
           }
         }
       }
@@ -1174,6 +1207,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Join the motorcycle WiFi"
+          }
+        }
+      }
+    },
+    "Dystans": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distance"
           }
         }
       }
@@ -1867,6 +1911,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bus · %lld IDs"
+          }
+        }
+      }
+    },
+    "Maks.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Max"
           }
         }
       }
@@ -2619,17 +2674,6 @@
         }
       }
     },
-    "Odzyskaj przerwaną sesję": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Recover interrupted session"
-          }
-        }
-      }
-    },
     "Odłącz": {
       "extractionState": "manual",
       "localizations": {
@@ -2850,6 +2894,17 @@
         }
       }
     },
+    "Piosenki": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Songs"
+          }
+        }
+      }
+    },
     "Piosenki z odtwarzacza w trakcie trasy: %lld.": {
       "extractionState": "manual",
       "localizations": {
@@ -3048,13 +3103,13 @@
         }
       }
     },
-    "Poprzednia sesja została przerwana (crash lub zamknięcie apki). Czy chcesz ją odzyskać?": {
+    "Poprzednia trasa została przerwana (awaria albo zamknięcie apki). Zapisać ją do biblioteki?": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The previous session was interrupted (crash or app closed). Do you want to recover it?"
+            "value": "The previous ride was interrupted (a crash or the app was closed). Save it to the library?"
           }
         }
       }
@@ -3224,6 +3279,17 @@
         }
       }
     },
+    "Przechył L / P": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lean L / R"
+          }
+        }
+      }
+    },
     "Przechył wg telefonu": {
       "extractionState": "manual",
       "localizations": {
@@ -3330,6 +3396,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Converting…"
+          }
+        }
+      }
+    },
+    "Przerwana trasa": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interrupted ride"
           }
         }
       }
@@ -4599,6 +4676,17 @@
         }
       }
     },
+    "Usunąć tę trasę na zawsze?": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete this ride for good?"
+          }
+        }
+      }
+    },
     "Usunąć wszystkie zapisane logi magistrali?": {
       "extractionState": "manual",
       "localizations": {
@@ -4639,6 +4727,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Delete segment"
+          }
+        }
+      }
+    },
+    "Usuń trasę": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete ride"
           }
         }
       }
@@ -6509,6 +6608,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Downloading routes from the cloud…"
+          }
+        }
+      }
+    },
+    "Średnia": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Average"
           }
         }
       }

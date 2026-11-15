@@ -46,7 +46,8 @@ struct ContentView: View {
     @State private var sessionSummary:      SessionSummary? = nil
     @State private var showLibrary:         Bool = false
     @State private var showPlayer:          Bool = false
-    @State private var showRecoveryAlert:   Bool = false
+    /// Interrupted ride waiting for a decision (preview only — saved on "Recover and save").
+    @State private var recoveryPreview: SessionSummary? = nil
 
     // ── Grace period: BT zerwane podczas nagrywania ──
     // Nagrywanie NIE jest przerywane — czekamy na powrót BT.
@@ -235,17 +236,17 @@ struct ContentView: View {
                     sessionSummary = summary   // po STOP pokaż podsumowanie jak zwykle
                 }
             }
-            .alert("Odzyskaj przerwaną sesję", isPresented: $showRecoveryAlert) {
-                Button("Odzyskaj i zapisz") {
+            .sheet(item: $recoveryPreview) { preview in
+                RecoveryPreviewView(summary: preview, onRecover: {
+                    recoveryPreview = nil
                     if let recovered = recorder.recoverInterruptedSession() {
-                        sessionSummary = recovered
+                        // after the sheet has gone — two presentations at once would clash
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { sessionSummary = recovered }
                     }
-                }
-                Button("Usuń", role: .destructive) {
+                }, onDiscard: {
                     recorder.clearInterruptedSession()
-                }
-            } message: {
-                Text("Poprzednia sesja została przerwana (crash lub zamknięcie apki). Czy chcesz ją odzyskać?")
+                    recoveryPreview = nil
+                })
             }
             .alert("Zakończyć trasę?", isPresented: $showEndRouteAlert) {
                 Button("Zakończ i zapisz") { finishCurrentRoute() }
@@ -2756,7 +2757,11 @@ struct ContentView: View {
 
         // Sprawdź czy jest przerwana sesja do odzyskania (crash / iOS kill)
         if recorder.hasInterruptedSession {
-            showRecoveryAlert = true
+            if let preview = recorder.previewInterruptedSession() {
+                recoveryPreview = preview
+            } else {
+                recorder.clearInterruptedSession()     // unreadable or empty — nothing to recover
+            }
         }
 
         // Cel udostępniony z Apple Maps (share sheet) przed uruchomieniem apki

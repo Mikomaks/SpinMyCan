@@ -228,16 +228,29 @@ final class SessionRecorder: ObservableObject {
         FileManager.default.fileExists(atPath: tempURL.path)
     }
 
-    /// Odczytuje przerwaną sesję z dysku i zapisuje ją do biblioteki.
-    /// Zwraca podsumowanie gotowe do pokazania użytkownikowi.
-    func recoverInterruptedSession() -> SessionSummary? {
+    /// The interrupted ride as it would be saved — read only, nothing changes on disk.
+    /// nil = no snapshot, or one that cannot be read / has no points.
+    func previewInterruptedSession() -> SessionSummary? {
         guard let data     = try? Data(contentsOf: tempURL),
               let snapshot = try? JSONDecoder().decode(InProgressSession.self, from: data),
               !snapshot.points.isEmpty
-        else {
+        else { return nil }
+        return Self.summary(of: snapshot)
+    }
+
+    /// Odczytuje przerwaną sesję z dysku i zapisuje ją do biblioteki.
+    /// Zwraca podsumowanie gotowe do pokazania użytkownikowi.
+    func recoverInterruptedSession() -> SessionSummary? {
+        guard let summary = previewInterruptedSession() else {
             clearInterruptedSession()
             return nil
         }
+        clearInterruptedSession()
+        try? SessionStorage.shared.save(summary)
+        return summary
+    }
+
+    private static func summary(of snapshot: InProgressSession) -> SessionSummary {
         let movingPts = snapshot.points.filter { $0.isMoving }
         let avgSpeed  = movingPts.isEmpty ? 0.0
             : movingPts.reduce(0) { $0 + $1.speedKmh } / Double(movingPts.count)
@@ -256,8 +269,6 @@ final class SessionRecorder: ObservableObject {
             points:       snapshot.points,
             tracks:       snapPlayed.isEmpty ? nil : snapPlayed
         )
-        clearInterruptedSession()
-        try? SessionStorage.shared.save(summary)
         return summary
     }
 
