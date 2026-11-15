@@ -40,6 +40,7 @@ enum FeatureSelfTest {
         testObd()
         testAppList()
         testSkippedTracks()
+        testSnake()
 
         lines.append("")
         lines.append(failed == 0 ? "WYNIK: wszystko OK" : "WYNIK: \(failed) błędów")
@@ -260,6 +261,48 @@ enum FeatureSelfTest {
     // MARK: — Mostek CAN: pakiety w formacie firmware + plik logu
 
     /// Dekodowanie kodów błędów (te same bajty co w logu z 2026-10-25, ramka 0x441).
+    private static func testSnake() {
+        let d = UserDefaults(suiteName: "snaketest")!
+        d.removePersistentDomain(forName: "snaketest")
+        let up = (0, -1), down = (0, 1), left = (-1, 0), right = (1, 0)
+        func game() -> SnakeGame { let g = SnakeGame(defaults: d); g.setFood((40, 0)); return g }
+        func head(_ g: SnakeGame) -> (Int, Int) { g.snapshot().snake[0] }
+
+        var g = game()                                   // head (6,8), moving right
+        g.step()
+        check("snake: stoi do pierwszego kierunku", head(g) == (6, 8) && !g.snapshot().started)
+        g.turn(up); g.turn(left)                         // quick U-turn inside one step
+        g.step(); g.step()
+        check("snake: szybki zawrót ▲◀ nie ginie", head(g) == (5, 7) && !g.snapshot().gameOver)
+
+        g = game()
+        g.turn(left)                                     // straight back into the body
+        g.step()
+        check("snake: zawrót o 180° ignorowany", head(g) == (7, 8) && !g.snapshot().gameOver)
+
+        g = game()
+        g.setFood((7, 8)); g.turn(right); g.step()
+        check("snake: jedzenie wydłuża i daje punkt", g.snapshot().snake.count == 4 && g.snapshot().score == 1)
+        g.setFood((40, 0))
+        g.turn(down); g.step(); g.turn(left); g.step(); g.turn(up); g.step()   // 2×2 loop: head chases the tail
+        check("snake: wejście w pole zwalniane przez ogon to nie kolizja", !g.snapshot().gameOver && head(g) == (6, 8))
+        g.setFood((6, 7)); g.step(); g.setFood((40, 0))                        // 5 segments, score 2
+        g.turn(right); g.step(); g.turn(down); g.step(); g.turn(left); g.step()
+        check("snake: wjazd w siebie kończy grę", g.snapshot().gameOver && g.snapshot().score == 2)
+        check("snake: rekord zapisany", g.snapshot().newRecord && d.integer(forKey: SnakeGame.bestKey) == 2
+              && SnakeGame(defaults: d).snapshot().best == 2)
+        g.turn(left); g.okPressed()
+        check("snake: OK zaczyna od nowa", !g.snapshot().gameOver && g.snapshot().score == 0 && g.snapshot().snake.count == 3)
+
+        g = game()
+        g.turn(up)
+        for _ in 0..<9 { g.step() }
+        check("snake: ściana kończy grę, bez rekordu przy 0", g.snapshot().gameOver && !g.snapshot().newRecord && head(g) == (6, 0))
+        check("snake: przyspiesza z punktami, ale nie bez końca", SnakeGame.interval(score: 0) == SnakeGame.baseInterval
+              && SnakeGame.interval(score: 10) < SnakeGame.baseInterval && SnakeGame.interval(score: 500) == SnakeGame.minInterval)
+        d.removePersistentDomain(forName: "snaketest")
+    }
+
     private static func testSkippedTracks() {
         lines.append(""); lines.append("── Pominięte utwory ──")
         let t0 = Date(timeIntervalSince1970: 1_800_000_000)
@@ -422,11 +465,11 @@ enum FeatureSelfTest {
               && KeyBindings.key(for: cl.first { $0.id == "classic.next" }!, defaults: kd) == 0x21)
         check("skróty: gry nietknięte", kd.integer(forKey: "bind.snake.up") == 0x20)
         kd.removePersistentDomain(forName: "keystest")
-        let order = ContentView.orderedScreens("3,0,7").map(\.rawValue)
-        check("ekrany: kolejność z apki + reszta na końcu", Array(order.prefix(3)) == [3, 0, 7] && order.count == DashboardScreen.allCases.count)
-        check("ekrany: ▼ idzie po kolejności z apki", JoystickState.cycled(from: 3, delta: 1, order: order) == 0
+        let order = ContentView.orderedScreens("4,3,0,7").map(\.rawValue)
+        check("ekrany: kolejność z apki + reszta na końcu", Array(order.prefix(3)) == [4, 0, 7] && order.count == DashboardScreen.allCases.count)
+        check("ekrany: ▼ idzie po kolejności z apki", JoystickState.cycled(from: 4, delta: 1, order: order) == 0
               && JoystickState.cycled(from: 0, delta: 1, order: order) == 7)
-        check("ekrany: ▲ z pierwszego na ostatni", JoystickState.cycled(from: 3, delta: -1, order: order) == order.last)
+        check("ekrany: ▲ z pierwszego na ostatni", JoystickState.cycled(from: 4, delta: -1, order: order) == order.last)
         check("motyw: ▲▼▲▼ szybko przełącza", feed([up, down, up, down], dt: 0.3) == [false, false, false, true])
         check("motyw: ▲▼▲▼ za wolno nic nie robi", !feed([up, down, up, down], dt: 0.6).contains(true))
         check("motyw: inna kolejność nic nie robi", !feed([up, up, down, down, down, up, ok, down], dt: 0.2).contains(true))

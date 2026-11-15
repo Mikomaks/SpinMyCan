@@ -36,7 +36,7 @@
 
 **Płytka CAN jest dodatkiem, nie wymaganiem.** Bez niej apka działa w pełni: prędkość bierze
 z GPS, przechył i przeciążenie z czujników telefonu w uchwycie (z kalibracją), a resztę —
-nawigację, muzykę, nagrywanie tras, wideo, gry — robi sama. Płytka dokłada to, czego telefon
+nawigację, muzykę, nagrywanie tras, wideo, grę — robi sama. Płytka dokłada to, czego telefon
 nie wie: obroty, bieg, gaz, tryby, temperatury, zawieszenie, przebieg i dokładny przechył
 z czujnika motocykla.
 
@@ -47,7 +47,7 @@ z czujnika motocykla.
 
 ## ✨ Co potrafi
 
-- **11 ekranów deski** przełączanych joystickiem z kierownicy (kolejność ustawiasz w apce)
+- **10 ekranów deski** przełączanych joystickiem z kierownicy (kolejność ustawiasz w apce)
 - **Przechył** na żywo z rekordami lewo / prawo, przeciążenie, kurs, wysokość, pogoda
 - **Nawigacja** z Apple Maps na desce — wyślij cel z Map przez „Udostępnij”
 - **Muzyka**: okładka, postęp i ekran *Disco* z tekstem piosenki; sterowanie joystickiem
@@ -56,7 +56,7 @@ z czujnika motocykla.
 - **Plakat trasy** do relacji / posta na Instagram — konfigurowalny, z biegami i „utworem trasy”
 - **Wideo**: własne filmy na desce (grają też przy zablokowanym telefonie)
 - **Terminal CAN** — surowe ramki szyny z dekodowaniem na żywo
-- **Gry**: wąż i sudoku 🐍 (na postoju, proszę)
+- **Gra**: wąż 🐍 z rekordem (na postoju, proszę)
 - **Dynamic Island** i ekran blokady z prędkością i biegiem
 - Jasny i ciemny motyw (skrót ▲▼▲▼ na joysticku), ostra pikselowa czcionka 1:1 z wyświetlaczem
 
@@ -67,7 +67,7 @@ z czujnika motocykla.
 | <img src="docs/media/lean.gif" width="420"><br>**Przechył** | <img src="docs/media/still_nav.png" width="420"><br>**Nawigacja + deska** |
 | <img src="docs/media/still_disco.png" width="420"><br>**Disco** — okładka i tekst | <img src="docs/media/still_nav_full.png" width="420"><br>**Nawigacja** na cały ekran |
 | <img src="docs/media/still_classic_can_light.png" width="420"><br>**Jasny motyw** na pełne słońce | <img src="docs/media/still_perf.png" width="420"><br>**Pomiary** 0–100, ¼ mili |
-| <img src="docs/media/still_snake.png" width="420"><br>**Wąż** | <img src="docs/media/still_sudoku.png" width="420"><br>**Sudoku** |
+| <img src="docs/media/still_snake.png" width="420"><br>**Wąż** | |
 
 ### 🟩 Terminal CAN
 
@@ -113,7 +113,7 @@ flowchart LR
 
 Telefon rysuje każdą klatkę deski sam i wysyła ją na wyświetlacz jako gotowy obrazek —
 dlatego deska może wyglądać jak chcesz. Joystick z kierownicy wraca do telefonu i przełącza
-ekrany, muzykę, wideo, gry.
+ekrany, muzykę, wideo, grę.
 
 ## 🔌 Płytka CAN (opcjonalna)
 

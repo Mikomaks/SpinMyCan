@@ -33,7 +33,7 @@
 
 **The CAN board is an add-on, not a requirement.** Without it the app is fully featured: speed
 comes from GPS, lean angle and g-force from the phone's sensors in the handlebar mount (with
-calibration), and everything else — navigation, music, ride recording, video, games — the app
+calibration), and everything else — navigation, music, ride recording, video, the snake game — the app
 does on its own. The board adds what the phone can't know: RPM, gear, throttle, modes,
 temperatures, suspension, odometer and the exact lean angle from the bike's own IMU.
 
@@ -44,7 +44,7 @@ temperatures, suspension, odometer and the exact lean angle from the bike's own 
 
 ## ✨ Features
 
-- **11 dashboard screens** switched with the handlebar joystick (you set the order in the app)
+- **10 dashboard screens** switched with the handlebar joystick (you set the order in the app)
 - **Lean angle** live with left / right records, g-force, heading, altitude, weather
 - **Navigation** with Apple Maps on the dash — send a destination from Maps via "Share"
 - **Music**: cover art, progress and a *Disco* screen with lyrics; joystick controls
@@ -53,7 +53,7 @@ temperatures, suspension, odometer and the exact lean angle from the bike's own 
 - **Ride poster** for an Instagram story / post — configurable, with gears and the "ride's song"
 - **Video**: your own videos on the dash (they keep playing with the phone locked)
 - **CAN Terminal** — raw bus frames with live decoding
-- **Games**: snake and sudoku 🐍 (when parked, please)
+- **Game**: snake 🐍 with a high score (when parked, please)
 - **Dynamic Island** and Lock Screen with speed and gear
 - Light and dark theme (▲▼▲▼ joystick shortcut), crisp pixel font rendered 1:1 with the display
 
@@ -64,7 +64,7 @@ temperatures, suspension, odometer and the exact lean angle from the bike's own 
 | <img src="docs/media/lean.gif" width="420"><br>**Lean angle** | <img src="docs/media/still_nav.png" width="420"><br>**Navigation + dashboard** |
 | <img src="docs/media/still_disco.png" width="420"><br>**Disco** — cover art and lyrics | <img src="docs/media/still_nav_full.png" width="420"><br>**Full-screen navigation** |
 | <img src="docs/media/still_classic_can_light.png" width="420"><br>**Light theme** for full sun | <img src="docs/media/still_perf.png" width="420"><br>**Performance** 0–100, ¼ mile |
-| <img src="docs/media/still_snake.png" width="420"><br>**Snake** | <img src="docs/media/still_sudoku.png" width="420"><br>**Sudoku** |
+| <img src="docs/media/still_snake.png" width="420"><br>**Snake** | |
 
 ### 🟩 CAN Terminal
 
@@ -110,7 +110,7 @@ flowchart LR
 
 The phone draws every dashboard frame itself and sends it to the display as a finished image —
 so the dash can look however you want. The handlebar joystick talks back to the phone and
-switches screens, music, video and games.
+switches screens, music, video and the game.
 
 ## 🔌 CAN board (optional)
 

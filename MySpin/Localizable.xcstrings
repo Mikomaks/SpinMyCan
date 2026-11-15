@@ -1,17 +1,6 @@
 {
   "sourceLanguage": "pl",
   "strings": {
-    "  cyfra": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "  digit"
-          }
-        }
-      }
-    },
     " · dane z silnika dla %.0f%% trasy": {
       "extractionState": "manual",
       "localizations": {
@@ -463,28 +452,6 @@
         }
       }
     },
-    "Back: anuluj": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Back: cancel"
-          }
-        }
-      }
-    },
-    "Back: wyjście": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Back: exit"
-          }
-        }
-      }
-    },
     "Bardzo wolne, rozmyte plamy koloru w tle ekranów": {
       "extractionState": "manual",
       "localizations": {
@@ -646,17 +613,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "No access to the folder — choose it again."
-          }
-        }
-      }
-    },
-    "Brak internetu — generuję planszę lokalnie": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No internet — generating puzzle locally"
           }
         }
       }
@@ -991,17 +947,6 @@
         }
       }
     },
-    "D-pad: kursor": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "D-pad: cursor"
-          }
-        }
-      }
-    },
     "DESKA": {
       "extractionState": "manual",
       "localizations": {
@@ -1101,17 +1046,6 @@
         }
       }
     },
-    "Dnia": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Daily"
-          }
-        }
-      }
-    },
     "Dodaj": {
       "extractionState": "manual",
       "localizations": {
@@ -1200,28 +1134,6 @@
         }
       }
     },
-    "EDYCJA": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "EDIT"
-          }
-        }
-      }
-    },
-    "Edytuj / zatwierdź (OK)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Edit / confirm (OK)"
-          }
-        }
-      }
-    },
     "Ekran na desce": {
       "extractionState": "manual",
       "localizations": {
@@ -1240,17 +1152,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dashboard screens"
-          }
-        }
-      }
-    },
-    "Ekspert": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Expert"
           }
         }
       }
@@ -1354,28 +1255,6 @@
         }
       }
     },
-    "Generuję planszę...": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Generating puzzle..."
-          }
-        }
-      }
-    },
-    "Generuję...": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Generating..."
-          }
-        }
-      }
-    },
     "Góra": {
       "extractionState": "manual",
       "localizations": {
@@ -1383,17 +1262,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Up"
-          }
-        }
-      }
-    },
-    "Góra/Dół:": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Up/Down:"
           }
         }
       }
@@ -1684,50 +1552,6 @@
         }
       }
     },
-    "Kursor dół / cyfra −": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cursor down / digit −"
-          }
-        }
-      }
-    },
-    "Kursor góra / cyfra +": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cursor up / digit +"
-          }
-        }
-      }
-    },
-    "Kursor lewo": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cursor left"
-          }
-        }
-      }
-    },
-    "Kursor prawo": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cursor right"
-          }
-        }
-      }
-    },
     "LEWO": {
       "extractionState": "manual",
       "localizations": {
@@ -1856,28 +1680,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "App logo and speed in the island, and when expanded and on the lock screen: gear, RPM, coolant, lean and dashboard status. Appears once the app is opened."
-          }
-        }
-      }
-    },
-    "Losowa": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Random"
-          }
-        }
-      }
-    },
-    "Losowa plansza lokalna (offline):": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Random local puzzle (offline):"
           }
         }
       }
@@ -2080,17 +1882,6 @@
         }
       }
     },
-    "NAWIGACJA": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "NAVIGATION"
-          }
-        }
-      }
-    },
     "NIEAKTYWNY": {
       "extractionState": "manual",
       "localizations": {
@@ -2098,6 +1889,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "INACTIVE"
+          }
+        }
+      }
+    },
+    "NOWY REKORD!": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NEW RECORD!"
           }
         }
       }
@@ -2439,28 +2240,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "RPM"
-          }
-        }
-      }
-    },
-    "OK: edytuj": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OK: edit"
-          }
-        }
-      }
-    },
-    "OK: zatwierdź": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OK: confirm"
           }
         }
       }
@@ -2813,17 +2592,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Route poster"
-          }
-        }
-      }
-    },
-    "Plansza dnia": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Daily puzzle"
           }
         }
       }
@@ -3554,13 +3322,12 @@
         }
       }
     },
-    "ROZWIĄZANE! 🎉": {
-      "extractionState": "manual",
+    "Rekord: %lld": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "SOLVED! 🎉"
+            "value": "Best: %lld"
           }
         }
       }
@@ -3616,17 +3383,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Split"
-          }
-        }
-      }
-    },
-    "Rozwiązane! 🎉": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Solved! 🎉"
           }
         }
       }
@@ -3873,17 +3629,6 @@
         }
       }
     },
-    "Sterowanie joystickiem: d-pad rusza kursorem, OK edytuje komórkę, Góra/Dół zmienia cyfrę, Back wychodzi. Stan zapisuje się automatycznie. Plansza dnia działa offline (ta sama dla wszystkich danego dnia).": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Joystick controls: d-pad moves the cursor, OK edits a cell, Up/Down changes the digit, Back exits. Progress is saved automatically. The daily puzzle works offline (the same for everyone on a given day)."
-          }
-        }
-      }
-    },
     "Stój by zacząć": {
       "extractionState": "manual",
       "localizations": {
@@ -3891,17 +3636,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stop to arm"
-          }
-        }
-      }
-    },
-    "Sudoku — ładowanie...": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sudoku — loading..."
           }
         }
       }
@@ -4236,17 +3970,6 @@
         }
       }
     },
-    "Trudny": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hard"
-          }
-        }
-      }
-    },
     "Trwa ok. minuty. Trzymaj telefon przy motocyklu i nie wyłączaj zapłonu.": {
       "extractionState": "manual",
       "localizations": {
@@ -4485,6 +4208,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "No songs were recorded on this route (recording since version 1.18.0)."
+          }
+        }
+      }
+    },
+    "WYGRANA!": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "YOU WIN!"
           }
         }
       }
@@ -4980,17 +4713,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "From Files"
-          }
-        }
-      }
-    },
-    "Z internetu": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "From the web"
           }
         }
       }
@@ -6117,17 +5839,6 @@
         }
       }
     },
-    "Łatwy": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Easy"
-          }
-        }
-      }
-    },
     "ŁĄCZNIE": {
       "extractionState": "manual",
       "localizations": {
@@ -6223,17 +5934,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Downloading routes from the cloud…"
-          }
-        }
-      }
-    },
-    "Średni": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Medium"
           }
         }
       }
