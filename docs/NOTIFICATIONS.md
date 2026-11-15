@@ -31,8 +31,8 @@ connections and starts the relay only when the app asks.
 
 | Key | Banner visible | Quick menu open |
 |---|---|---|
-| **OK** | open the full text / fold it back | change the chosen setting |
-| **◀** | close the banner | previous item |
+| **OK** | open the full text / fold it back · **incoming call: answer** | change the chosen setting |
+| **◀** | close the banner · **incoming call: reject** | previous item |
 | **▶** | — | next item |
 | **▲ ▼** | — (they still change the screen) | close the menu |
 | **OK twice** | — | opens the quick menu (when it is closed) |
@@ -115,7 +115,11 @@ sequenceDiagram
 After flashing the board over USB with a full erase the board forgets the pairing while the
 phone still remembers it — forget the device on the phone and pair again.
 
-Not there yet: answering or rejecting a call from the joystick, app icons, replies.
+Answering and rejecting use the actions the phone itself attaches to the call notification, so
+the keys are offered only when the phone offers them; the call audio goes wherever the phone
+sends it (your headset).
+
+Not there yet: app icons, replies.
 
 ## References
 

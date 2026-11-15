@@ -373,6 +373,26 @@ enum FeatureSelfTest {
         check("deska: wyciszone nie pokazuje", o.snapshot(at: 200.5).isEmpty)
         muted = false
 
+        // Incoming call: OK answers, ◀ rejects — only when the phone offers it
+        var call = note(30, "Marek", "", category: 1); call.canAccept = true; call.canDecline = true
+        o = make(); o.post(call, at: 0)
+        check("połączenie: OK odbiera i baner znika", o.key(ok, itemCount: 5, at: 1) == .call(30, accept: true)
+              && o.snapshot(at: 1 + DashOverlay.slideOut + 0.1).isEmpty)
+        o = make(); o.post(call, at: 0)
+        check("połączenie: ◀ odrzuca", o.key(left, itemCount: 5, at: 1) == .call(30, accept: false))
+        call.canAccept = false; call.canDecline = false
+        o = make(); o.post(call, at: 0)
+        check("połączenie: bez akcji z telefonu ◀ tylko zamyka baner", o.key(left, itemCount: 5, at: 1) == .consumed
+              && o.key(ok, itemCount: 5, at: 5) == .pass)
+        o = make(); o.post(note(31), at: 0)
+        check("połączenie: wiadomość nie daje akcji połączenia", o.key(ok, itemCount: 5, at: 1) == .consumed)
+        check("połączenie: komendy odbierz / odrzuć", AncsClient.actionCommand(0x01020304, accept: true) == [2, 4, 3, 2, 1, 0]
+              && AncsClient.actionCommand(7, accept: false) == [2, 7, 0, 0, 0, 1])
+        var ac = AncsClient()
+        _ = ac.source([0, 0x18, 1, 1, 40, 0, 0, 0], now: 0)
+        let callPost = ac.data([0, 40, 0, 0, 0, 0, 21, 0] + Array("com.apple.mobilephone".utf8) + [1, 5, 0] + Array("Marek".utf8) + [2, 0, 0, 3, 0, 0], now: 0.1)
+        check("połączenie: akcje z flag powiadomienia", callPost.contains { if case .post(let n) = $0 { return n.isCall && n.canAccept && n.canDecline && n.title == "Marek" }; return false })
+
         // Quick menu
         o = make()
         o.openMenu(at: 0)

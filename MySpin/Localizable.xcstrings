@@ -2421,6 +2421,17 @@
         }
       }
     },
+    "OK odbierz": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK answer"
+          }
+        }
+      }
+    },
     "OK pokaż": {
       "extractionState": "manual",
       "localizations": {
@@ -6729,6 +6740,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "◀ Back 10 s"
+          }
+        }
+      }
+    },
+    "◀ odrzuć": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "◀ reject"
           }
         }
       }

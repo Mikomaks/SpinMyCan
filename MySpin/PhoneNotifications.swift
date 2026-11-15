@@ -21,8 +21,14 @@ struct DashNotification: Equatable {
     var title = ""              // usually the sender
     var subtitle = ""
     var message = ""
+    var canAccept = false       // the phone offers a positive action (answer the call)
+    var canDecline = false      // … and a negative one (reject the call)
 
     var isCall: Bool { category == 1 }
+
+    static let demoAppId = "demo"
+    /// Test notifications have ids the phone never uses — nothing about them is sent to the phone.
+    static func isDemo(_ uid: UInt32) -> Bool { uid >= 0xD000_0000 }
 
     /// Sample notifications for the "show a test notification" button and for screenshots.
     static func demo(_ n: Int) -> DashNotification {
@@ -33,7 +39,8 @@ struct DashNotification: Equatable {
         ]
         let s = samples[((n % samples.count) + samples.count) % samples.count]
         return DashNotification(uid: 0xD000_0000 &+ UInt32(truncatingIfNeeded: n), category: s.0,
-                                appId: "demo", appName: s.1, title: s.2, message: s.3)
+                                appId: demoAppId, appName: s.1, title: s.2, message: s.3,
+                                canAccept: s.0 == 1, canDecline: s.0 == 1)
     }
 }
 
@@ -94,10 +101,10 @@ struct AncsClient {
     var messagesOnly = true
 
     private enum Waiting {
-        case attributes(uid: UInt32, category: UInt8)
+        case attributes(uid: UInt32, category: UInt8, flags: UInt8)
         case appName(DashNotification)
     }
-    private var queue: [(uid: UInt32, category: UInt8)] = []
+    private var queue: [(uid: UInt32, category: UInt8, flags: UInt8)] = []
     private var waiting: Waiting?
     private var waitingSince: TimeInterval = 0
     private var stream: [UInt8] = []
@@ -119,14 +126,14 @@ struct AncsClient {
         let uid = UInt32(p[4]) | UInt32(p[5]) << 8 | UInt32(p[6]) << 16 | UInt32(p[7]) << 24
         if event == 2 {                                    // removed
             queue.removeAll { $0.uid == uid }
-            if case .attributes(let u, _)? = waiting, u == uid { cancelled.insert(uid) }
+            if case .attributes(let u, _, _)? = waiting, u == uid { cancelled.insert(uid) }
             if case .appName(let n)? = waiting, n.uid == uid { cancelled.insert(uid) }
             return [.remove(uid)]
         }
         // Silent (0x01) = the phone itself does not alert; pre-existing (0x04) = it was there
         // before we connected. Neither is news for the rider.
         guard event <= 1, flags & 0x05 == 0, Self.wanted(category: category, messagesOnly: messagesOnly) else { return [] }
-        if !queue.contains(where: { $0.uid == uid }) { queue.append((uid, category)) }
+        if !queue.contains(where: { $0.uid == uid }) { queue.append((uid, category, flags)) }
         return next(now)
     }
 
@@ -135,7 +142,7 @@ struct AncsClient {
         guard let w = waiting else { stream = []; return [] }
         stream += p
         switch w {
-        case .attributes(let uid, let category):
+        case .attributes(let uid, let category, let flags):
             guard let a = Self.parseAttributes(stream, uid: uid, count: 4) else {
                 // Not ours at all (wrong command or UID) — throw the bytes away and wait for the timeout.
                 if let h = Self.header(stream), h.0 != 0 || h.1 != uid { stream = [] }
@@ -144,7 +151,8 @@ struct AncsClient {
             stream = []; waiting = nil
             if cancelled.remove(uid) != nil { return next(now) }
             var n = DashNotification(uid: uid, category: category,
-                                     appId: a[0] ?? "", title: a[1] ?? "", subtitle: a[2] ?? "", message: a[3] ?? "")
+                                     appId: a[0] ?? "", title: a[1] ?? "", subtitle: a[2] ?? "", message: a[3] ?? "",
+                                     canAccept: flags & 0x08 != 0, canDecline: flags & 0x10 != 0)
             if let name = appNames[n.appId] ?? Self.builtInName(n.appId) {
                 n.appName = name
                 return [.post(n)] + next(now)
@@ -175,8 +183,8 @@ struct AncsClient {
 
     private mutating func next(_ now: TimeInterval) -> [Output] {
         guard waiting == nil, !queue.isEmpty else { return [] }
-        let (uid, category) = queue.removeFirst()
-        waiting = .attributes(uid: uid, category: category); waitingSince = now
+        let (uid, category, flags) = queue.removeFirst()
+        waiting = .attributes(uid: uid, category: category, flags: flags); waitingSince = now
         stream = []
         return [.write(Self.attributesCommand(uid))]
     }
@@ -186,6 +194,11 @@ struct AncsClient {
         func le(_ v: UInt16) -> [UInt8] { [UInt8(v & 0xFF), UInt8(v >> 8)] }
         return [0x00, UInt8(uid & 0xFF), UInt8((uid >> 8) & 0xFF), UInt8((uid >> 16) & 0xFF), UInt8(uid >> 24), 0x00]
             + [0x01] + le(maxTitle) + [0x02] + le(maxTitle) + [0x03] + le(maxMessage)
+    }
+
+    /// Perform Notification Action: positive (answer the call) or negative (reject it).
+    static func actionCommand(_ uid: UInt32, accept: Bool) -> [UInt8] {
+        [0x02, UInt8(uid & 0xFF), UInt8((uid >> 8) & 0xFF), UInt8((uid >> 16) & 0xFF), UInt8(uid >> 24), accept ? 0x00 : 0x01]
     }
 
     private static func header(_ b: [UInt8]) -> (UInt8, UInt32)? {
@@ -272,6 +285,7 @@ final class DashOverlay {
         case pass               // not ours — the screen handles the key
         case consumed
         case activate(Int)      // the quick menu item with this index was pressed
+        case call(UInt32, accept: Bool)   // answer / reject the call with this notification id
     }
 
     /// "Do not disturb" from the quick menu. A closure, so the switch lives in one place (UserDefaults).
@@ -340,12 +354,17 @@ final class DashOverlay {
 
     // Joystick
 
-    /// A pressed key. The banner takes OK (open / fold) and ◀ (close); the quick menu takes
+    /// A pressed key. The banner takes OK (open / fold) and ◀ (close) — for an incoming call
+    /// OK answers and ◀ rejects, when the phone offers that; the quick menu takes
     /// ◀ ▶ (choose), OK (change) and ▲ ▼ (close). `itemCount` = number of quick menu items.
     func key(_ key: UInt8, itemCount: Int, at t: TimeInterval) -> KeyResult {
         lock.lock(); defer { lock.unlock() }
         expire(t)
-        if !queue.isEmpty, hidingAt == nil {
+        if let n = queue.last, hidingAt == nil {
+            if n.isCall, (key == Self.keyOK && n.canAccept) || (key == Self.keyLeft && n.canDecline) {
+                hidingAt = t                                // the phone takes it from here
+                return .call(n.uid, accept: key == Self.keyOK)
+            }
             if key == Self.keyOK {
                 expanded.toggle(); expandChangedAt = t; touchedAt = t
                 return .consumed

@@ -121,7 +121,8 @@ extension FrameRenderer {
 
         // Size: compact pill → wide card with the message.
         let wideW = min(l.W - 40, 780)
-        let w = 500 + (wideW - 500) * e
+        let compactW: CGFloat = n.isCall ? 600 : 500
+        let w = compactW + (wideW - compactW) * e
         let msgAttrs = wrappedAttributes(size: dashFont == .pixel ? 18 : 22, color: overlayText)
         let msgMaxH = l.H - 16 - headH - 34
         let msgH = text.isEmpty ? 0 : min(msgMaxH, ceil((text as NSString).boundingRect(
@@ -145,6 +146,21 @@ extension FrameRenderer {
 
         // Right side: how many more wait, and what OK does.
         var right = rect.maxX - 14
+        if n.isCall {
+            // Incoming call: what the two keys do, in the colours of the phone's own buttons.
+            let keys: [(String, UIColor, Bool)] = [
+                (String(localized: "OK odbierz"), UIColor(red: 0.20, green: 0.78, blue: 0.35, alpha: 1), n.canAccept),
+                (String(localized: "◀ odrzuć"), UIColor(red: 1.00, green: 0.27, blue: 0.23, alpha: 1), n.canDecline),
+            ]
+            for (label, color, shown) in keys where shown {
+                let cw = textWidth(label, size: small, bold: true) + 18
+                let chip = CGRect(x: right - cw, y: rect.minY + 16, width: cw, height: 24)
+                color.setFill()
+                UIBezierPath(roundedRect: chip, cornerRadius: 12).fill()
+                line(label, in: chip, size: small, color: .white, bold: true, align: .center)
+                right = chip.minX - 8
+            }
+        }
         let hint = n.isCall ? "" : (e > 0.5 ? String(localized: "OK zwiń") : String(localized: "OK pokaż"))
         if !hint.isEmpty, !text.isEmpty {
             let hw = textWidth(hint, size: small, bold: true) + 16
