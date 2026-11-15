@@ -686,6 +686,7 @@ final class BikeLinkManager: NSObject, ObservableObject {
     static let rawUUID     = CBUUID(string: "7C0A6F52-3B1E-4D7A-9E55-0A2C4B8F1D93")
     static let otaUUID     = CBUUID(string: "9E0B6C1D-52A7-4F3E-8D14-6B7C2A905E31")
     static let diagUUID    = CBUUID(string: "3D8F1A62-7C4B-4E19-A0D5-5B2E9C71F084")
+    static let notifUUID   = CBUUID(string: "154185CF-C7F0-4931-B4AE-E4F563296858")   // phone notifications relay (board v12+)
     private static let savedKey = "bikeLink.peripheral"
     private static let wheelKey = "bikeLink.wheelFactor"
     private static let suspKey  = "bikeLink.suspRange"     // [przód rozc., przód ugięte, tył rozc., tył ugięte]
@@ -739,6 +740,11 @@ final class BikeLinkManager: NSObject, ObservableObject {
     /// Płytka umie odczytać/skasować kody błędów (program od wersji 9).
     @Published private(set) var diagSupported = false
     @Published private(set) var diagState: DiagState = .idle
+    /// Relay of phone notifications through the board (docs/NOTIFICATIONS.md).
+    @Published private(set) var notifState: NotifLinkState = .unsupported
+    /// Called on the Bluetooth queue with every notification to show / take off the dash.
+    var onNotificationPost: ((DashNotification) -> Void)?
+    var onNotificationRemove: ((UInt32) -> Void)?
     // Podgląd magistrali — odświeżany tylko, gdy jest otwarty.
     @Published private(set) var busRows: [BusRow] = []
     @Published private(set) var busLearning = false
@@ -755,6 +761,10 @@ final class BikeLinkManager: NSObject, ObservableObject {
     private var rawOn = false
     private var otaChar: CBCharacteristic?
     private var diagChar: CBCharacteristic?
+    private var notifChar: CBCharacteristic?
+    private var notifWanted = false
+    private var notifAsked = false              // this connection has been asked to relay
+    private var ancs = AncsClient()
     private var diagOp: DiagOp?
     private var diagReplies: [DiagReply] = []
     private var diagTimeout: DispatchWorkItem?
@@ -1526,6 +1536,10 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
         rawOn = false
         otaChar = nil
         diagChar = nil
+        notifChar = nil
+        notifAsked = false
+        ancs.reset()
+        publishNotif(.unsupported)
         if diagRunning { diagEnd(.failed(String(localized: "Połączenie z płytką zerwane w trakcie komendy."))) }
         qSeq = nil; qLastAt = 0; qWindow = 0; qCount = 0; qLost = 0; qLate = 0; qMaxGap = 0
         DispatchQueue.main.async { self.updateSupported = false; self.diagSupported = false; self.quality = LinkQuality() }
@@ -1536,6 +1550,72 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
         }
         clearLatest()
         seek()
+    }
+
+    // MARK: — Phone notifications (docs/NOTIFICATIONS.md)
+
+    /// Turns the relay of phone notifications on or off. The board remembers nothing: the
+    /// request is repeated after every connection, so switching it off here is always enough.
+    func setNotifications(enabled: Bool, messagesOnly: Bool) {
+        q.async { [self] in
+            ancs.messagesOnly = messagesOnly
+            guard notifWanted != enabled else { return }
+            notifWanted = enabled
+            applyNotifications()
+        }
+    }
+
+    private func applyNotifications() {
+        guard let p = peripheral, let ch = notifChar, p.state == .connected else {
+            publishNotif(.unsupported)
+            return
+        }
+        ancs.reset()
+        // With the feature off nothing at all is sent — the board behaves as before v12.
+        guard notifWanted || notifAsked else { publishNotif(.off); return }
+        notifAsked = notifWanted
+        p.setNotifyValue(notifWanted, for: ch)
+        p.writeValue(Data([notifWanted ? 0x01 : 0x00]), for: ch, type: .withResponse)
+        if !notifWanted { publishNotif(.off) }
+    }
+
+    private func publishNotif(_ s: NotifLinkState) {
+        DispatchQueue.main.async { if self.notifState != s { self.notifState = s } }
+    }
+
+    /// From the board: [0x10][state][reason] · [0x11][Notification Source] · [0x12][Data Source piece].
+    private func handleNotif(_ d: Data) {
+        let b = [UInt8](d)
+        guard b.count >= 2 else { return }
+        let now = CACurrentMediaTime()
+        switch b[0] {
+        case 0x10:
+            let state = NotifLinkState(board: b[1], reason: b.count > 2 ? b[2] : 0)
+            // States only — the content of notifications never goes to any log.
+            writeLink(String(format: "E,%.3f,notif,state %d reason %d", now, b[1], b.count > 2 ? b[2] : 0))
+            if state == .ready { ancs.reset() }
+            publishNotif(notifWanted ? state : .off)
+        case 0x11: runNotif(ancs.source(Array(b.dropFirst()), now: now))
+        case 0x12: runNotif(ancs.data(Array(b.dropFirst()), now: now))
+        default: break
+        }
+    }
+
+    private func runNotif(_ outputs: [AncsClient.Output]) {
+        for o in outputs {
+            switch o {
+            case .post(let n): onNotificationPost?(n)
+            case .remove(let uid): onNotificationRemove?(uid)
+            case .write(let cmd):
+                guard let p = peripheral, let ch = notifChar, p.state == .connected else { continue }
+                p.writeValue(Data([0x02] + cmd), for: ch, type: .withResponse)
+                // An answer that never comes must not block the next notifications.
+                q.asyncAfter(deadline: .now() + AncsClient.timeout + 0.2) { [weak self] in
+                    guard let self else { return }
+                    self.runNotif(self.ancs.tick(now: CACurrentMediaTime()))
+                }
+            }
+        }
     }
 
     // MARK: — Trouble codes (docs/DIAGNOSTICS.md)
@@ -1787,7 +1867,7 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
             central?.cancelPeripheralConnection(p)
             return
         }
-        p.discoverCharacteristics([Self.teleUUID, Self.rawUUID, Self.otaUUID, Self.diagUUID], for: svc)
+        p.discoverCharacteristics([Self.teleUUID, Self.rawUUID, Self.otaUUID, Self.diagUUID, Self.notifUUID], for: svc)
     }
 
     func peripheral(_ p: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
@@ -1806,8 +1886,11 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
             } else if ch.uuid == Self.diagUUID {
                 diagChar = ch
                 p.setNotifyValue(true, for: ch)
+            } else if ch.uuid == Self.notifUUID {
+                notifChar = ch
             }
         }
+        applyNotifications()
         let canUpdate = otaChar != nil, canDiag = diagChar != nil
         DispatchQueue.main.async { self.updateSupported = canUpdate; self.diagSupported = canDiag }
         guard haveTelemetry else {
@@ -1827,6 +1910,8 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
             handleOta(d)
         } else if ch.uuid == Self.diagUUID {
             handleDiag(d)
+        } else if ch.uuid == Self.notifUUID {
+            handleNotif(d)
         }
     }
 

@@ -41,6 +41,8 @@ enum FeatureSelfTest {
         testAppList()
         testSkippedTracks()
         testSnake()
+        testNotifications()
+        testOverlay()
 
         lines.append("")
         lines.append(failed == 0 ? "WYNIK: wszystko OK" : "WYNIK: \(failed) błędów")
@@ -261,6 +263,151 @@ enum FeatureSelfTest {
     // MARK: — Mostek CAN: pakiety w formacie firmware + plik logu
 
     /// Dekodowanie kodów błędów (te same bajty co w logu z 2026-10-25, ramka 0x441).
+    private static func testNotifications() {
+        func le(_ uid: UInt32) -> [UInt8] { [UInt8(uid & 0xFF), UInt8((uid >> 8) & 0xFF), UInt8((uid >> 16) & 0xFF), UInt8(uid >> 24)] }
+        func source(_ event: UInt8, flags: UInt8 = 0, category: UInt8 = 4, uid: UInt32) -> [UInt8] { [event, flags, category, 1] + le(uid) }
+        func attr(_ id: UInt8, _ text: String) -> [UInt8] { let b = Array(text.utf8); return [id, UInt8(b.count & 0xFF), UInt8(b.count >> 8)] + b }
+        func answer(_ uid: UInt32, app: String, title: String, sub: String = "", msg: String) -> [UInt8] {
+            [0] + le(uid) + attr(0, app) + attr(1, title) + attr(2, sub) + attr(3, msg)
+        }
+        func posts(_ o: [AncsClient.Output]) -> [DashNotification] { o.compactMap { if case .post(let n) = $0 { return n }; return nil } }
+        func writes(_ o: [AncsClient.Output]) -> [[UInt8]] { o.compactMap { if case .write(let w) = $0 { return w }; return nil } }
+
+        var c = AncsClient()
+        var o = c.source(source(0, uid: 7), now: 0)
+        check("ancs: nowe powiadomienie → pytanie o szczegóły", writes(o) == [AncsClient.attributesCommand(7)] && posts(o).isEmpty)
+        check("ancs: komenda = aplikacja, tytuł, podtytuł, treść", AncsClient.attributesCommand(0x01020304)
+              == [0, 4, 3, 2, 1, 0, 1, 64, 0, 2, 64, 0, 3, 0x90, 0x01])
+        let full = answer(7, app: "com.apple.MobileSMS", title: "Kasia", msg: "Będę za 10 minut")
+        check("ancs: połowa odpowiedzi to jeszcze nic", c.data(Array(full.prefix(20)), now: 0.1).isEmpty)
+        o = c.data(Array(full.dropFirst(20)), now: 0.2)
+        check("ancs: odpowiedź w kawałkach złożona", posts(o).first?.title == "Kasia" && posts(o).first?.message == "Będę za 10 minut"
+              && posts(o).first?.appName == AncsClient.builtInName("com.apple.MobileSMS") && posts(o).first?.category == 4)
+
+        // Unknown app: asks for its name, remembers it for the next time.
+        o = c.source(source(0, uid: 8), now: 1)
+        o = c.data(answer(8, app: "net.whatsapp.WhatsApp", title: "Tomek", msg: "Jedziemy?"), now: 1.1)
+        check("ancs: nieznana aplikacja → pytanie o nazwę", writes(o) == [[1] + Array("net.whatsapp.WhatsApp".utf8) + [0, 0]] && posts(o).isEmpty)
+        o = c.data([1] + Array("net.whatsapp.WhatsApp".utf8) + [0] + attr(0, "WhatsApp"), now: 1.2)
+        check("ancs: nazwa aplikacji z telefonu", posts(o).first?.appName == "WhatsApp" && posts(o).first?.title == "Tomek")
+        o = c.source(source(0, uid: 9), now: 2)
+        o = c.data(answer(9, app: "net.whatsapp.WhatsApp", title: "Tomek", msg: "Halo"), now: 2.1)
+        check("ancs: nazwa zapamiętana — bez drugiego pytania", posts(o).first?.appName == "WhatsApp" && writes(o).isEmpty)
+
+        // One question at a time; a removed notification is not shown.
+        o = c.source(source(0, uid: 10), now: 3)
+        let second = c.source(source(0, uid: 11), now: 3)
+        check("ancs: jedno pytanie naraz", writes(o).count == 1 && writes(second).isEmpty)
+        let gone = c.source(source(2, uid: 10), now: 3.05)
+        check("ancs: usunięcie przekazane dalej", gone == [.remove(10)])
+        o = c.data(answer(10, app: "com.apple.MobileSMS", title: "X", msg: "Y"), now: 3.1)
+        check("ancs: usunięte w trakcie nie trafia na deskę, kolejka idzie dalej", posts(o).isEmpty && writes(o) == [AncsClient.attributesCommand(11)])
+        check("ancs: przed czasem nic", c.tick(now: 5).isEmpty)
+        o = c.tick(now: 3.1 + AncsClient.timeout + 0.1)
+        check("ancs: brak odpowiedzi nie blokuje", posts(o).isEmpty && writes(o).isEmpty)
+        o = c.source(source(0, uid: 12), now: 20)
+        check("ancs: po przerwie działa dalej", writes(o) == [AncsClient.attributesCommand(12)])
+        o = c.data(answer(12, app: "com.example.Unknown", title: "A", msg: "B"), now: 20.1)
+        o = c.tick(now: 20.1 + AncsClient.timeout + 0.1)
+        check("ancs: brak nazwy aplikacji → nazwa z identyfikatora", posts(o).first?.appName == "Unknown" && posts(o).first?.message == "B")
+
+        // What is not news for the rider
+        c = AncsClient()
+        check("ancs: ciche pominięte", c.source(source(0, flags: 0x01, uid: 20), now: 30).isEmpty)
+        check("ancs: zastane przy połączeniu pominięte", c.source(source(0, flags: 0x04, uid: 21), now: 30).isEmpty)
+        check("ancs: mail pominięty przy „tylko wiadomości”", c.source(source(0, category: 6, uid: 22), now: 30).isEmpty)
+        check("ancs: połączenie przechodzi", writes(c.source(source(0, category: 1, uid: 23), now: 30)).count == 1)
+        c = AncsClient(); c.messagesOnly = false
+        check("ancs: mail przechodzi przy wszystkich", writes(c.source(source(0, category: 6, uid: 24), now: 30)).count == 1)
+        check("ancs: za krótki pakiet", c.source([0, 0, 4], now: 30).isEmpty)
+        check("ancs: dane bez pytania wyrzucone", c.data([9, 9, 9], now: 31).isEmpty)
+        check("ancs: stan płytki", NotifLinkState(board: 3, reason: 0) == .ready && NotifLinkState(board: 4, reason: 2) == .failed(2)
+              && NotifLinkState.failed(2).isProblem && !NotifLinkState.ready.isProblem)
+    }
+
+    private static func testOverlay() {
+        let ok = DashOverlay.keyOK, left = DashOverlay.keyLeft, right = DashOverlay.keyRight, up = DashOverlay.keyUp
+        var muted = false
+        func make() -> DashOverlay { let o = DashOverlay(); o.isMuted = { muted }; return o }
+        func note(_ uid: UInt32, _ title: String = "Kasia", _ msg: String = "Hej", category: UInt8 = 4) -> DashNotification {
+            DashNotification(uid: uid, category: category, appId: "sms", appName: "Wiadomości", title: title, message: msg)
+        }
+
+        var o = make()
+        check("deska: pusto na starcie, klawisze idą do ekranu", o.snapshot(at: 0).isEmpty && o.key(ok, itemCount: 5, at: 0) == .pass)
+        o.post(note(1), at: 10)
+        check("deska: baner wjeżdża od góry", o.snapshot(at: 10).banner?.slide == 0 && (o.snapshot(at: 10.1).banner?.slide ?? 0) > 0
+              && o.snapshot(at: 10.5).banner?.slide == 1 && o.snapshot(at: 10.5).banner?.expand == 0)
+        check("deska: inne klawisze nie są zabierane", o.key(right, itemCount: 5, at: 11) == .pass && o.key(up, itemCount: 5, at: 11) == .pass)
+        check("deska: OK rozwija", o.key(ok, itemCount: 5, at: 12) == .consumed && o.snapshot(at: 12.5).banner?.expand == 1)
+        check("deska: rozwinięte zostaje dłużej", o.snapshot(at: 12 + DashOverlay.compactTime + 2).banner != nil)
+        check("deska: OK zwija", o.key(ok, itemCount: 5, at: 20) == .consumed && o.snapshot(at: 20.5).banner?.expand == 0)
+        check("deska: ◀ zamyka", o.key(left, itemCount: 5, at: 21) == .consumed && (o.snapshot(at: 21.1).banner?.slide ?? 1) < 1
+              && o.snapshot(at: 21.3).isEmpty)
+        check("deska: po zamknięciu ◀ wraca do ekranu", o.key(left, itemCount: 5, at: 22) == .pass)
+
+        o = make()
+        o.post(note(1), at: 0)
+        check("deska: nietknięty baner znika sam", o.snapshot(at: DashOverlay.compactTime - 0.5).banner != nil
+              && o.snapshot(at: DashOverlay.compactTime + DashOverlay.slideOut + 0.1).isEmpty)
+        o.post(note(2, "Kasia", "Pierwsza"), at: 100)
+        o.post(note(3, "Kasia", "Druga"), at: 101)
+        o.post(note(4, "Tomek", "Inna"), at: 102)
+        var b = o.snapshot(at: 103).banner
+        check("deska: najnowsze na wierzchu, reszta policzona", b?.notification.title == "Tomek" && b?.more == 2 && b?.messages == ["Inna"])
+        o.remove(uid: 4, at: 103)
+        b = o.snapshot(at: 103.1).banner
+        check("deska: przeczytane na telefonie znika, wiadomości od jednej osoby razem", b?.notification.title == "Kasia"
+              && b?.messages == ["Pierwsza", "Druga"] && b?.more == 0)
+        o.post(note(3, "Kasia", "Druga (zmieniona)"), at: 104)
+        check("deska: zmienione powiadomienie podmienia treść", o.snapshot(at: 104.1).banner?.messages == ["Pierwsza", "Druga (zmieniona)"])
+        o.remove(uid: 2, at: 105); o.remove(uid: 3, at: 105)
+        check("deska: ostatnie usunięte → baner odjeżdża", o.snapshot(at: 105 + DashOverlay.slideOut + 0.1).isEmpty)
+
+        o = make()
+        o.post(note(9, "Marek", "", category: 1), at: 0)
+        check("deska: połączenie zostaje dłużej niż wiadomość", o.snapshot(at: DashOverlay.compactTime + 5).banner != nil
+              && o.snapshot(at: DashOverlay.callTime + 1).isEmpty)
+        muted = true
+        o.post(note(10), at: 200)
+        check("deska: wyciszone nie pokazuje", o.snapshot(at: 200.5).isEmpty)
+        muted = false
+
+        // Quick menu
+        o = make()
+        o.openMenu(at: 0)
+        check("menu: otwarte na pierwszej pozycji", o.menuIsOpen && o.snapshot(at: 0.5).menu == DashOverlay.Menu(index: 0, slide: 1))
+        check("menu: ▶ następna, ◀ z pierwszej na ostatnią", o.key(right, itemCount: 5, at: 1) == .consumed && o.snapshot(at: 1).menu?.index == 1
+              && o.key(left, itemCount: 5, at: 1.1) == .consumed && o.key(left, itemCount: 5, at: 1.2) == .consumed && o.snapshot(at: 1.2).menu?.index == 4)
+        check("menu: OK wybiera pozycję", o.key(ok, itemCount: 5, at: 2) == .activate(4))
+        check("menu: mniej pozycji niż indeks → ostatnia", o.key(ok, itemCount: 3, at: 2.1) == .activate(2))
+        check("menu: klawisz przedłuża otwarcie", o.snapshot(at: 2.1 + DashOverlay.menuIdle - 0.5).menu != nil)
+        check("menu: ▲ zamyka", o.key(up, itemCount: 5, at: 3) == .consumed && !o.menuIsOpen && o.snapshot(at: 3.5).isEmpty)
+        o.openMenu(at: 10)
+        check("menu: zamyka się samo", o.snapshot(at: 10 + DashOverlay.menuIdle + DashOverlay.slideOut + 0.2).isEmpty)
+        o.openMenu(at: 30); o.post(note(1), at: 31)
+        check("menu + baner: OK i ◀ dla banera, ▶ dla menu", o.key(ok, itemCount: 5, at: 32) == .consumed && o.snapshot(at: 32.5).banner?.expand == 1
+              && o.key(right, itemCount: 5, at: 32.6) == .consumed && o.snapshot(at: 32.6).menu?.index == 1
+              && o.key(left, itemCount: 5, at: 33) == .consumed && o.snapshot(at: 33.5).banner == nil && o.snapshot(at: 33.5).menu?.index == 1)
+
+        func ids(_ c: QuickContext) -> [QuickItem.ID] { QuickMenu.items(c).map(\.id) }
+        check("menu: zwykły ekran", ids(QuickContext()) == [.theme, .font, .ambient, .calibrate])
+        check("menu: wyciszanie tylko przy włączonych powiadomieniach", ids(QuickContext(notifications: true)) == [.theme, .font, .mute, .ambient, .calibrate])
+        check("menu: wideo, gra i nawigacja mają swoje pozycje na początku", ids(QuickContext(screen: .video)).first == .nextVideo
+              && ids(QuickContext(screen: .snake)).first == .exitGame && ids(QuickContext(navigating: true)).first == .endNavigation)
+        let items = QuickMenu.items(QuickContext(dark: false, font: .pixel, notifications: true, muted: true))
+        check("menu: pokazuje bieżące ustawienia", items.first { $0.id == .font }?.value == DashFont.pixel.title
+              && items.first { $0.id == .theme }?.value != QuickMenu.items(QuickContext()).first { $0.id == .theme }?.value)
+        check("menu: akcja zamyka menu, ustawienie nie", items.first { $0.id == .calibrate }?.closes == true && items.first { $0.id == .theme }?.closes == false)
+        let d = UserDefaults(suiteName: "quicktest")!
+        d.removePersistentDomain(forName: "quicktest")
+        check("menu: domyślne ustawienia", QuickContext.current(screen: 0, navigating: false, defaults: d) == QuickContext())
+        d.set(false, forKey: "dashboardDark"); d.set("pixel", forKey: "dashFont"); d.set(true, forKey: "notifEnabled")
+        check("menu: ustawienia z pamięci", QuickContext.current(screen: 6, navigating: true, defaults: d)
+              == QuickContext(screen: .video, dark: false, font: .pixel, notifications: true, navigating: true))
+        d.removePersistentDomain(forName: "quicktest")
+    }
+
     private static func testSnake() {
         let d = UserDefaults(suiteName: "snaketest")!
         d.removePersistentDomain(forName: "snaketest")

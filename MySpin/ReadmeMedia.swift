@@ -147,6 +147,23 @@ extension FrameRenderer {
                                             gameOver: false, started: true)
         save(snake, "still_snake")
 
+        // ── Notification banner and quick menu on top of the classic screen ──
+        func overlayShot(_ name: String, dark: Bool = true, font: DashFont = .rounded, _ over: DashOverlay.Snapshot) {
+            let r = base(.classic, dark: dark); music(r); bike(r, rpm: 5400, gear: 4, throttle: 34)
+            r.dashFont = font
+            r.overlay = over
+            r.quickItems = QuickMenu.items(QuickContext(dark: dark, font: font, notifications: true))
+            save(r, name)
+        }
+        let msg = DashNotification.demo(0), group = DashNotification.demo(2)
+        overlayShot("still_notification", .init(banner: .init(notification: msg, messages: [msg.message], more: 0, slide: 1, expand: 0)))
+        overlayShot("still_notification_open", .init(banner: .init(notification: group, messages: [group.message], more: 2, slide: 1, expand: 1)))
+        overlayShot("still_notification_call", .init(banner: .init(notification: .demo(1), messages: [], more: 0, slide: 1, expand: 0)))
+        overlayShot("still_notification_light", dark: false, font: .pixel,
+                    .init(banner: .init(notification: msg, messages: [msg.message], more: 1, slide: 1, expand: 1)))
+        overlayShot("still_quick_menu", .init(menu: .init(index: 0, slide: 1)))
+        overlayShot("still_quick_menu_light", dark: false, font: .pixel, .init(menu: .init(index: 2, slide: 1)))
+
         // ── Nawigacja z prawdziwą mapą (Apple Maps, asynchronicznie) ──
         let opts = MKMapSnapshotter.Options()
         opts.size = CGSize(width: 494, height: 320)

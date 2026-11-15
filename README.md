@@ -53,6 +53,9 @@ temperatures, suspension, odometer and the exact lean angle from the bike's own 
 - **Ride poster** for an Instagram story / post — configurable, with gears and the "ride's song"
 - **Video**: your own videos on the dash (they keep playing with the phone locked)
 - **CAN Terminal** — raw bus frames with live decoding
+- **Phone notifications** on the dash (experimental, needs the board): calls and messages in a
+  glass banner, OK opens the text ([how it works](docs/NOTIFICATIONS.md))
+- **Quick menu**: press OK twice — theme, font, mute and more without touching the phone
 - **Trouble codes**: read the stored codes and clear them (FI light) — the app checks the
   result itself ([how it works](docs/DIAGNOSTICS.md))
 - **Game**: snake 🐍 with a high score (when parked, please)
@@ -67,7 +70,8 @@ temperatures, suspension, odometer and the exact lean angle from the bike's own 
 | <img src="docs/media/lean.gif" width="420"><br>**Lean angle** | <img src="docs/media/still_nav.png" width="420"><br>**Navigation + dashboard** |
 | <img src="docs/media/still_disco.png" width="420"><br>**Disco** — cover art and lyrics | <img src="docs/media/still_nav_full.png" width="420"><br>**Full-screen navigation** |
 | <img src="docs/media/still_classic_can_light.png" width="420"><br>**Light theme** for full sun | <img src="docs/media/still_perf.png" width="420"><br>**Performance** 0–100, ¼ mile |
-| <img src="docs/media/still_snake.png" width="420"><br>**Snake** | |
+| <img src="docs/media/still_snake.png" width="420"><br>**Snake** | <img src="docs/media/still_quick_menu.png" width="420"><br>**Quick menu** (OK twice) |
+| <img src="docs/media/still_notification.png" width="420"><br>**Notification** | <img src="docs/media/still_notification_open.png" width="420"><br>**Notification opened** with OK |
 
 ### 🟩 CAN Terminal
 

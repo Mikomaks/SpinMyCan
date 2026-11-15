@@ -75,6 +75,7 @@
 #include "bridge_core.h"   // dekodowanie i pakiety — ten sam kod testowany na komputerze
 #include "ota_core.h"      // protokół aktualizacji przez Bluetooth — też testowany na komputerze
 #include "diag_core.h"     // kody błędów przez OBD — też testowany na komputerze
+#include "phone_notif.h"   // relay of phone notifications (ANCS) to the app
 
 // Aktualizacja przez Bluetooth jest wbudowana tylko, gdy istnieje plik z kluczem
 // (src/ota_key.h, poza repozytorium — patrz ota_key.example.h i `make fw-key`).
@@ -101,6 +102,7 @@ static const char *TELE_UUID = "531855D0-77DE-44E5-B26C-6DD5A615D194";
 static const char *RAW_UUID  = "7C0A6F52-3B1E-4D7A-9E55-0A2C4B8F1D93";
 static const char *OTA_UUID  = "9E0B6C1D-52A7-4F3E-8D14-6B7C2A905E31";
 static const char *DIAG_UUID = "3D8F1A62-7C4B-4E19-A0D5-5B2E9C71F084";
+static const char *NOTIF_UUID = "154185CF-C7F0-4931-B4AE-E4F563296858";   // phone notifications relay (phone_notif.h)
 
 // Tempo dobrane do tego, co łącze faktycznie przenosi na motocyklu. iPhone dzieli radio
 // między Bluetooth a WiFi do wyświetlacza i odbiera wtedy dużo mniej pakietów niż na
@@ -158,6 +160,7 @@ class ServerEvents : public NimBLEServerCallbacks {
         bleConnected = false;
         rawSubscribed = false;
         peerMtu = 23;
+        notif::onDisconnect();
         NimBLEDevice::startAdvertising();
     }
     void onMTUChange(uint16_t mtu, ble_gap_conn_desc *desc) override {
@@ -614,6 +617,7 @@ void setup() {
     diagChar = svc->createCharacteristic(DIAG_UUID, NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::NOTIFY);
     diagChar->setCallbacks(new DiagEvents());
 #endif
+    notif::begin(svc, NOTIF_UUID);
     svc->start();
 
     NimBLEAdvertising *adv = NimBLEDevice::getAdvertising();
@@ -703,6 +707,7 @@ void loop() {
         diagPoll(now, busAlive, moving);
     }
 #endif
+    notif::poll(now, bleConnected, connHandle, peerMtu, otaBusy());
     // Ponowienie prośby o krótki odstęp połączenia: po 3 s i po 8 s, jeśli telefon go nie dał.
     if (bleConnected && connAsks < 3 && now - connectedAt > (connAsks == 1 ? 3000u : 8000u) && connInterval() > 12) {
         askConnParams(NimBLEDevice::getServer());

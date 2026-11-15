@@ -88,6 +88,12 @@ struct ContentView: View {
     // Motyw: true = ciemny (domyślny), false = jasny
     @AppStorage("dashboardDark") private var isDark: Bool = true
     @AppStorage("dashFont") private var dashFontRaw: String = DashFont.rounded.rawValue
+    /// Phone notifications on the dash (through the CAN board) — off unless switched on.
+    @AppStorage("notifEnabled") private var notifEnabled: Bool = false
+    @AppStorage("notifMessagesOnly") private var notifMessagesOnly: Bool = true
+    @AppStorage("notifMuted") private var notifMuted: Bool = false
+    @State private var notifDemoCount = 0
+    @State private var overlay = DashOverlay()
 
     /// Gdy ON — sensory (GPS + IMU) i zapis wyników tylko gdy BT jest aktywne.
     /// Domyślnie włączone. Wyłącz jeśli używasz apki bez motocykla.
@@ -1200,14 +1206,9 @@ struct ContentView: View {
 
     // MARK: — Keybindy ekranu (per-ekran mapowanie joysticka)
 
-    /// Etykieta akcji podwójnego kliknięcia na danym ekranie (nil = brak).
+    /// What a double click does — the same on every screen.
     private func doubleActionLabel(_ s: DashboardScreen) -> String? {
-        switch joyState.doubleAction(s) {
-        case "__calibrate": return String(localized: "Kalibracja lean")
-        case "__exit":      return String(localized: "Wyjście do klasycznego")
-        case "__nextVideo": return String(localized: "Następny film")
-        default:            return nil
-        }
+        String(localized: "Szybkie menu na desce")
     }
 
     /// Przyjazna nazwa przycisku (Góra/Dół/...) — bez hex.
@@ -1508,6 +1509,7 @@ struct ContentView: View {
 
                 firmwareUpdateRow
                 if bikeLink.diagSupported { diagnosticsRow }
+                notificationsRow
 
                 Toggle(isOn: $bikeLeanOn) {
                     VStack(alignment: .leading, spacing: 2) {
@@ -1678,6 +1680,46 @@ struct ContentView: View {
                     .font(.caption2).foregroundColor(r.tx.sent == 0 ? .orange : .secondary)
             }
             Button("OK") { bikeLink.clearDiagnosticResult() }.font(.caption)
+        }
+    }
+
+    /// Phone notifications on the dash (docs/NOTIFICATIONS.md): the switch, its state and a
+    /// test notification that needs neither the board nor a message from anyone.
+    private var notificationsRow: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("POWIADOMIENIA NA DESCE").font(.caption2.bold()).foregroundColor(.secondary)
+            Toggle(isOn: $notifEnabled) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Powiadomienia z telefonu").font(.subheadline)
+                    Text("Eksperymentalne. Płytka paruje się z telefonem i przekazuje jego powiadomienia; na desce OK rozwija treść, ◀ zamyka.")
+                        .font(.caption2).foregroundColor(.secondary)
+                }
+            }
+            .tint(AppStyle.accent)
+            if notifEnabled {
+                Toggle(isOn: $notifMessagesOnly) {
+                    Text("Tylko połączenia i wiadomości").font(.subheadline)
+                }
+                .tint(AppStyle.accent)
+                Text(bikeLink.notifState.text)
+                    .font(.caption2)
+                    .foregroundColor(bikeLink.notifState == .ready ? .green : bikeLink.notifState.isProblem ? .orange : .secondary)
+            }
+            Button {
+                overlay.post(DashNotification.demo(notifDemoCount), at: ProcessInfo.processInfo.systemUptime)
+                notifDemoCount += 1
+                renderDashboardPreview()
+            } label: {
+                Label("Pokaż próbne powiadomienie", systemImage: "bell.badge").font(.caption.bold())
+            }
+            .buttonStyle(.bordered)
+        }
+        .padding(.top, 4)
+        .onChange(of: notifEnabled) { _, on in
+            bikeLink.setNotifications(enabled: on, messagesOnly: notifMessagesOnly)
+        }
+        .onChange(of: notifMessagesOnly) { _, only in
+            bikeLink.setNotifications(enabled: notifEnabled, messagesOnly: only)
         }
     }
 
@@ -1967,6 +2009,24 @@ struct ContentView: View {
             .padding(.horizontal, 4)
         }
         .card(padding: 10)
+    }
+
+    /// A quick menu item chosen with the joystick.
+    private func runQuickAction(_ id: QuickItem.ID) {
+        switch id {
+        case .theme:     setDashTheme(dark: !isDark)
+        case .font:
+            let f: DashFont = (DashFont(rawValue: dashFontRaw) ?? .rounded) == .rounded ? .pixel : .rounded
+            dashFontRaw = f.rawValue
+            renderer.dashFont = f
+        case .mute:      notifMuted.toggle()
+        case .ambient:   ambientBG.toggle()
+        case .calibrate: motion.startCalibration()
+        case .nextVideo: videoProvider.next()
+        case .exitGame:  setActiveScreen(DashboardScreen.classic.rawValue)
+        case .endNavigation: navManager.stop()
+        }
+        renderDashboardPreview()
     }
 
     private func setDashTheme(dark: Bool) {
@@ -2359,6 +2419,9 @@ struct ContentView: View {
         }
         renderer.isDarkMode   = isDark
         renderer.ambientEnabled = ambientBG
+        let over = overlay.snapshot(at: ProcessInfo.processInfo.systemUptime)
+        renderer.overlay = over
+        renderer.quickItems = over.menu == nil ? [] : QuickMenu.items(.current(screen: activeScreen, navigating: navManager.isActive))
         // Prędkość z przedniego koła, gdy mostek ją podaje i GPS potwierdził przelicznik.
         renderer.speedKmh     = bikeLink.wheelSpeedKmh() ?? motion.speedKmh
         renderer.maxSpeedKmh  = motion.maxSpeedKmh
@@ -2709,14 +2772,18 @@ struct ContentView: View {
 
         // Frame provider — każde wywołanie aktualizuje renderer danymi z telefonu
         // i zwraca JPEG 864×320 wysyłany na wyświetlacz motocykla (15 fps)
-        session.frameProvider = { [weak renderer, weak motion, weak nowPlaying, weak spotify, weak weather, weak snakeGame, weak mapSnap, weak perfMeter, weak navManager, weak videoProvider, weak recorder, weak lyrics, weak memories, weak segments, weak bikeLink] in
+        session.frameProvider = { [weak renderer, weak motion, weak nowPlaying, weak spotify, weak weather, weak snakeGame, weak mapSnap, weak perfMeter, weak navManager, weak videoProvider, weak recorder, weak lyrics, weak memories, weak segments, weak bikeLink, overlay] in
             guard let r = renderer, let m = motion else { return nil }
             let screen = UserDefaults.standard.integer(forKey: "activeScreen")
             r.activeScreen = screen
             r.ambientEnabled = UserDefaults.standard.object(forKey: "ambientBG") as? Bool ?? true
+            // Banner / quick menu on top of whatever the screen shows.
+            let over = overlay.snapshot(at: ProcessInfo.processInfo.systemUptime)
+            r.overlay = over
+            r.quickItems = over.menu == nil ? [] : QuickMenu.items(.current(screen: screen, navigating: navManager?.isActive ?? false))
             // Ekran wideo: klatki wprost z VideoFrameProvider (bypass renderera)
             if screen == DashboardScreen.video.rawValue {
-                if let f = videoProvider?.currentFrame() { return f }
+                if let f = videoProvider?.currentFrame() { return over.isEmpty ? f : (r.render(over: f) ?? f) }
                 return r.render()   // placeholder zanim pierwsza klatka gotowa
             }
             r.snakeSnapshot  = snakeGame?.snapshot()
@@ -2817,6 +2884,18 @@ struct ContentView: View {
         joyState.toggleTheme   = {
             DispatchQueue.main.async { self.setDashTheme(dark: !self.isDark) }
         }
+        // Notification banner and quick menu
+        joyState.overlay = overlay
+        joyState.quickItems = { [weak navManager] in
+            QuickMenu.items(.current(screen: UserDefaults.standard.integer(forKey: "activeScreen"),
+                                     navigating: navManager?.isActive ?? false))
+        }
+        joyState.quickAction = { id in
+            DispatchQueue.main.async { self.runQuickAction(id) }
+        }
+        bikeLink.onNotificationPost = { [overlay] n in overlay.post(n, at: ProcessInfo.processInfo.systemUptime) }
+        bikeLink.onNotificationRemove = { [overlay] uid in overlay.remove(uid: uid, at: ProcessInfo.processInfo.systemUptime) }
+        bikeLink.setNotifications(enabled: notifEnabled, messagesOnly: notifMessagesOnly)
         // Mapa nawigacji — czyta GPS/heading z MotionManager + trasa z NavManager
         mapSnap.motion = motion
         mapSnap.nav    = navManager
@@ -3192,16 +3271,11 @@ final class JoystickState: ObservableObject {
     private var pendingSingle: DispatchWorkItem? = nil
     private let doubleWindow: TimeInterval = 0.45
 
-    /// Akcja podwójnego kliknięcia na danym ekranie (to co robił long-press).
-    /// "__exit" = wyjście do klasycznego, "__calibrate" = kalibracja. nil = brak.
-    func doubleAction(_ s: DashboardScreen) -> String? {
-        switch s {
-        case .classic:        return "__calibrate"
-        case .snake:          return "__exit"
-        case .video:          return "__nextVideo"
-        default:              return nil   // lean (single OK już kalibruje), perf, nav
-        }
-    }
+    /// Banner and quick menu on top of the dashboard — they get the keys first.
+    var overlay: DashOverlay?
+    /// Items of the quick menu right now, and what choosing one does — injected from ContentView.
+    var quickItems: () -> [QuickItem] = { [] }
+    var quickAction: (QuickItem.ID) -> Void = { _ in }
 
     private static let monitorFmt: DateFormatter = {
         let f = DateFormatter(); f.dateFormat = "HH:mm:ss"; return f
@@ -3234,16 +3308,33 @@ final class JoystickState: ObservableObject {
         let screenRaw = currentScreen()
         let screen = DashboardScreen(rawValue: screenRaw) ?? .classic
 
-        // ── Double-click na przypisanym guziku → akcja specjalna ──
-        if let dbl = doubleAction(screen), ev.keyId == KeyBindings.doubleKey(screen: screenRaw) {
+        // Notification banner and quick menu take their keys before the screen does.
+        if let overlay {
+            let items = quickItems()
+            let uptime = ProcessInfo.processInfo.systemUptime
+            switch overlay.key(ev.keyId, itemCount: items.count, at: uptime) {
+            case .consumed:
+                pendingSingle?.cancel(); pendingSingle = nil
+                return
+            case .activate(let i):
+                pendingSingle?.cancel(); pendingSingle = nil
+                logRaw("⚙️ quick menu: \(items[i].label)")
+                if items[i].closes { overlay.closeMenu(at: uptime) }
+                quickAction(items[i].id)
+                return
+            case .pass:
+                break
+            }
+        }
+
+        // ── Double-click on the assigned key → quick menu (every screen) ──
+        if let overlay, ev.keyId == KeyBindings.doubleKey(screen: screenRaw) {
             let now = Date()
             if now.timeIntervalSince(lastDblDown) < doubleWindow {
-                // Drugie kliknięcie → akcja specjalna, anuluj zaległy single.
+                // Second click → open the menu, drop the postponed single action.
                 pendingSingle?.cancel(); pendingSingle = nil
                 lastDblDown = .distantPast
-                if dbl == "__exit"      { setScreen(DashboardScreen.classic.rawValue) }
-                else if dbl == "__calibrate" { motion?.startCalibration() }
-                else if dbl == "__nextVideo" { video?.next() }
+                overlay.openMenu(at: ProcessInfo.processInfo.systemUptime)
             } else {
                 // Pierwsze kliknięcie → odrocz normalną akcję guzika o okno double.
                 lastDblDown = now
