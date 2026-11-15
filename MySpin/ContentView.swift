@@ -2893,6 +2893,9 @@ struct ContentView: View {
         joyState.quickAction = { id in
             DispatchQueue.main.async { self.runQuickAction(id) }
         }
+        joyState.callAction = { [weak bikeLink] uid, accept in
+            if !DashNotification.isDemo(uid) { bikeLink?.callAction(uid: uid, accept: accept) }
+        }
         bikeLink.onNotificationPost = { [overlay] n in overlay.post(n, at: ProcessInfo.processInfo.systemUptime) }
         bikeLink.onNotificationRemove = { [overlay] uid in overlay.remove(uid: uid, at: ProcessInfo.processInfo.systemUptime) }
         bikeLink.setNotifications(enabled: notifEnabled, messagesOnly: notifMessagesOnly)
@@ -3276,6 +3279,8 @@ final class JoystickState: ObservableObject {
     /// Items of the quick menu right now, and what choosing one does — injected from ContentView.
     var quickItems: () -> [QuickItem] = { [] }
     var quickAction: (QuickItem.ID) -> Void = { _ in }
+    /// Answer / reject the call shown in the banner.
+    var callAction: (UInt32, Bool) -> Void = { _, _ in }
 
     private static let monitorFmt: DateFormatter = {
         let f = DateFormatter(); f.dateFormat = "HH:mm:ss"; return f
@@ -3321,6 +3326,11 @@ final class JoystickState: ObservableObject {
                 logRaw("⚙️ quick menu: \(items[i].label)")
                 if items[i].closes { overlay.closeMenu(at: uptime) }
                 quickAction(items[i].id)
+                return
+            case .call(let uid, let accept):
+                pendingSingle?.cancel(); pendingSingle = nil
+                logRaw(accept ? "📞 call: answer" : "📞 call: reject")
+                callAction(uid, accept)
                 return
             case .pass:
                 break

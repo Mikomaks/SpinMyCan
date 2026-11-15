@@ -1565,6 +1565,15 @@ extension BikeLinkManager: CBCentralManagerDelegate, CBPeripheralDelegate {
         }
     }
 
+    /// Answers or rejects the incoming call behind a notification (the phone does the rest).
+    func callAction(uid: UInt32, accept: Bool) {
+        q.async { [self] in
+            guard let p = peripheral, let ch = notifChar, p.state == .connected, notifAsked else { return }
+            writeLink(String(format: "E,%.3f,notif,call %@", CACurrentMediaTime(), accept ? "accept" : "decline"))
+            p.writeValue(Data([0x02] + AncsClient.actionCommand(uid, accept: accept)), for: ch, type: .withResponse)
+        }
+    }
+
     private func applyNotifications() {
         guard let p = peripheral, let ch = notifChar, p.state == .connected else {
             publishNotif(.unsupported)
