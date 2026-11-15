@@ -499,6 +499,32 @@ static void testDiag() {
     check("diag: nasze zapytania z szyny nie są odpowiedzią", !s.onFrame(0x7DF, false, 8, other, 30560, fc) && !s.onFrame(0x7E0, false, 8, other, 30560, fc) && s.nextReport() == nullptr);
     check("diag: PROBE kończy po 2 s ciszy", !s.finished(32000) && s.finished(32560));
     s.end();
+    // periodic traffic that only looks diagnostic must not keep the command alive,
+    // flood the phone or take the slots of real replies
+    s.start(READ, PHYS11, false, true, 34000);
+    s.nextRequest(34000, out);
+    int rawReports = 0;
+    for (uint32_t t = 34010; t < 36500; t += 10) {            // six junk IDs, each every 10 ms
+        for (uint32_t id = 0x710; id < 0x716; id++) s.onFrame(id, false, 8, odd, t, fc);
+        while (s.nextReport()) rawReports++;
+    }
+    check("diag: junk frames reported once each, at most MAX_RAW", rawReports == MAX_RAW);
+    check("diag: junk frames do not postpone the end", s.finished(36000));
+    uint8_t sf43[8] = {0x02, 0x43, 0x00, 0, 0, 0, 0, 0};
+    s.onFrame(0x7E8, false, 8, sf43, 36100, fc);
+    r = s.nextReport();
+    check("diag: real reply still has a slot after junk", r && r->id == 0x7E8 && r->len == 2 && r->data[0] == 0x43);
+    s.end();
+    // transmission budget: repeats are allowed, but only MAX_TX frames per command
+    check("diag: no transmission outside a command", !s.takeTx());
+    s.start(CLEAR, PHYS11, false, true, 37100);
+    int allowed = 0;
+    for (int i = 0; i < 100; i++) allowed += s.takeTx();
+    check("diag: at most MAX_TX transmissions per command", allowed == MAX_TX && MAX_TRIES <= MAX_TX);
+    s.end();
+    s.start(CLEAR, PHYS11, false, true, 40100);
+    check("diag: budget is fresh for the next command", s.takeTx());
+    s.end();
     // limit ramek sterowania przepływem
     s.start(PING, 0, false, true, 40000);
     check("diag: ping 7DF [02 01 00]", s.nextRequest(40000, out) && out.data[0] == 0x02 && out.data[1] == 0x01 && out.data[2] == 0x00);

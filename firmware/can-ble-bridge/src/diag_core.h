@@ -10,7 +10,11 @@
 //   - odmowa, gdy szyna milczy (zapłon wyłączony) — nie ma z kim rozmawiać,
 //   - najwyżej 3 zapytania na komendę i najwyżej 8 ramek sterowania przepływem;
 //     koniec po 2 s ciszy (5,5 s po „przetwarzam”), twardy limit w main.cpp,
-//   - main.cpp wysyła każdą ramkę jednorazowo (bez powtórek przy braku potwierdzenia).
+//   - every frame goes out single-shot. The bus is about half full, so a diagnostic frame
+//     (low priority) often loses arbitration and a single-shot frame is then dropped —
+//     seen on the bike 2026-10-25 as "2 of 3 not confirmed". main.cpp therefore repeats
+//     a failed frame, but only MAX_TRIES times and never more than MAX_TX transmissions
+//     per command (takeTx), so a board nobody acknowledges cannot flood the bus.
 //
 // GX nie odpowiedział na zwykłe zapytanie 11-bitowe 0x7DF (2026-10-25), więc są trzy
 // sposoby adresowania, a komenda PROBE wysyła odczyt kodów wszystkimi po kolei:
@@ -26,7 +30,8 @@
 //   0x05 = PROBE (odczyt kodów wszystkimi trzema sposobami). Brak drugiego bajtu = 0.
 // Powiadomienia do telefonu:
 //   [0x00][op][ID b0][ID b1][ID b2][ID b3 | 0x80 gdy 29-bit][długość][dane ...]
-//   [kod zakończenia][op][liczba odpowiedzi][wysłane][odrzucone][licznik błędów nadawania]
+//   [end code][op][number of replies][frames delivered][lost attempts][transmit error counter]
+//   (from v11 "lost attempts" counts every single-shot try that failed, repeats included)
 
 #pragma once
 #include <stdint.h>
@@ -53,6 +58,9 @@ static const uint32_t PENDING_MS = 5500;     // po „czekaj, przetwarzam” (7F
 static const uint32_t MIN_GAP_MS = 3000;     // najkrótszy odstęp między komendami
 static const uint32_t PROBE_STEP_MS = 250;   // odstęp między zapytaniami w PROBE
 static const uint8_t  MAX_FC = 8;            // limit ramek sterowania przepływem na komendę
+static const uint8_t  MAX_TRIES = 4;         // transmissions of one frame (first try + 3 repeats)
+static const uint8_t  MAX_TX = 16;           // transmissions per command, repeats included
+static const uint8_t  MAX_RAW = 4;           // slots for frames that only look diagnostic
 static const uint8_t  MAX_ECU = 8;
 static const uint8_t  MAX_PAYLOAD = 96;
 
@@ -88,6 +96,7 @@ public:
     bool active = false;
     uint8_t op = 0;
     uint8_t fcSent = 0;
+    uint8_t txUsed = 0;
     uint32_t lastActivity = 0, lastStart = 0, pendingUntil = 0;
     bool everStarted = false;
     Response ecus[MAX_ECU];
@@ -95,6 +104,7 @@ public:
     // zaplanowane zapytania
     Frame queue[3];
     uint8_t queued = 0, sent = 0;
+    uint8_t rawCount = 0;
 
     // Start komendy. 0 = OK (zapytania odbierać z nextRequest), inaczej kod błędu.
     uint8_t start(uint8_t command, uint8_t addr, bool moving, bool busAlive, uint32_t now) {
@@ -107,10 +117,12 @@ public:
         everStarted = true;
         op = command;
         fcSent = 0;
+        txUsed = 0;
         ecuCount = 0;
         for (auto &e : ecus) e = Response();
         lastStart = lastActivity = pendingUntil = now;
         queued = sent = 0;
+        rawCount = 0;
         if (command == PROBE) {
             queue[queued++] = request(READ, FUNC11);
             queue[queued++] = request(READ, PHYS11);
@@ -130,6 +142,14 @@ public:
         return true;
     }
 
+    // Permission for one transmission (a request, a flow control frame or a repeat of
+    // either). false = the budget of this command is used up, send nothing more.
+    bool takeTx() {
+        if (!active || txUsed >= MAX_TX) return false;
+        txUsed++;
+        return true;
+    }
+
     // Ramka z szyny. Zwraca true, gdy trzeba wysłać ramkę sterowania przepływem `fc`.
     bool onFrame(uint32_t id, bool ext, uint8_t dlc, const uint8_t *d, uint32_t now, Frame &fc) {
         if (!active || dlc < 1 || dlc > 8) return false;
@@ -138,17 +158,21 @@ public:
         bool diagLike = (!ext && id >= 0x700 && id <= 0x7FF && id != 0x7DF && !(id >= 0x7E0 && id <= 0x7E7)) || ext;
         if (!diagLike) return false;
         uint8_t pci = d[0] >> 4;
-        Response *r = find(id, ext);
-        if (!r) return false;
-        lastActivity = now;
         bool isoTp = std7E8 || resp29;
-        if (!isoTp || pci > 2) {                          // nieznana odpowiedź — surowe bajty
+        Response *r = find(id, ext, !isoTp);
+        if (!r) return false;
+        if (!isoTp || pci > 2) {                          // unknown reply — raw bytes, passed on once
+            // A frame that merely looks diagnostic may be periodic traffic: it must not keep
+            // the command alive (lastActivity) and is reported once, not on every repeat.
+            if (!isoTp && r->complete) return false;
+            if (isoTp) lastActivity = now;
             memcpy(r->data, d, dlc);
             r->len = r->total = dlc;
             r->complete = true;
             r->reported = false;
             return false;
         }
+        lastActivity = now;
         if (pci == 0) {                                   // pojedyncza ramka
             uint8_t n = d[0] & 0x0F;
             if (n > 7 || n + 1 > dlc) return false;
@@ -208,9 +232,15 @@ public:
     void end() { active = false; }
 
 private:
-    Response *find(uint32_t id, bool ext) {
+    // `raw` frames (not OBD replies) may take at most MAX_RAW slots, the rest stays free
+    // for real replies however much other traffic there is.
+    Response *find(uint32_t id, bool ext, bool raw) {
         for (uint8_t i = 0; i < ecuCount; i++) if (ecus[i].id == id && ecus[i].ext == ext) return &ecus[i];
         if (ecuCount >= MAX_ECU) return nullptr;
+        if (raw) {
+            if (rawCount >= MAX_RAW) return nullptr;
+            rawCount++;
+        }
         ecus[ecuCount] = Response();
         ecus[ecuCount].id = id;
         ecus[ecuCount].ext = ext;

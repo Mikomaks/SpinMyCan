@@ -1574,13 +1574,14 @@ struct ContentView: View {
         .card()
     }
 
-    /// Kody błędów motocykla przez płytkę (OBD). Odczyt nic nie zmienia; kasowanie po potwierdzeniu.
+    /// Trouble codes through the board (docs/DIAGNOSTICS.md). Reading only listens to the bus;
+    /// clearing asks for confirmation, then reads the list again and says what really happened.
     private var diagnosticsRow: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("KODY BŁĘDÓW (FI)").font(.caption2.bold()).foregroundColor(.secondary)
             HStack(spacing: 8) {
                 Button {
-                    bikeLink.runDiagnostic(.probe)
+                    bikeLink.readStoredCodes()
                 } label: {
                     Label("Odczytaj", systemImage: "magnifyingglass").font(.subheadline.bold())
                 }
@@ -1591,45 +1592,28 @@ struct ContentView: View {
                     Label("Skasuj kody", systemImage: "trash").font(.subheadline.bold())
                 }
                 .buttonStyle(.bordered)
-                .disabled(bikeLink.diagClearAddr == nil)
                 Spacer()
+                Button("Test OBD") { bikeLink.probeObd() }
+                    .font(.caption)
             }
             .disabled(diagBusy)
             .confirmationDialog("Skasować kody błędów i lampkę FI?", isPresented: $showClearCodes, titleVisibility: .visible) {
-                Button("Skasuj kody", role: .destructive) {
-                    if let addr = bikeLink.diagClearAddr { bikeLink.runDiagnostic(.clear, addr: addr) }
-                }
+                Button("Skasuj kody", role: .destructive) { bikeLink.clearCodes() }
                 Button("Anuluj", role: .cancel) {}
             } message: {
                 Text("Zapłon włączony, silnik ZGASZONY, motocykl stoi. Płytka na kilka sekund zacznie nadawać na szynę, potem wraca do samego nasłuchu. Jeśli usterka nadal jest, kod i lampka wrócą.")
             }
             switch bikeLink.diagState {
             case .idle:
-                Text(bikeLink.diagClearAddr == nil
-                     ? String(localized: "Zapłon włączony, silnik zgaszony. Odczyt niczego nie zmienia; kasowanie odblokuje się, gdy motocykl odpowie kodami.")
-                     : String(localized: "Zapłon włączony, silnik zgaszony. Odczyt niczego nie zmienia."))
+                Text("Odczyt tylko słucha szyny — działa zawsze, gdy zapłon jest włączony. Kasowanie: zapłon włączony, silnik zgaszony; trwa do pół minuty i samo sprawdza wynik.")
                     .font(.caption2).foregroundColor(.secondary)
-            case .running(let op):
+            case .running(let step):
                 HStack(spacing: 6) {
                     ProgressView()
-                    Text(op == .clear ? String(localized: "Kasuję kody…") : String(localized: "Pytam sterowniki…")).font(.caption)
+                    Text(diagStepText(step)).font(.caption)
                 }
-            case .finished(let op, let replies, let tx):
-                VStack(alignment: .leading, spacing: 4) {
-                    if !replies.contains(where: \.isObd) {
-                        Text("Żaden sterownik nie odpowiedział na OBD.").font(.caption).foregroundColor(.orange)
-                    }
-                    ForEach(replies.indices, id: \.self) { i in
-                        let r = replies[i]
-                        VStack(alignment: .leading, spacing: 1) {
-                            Text(Obd.ecuName(r.ecu, ext: r.ext)).font(.caption.bold())
-                            Text(Obd.summary(op, r)).font(.caption.monospaced())
-                        }
-                    }
-                    Text("Zapytań wysłanych \(tx.sent), bez potwierdzenia \(tx.failed), licznik błędów nadawania \(tx.errorCounter)")
-                        .font(.caption2).foregroundColor(tx.failed > 0 || tx.sent == 0 ? .orange : .secondary)
-                    Button("OK") { bikeLink.clearDiagnosticResult() }.font(.caption)
-                }
+            case .finished(let report):
+                diagReportView(report)
             case .failed(let msg):
                 VStack(alignment: .leading, spacing: 4) {
                     Text(msg).font(.caption).foregroundColor(.orange)
@@ -1638,6 +1622,50 @@ struct ContentView: View {
             }
         }
         .padding(.top, 4)
+    }
+
+    private func diagStepText(_ step: DiagStep) -> String {
+        switch step {
+        case .listening:       return String(localized: "Czytam listę kodów z szyny…")
+        case .clearing(let n): return String(localized: "Kasuję kody… (próba \(n) z 3)")
+        case .verifying:       return String(localized: "Sprawdzam, czy kody zniknęły…")
+        case .probing:         return String(localized: "Pytam sterowniki…")
+        }
+    }
+
+    @ViewBuilder
+    private func diagReportView(_ r: DiagReport) -> some View {
+        let verdict = Obd.verdict(r)
+        VStack(alignment: .leading, spacing: 4) {
+            Text(verdict.text).font(.caption.bold()).foregroundColor(verdict.ok ? .green : .orange)
+            // The list that is in the bike now: after clearing — the one read afterwards.
+            let list = r.kind == .clear ? r.after : r.before
+            if let list, !list.codes.isEmpty {
+                ForEach(list.codes, id: \.self) { code in
+                    Text(Obd.describe(code)).font(.caption.monospaced())
+                }
+            }
+            if r.kind == .clear, let before = r.before, before.total > 0 {
+                Text("Przed kasowaniem: \(before.codes.joined(separator: ", "))")
+                    .font(.caption2).foregroundColor(.secondary)
+            }
+            if r.kind == .probe {
+                ForEach(r.replies.indices, id: \.self) { i in
+                    let reply = r.replies[i]
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(Obd.ecuName(reply.ecu, ext: reply.ext)).font(.caption.bold())
+                        Text(Obd.summary(.probe, reply)).font(.caption.monospaced())
+                    }
+                }
+                Text("Odpowiedź OBD dotyczy tylko kodów emisyjnych — pełną listę pokazuje „Odczytaj”.")
+                    .font(.caption2).foregroundColor(.secondary)
+            }
+            if r.kind != .read {
+                Text("Ramek dostarczonych \(r.tx.sent), powtórzeń po kolizji \(r.tx.failed), licznik błędów nadawania \(r.tx.errorCounter)")
+                    .font(.caption2).foregroundColor(r.tx.sent == 0 ? .orange : .secondary)
+            }
+            Button("OK") { bikeLink.clearDiagnosticResult() }.font(.caption)
+        }
     }
 
     private var diagBusy: Bool {

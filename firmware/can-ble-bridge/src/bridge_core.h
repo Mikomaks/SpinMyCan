@@ -17,7 +17,7 @@ namespace bridge {
 #ifdef FW_VERSION_OVERRIDE          // tylko programy testowe aktualizacji (platformio.ini)
 static const uint8_t FW_VERSION = FW_VERSION_OVERRIDE;
 #else
-static const uint8_t FW_VERSION = 10;
+static const uint8_t FW_VERSION = 11;
 #endif
 
 static const uint32_t ID_ENGINE = 0x1A1;   // obroty, gaz, bieg
