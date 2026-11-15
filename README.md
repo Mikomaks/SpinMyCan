@@ -57,7 +57,8 @@ temperatures, suspension, odometer and the exact lean angle from the bike's own 
   result itself ([how it works](docs/DIAGNOSTICS.md))
 - **Game**: snake 🐍 with a high score (when parked, please)
 - **Dynamic Island** and Lock Screen with speed and gear
-- Light and dark theme (▲▼▲▼ joystick shortcut), crisp pixel font rendered 1:1 with the display
+- Light and dark theme (▲▼▲▼ joystick shortcut); two dashboard fonts: smooth rounded or a crisp
+  pixel font rendered 1:1 with the display
 
 ## 🖼️ Screens
 

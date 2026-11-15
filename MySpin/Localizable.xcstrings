@@ -881,6 +881,17 @@
         }
       }
     },
+    "Czcionka deski": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dashboard font"
+          }
+        }
+      }
+    },
     "Czeka na potwierdzenie z GPS: ok. pół minuty równej jazdy powyżej 30 km/h. Do tego czasu deska pokazuje GPS.": {
       "extractionState": "manual",
       "localizations": {
@@ -2637,6 +2648,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pause"
+          }
+        }
+      }
+    },
+    "Pikselowa": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pixel"
           }
         }
       }
@@ -4991,6 +5013,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Update board to v%lld"
+          }
+        }
+      }
+    },
+    "Zaokrąglona": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rounded"
           }
         }
       }

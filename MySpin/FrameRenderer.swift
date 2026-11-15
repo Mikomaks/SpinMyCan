@@ -31,6 +31,8 @@ final class FrameRenderer: ObservableObject {
 
     // MARK: — Motyw (ciemny/jasny) — przełączany z ContentView
     var isDarkMode: Bool = true
+    /// Font of the dashboard, chosen in the app. The CAN terminal screen always stays pixel.
+    var dashFont: DashFont = .pixel
 
     // MARK: — Dane do renderowania (ustawiaj z MotionManager przed każdym render())
     var speedKmh:     Double = 0
@@ -1289,6 +1291,10 @@ final class FrameRenderer: ObservableObject {
 
     /// Monocraft (wymagany .ttf w bundlu + UIAppFonts), fallback: SF Mono
     func mono(_ size: CGFloat, bold: Bool = false) -> UIFont {
+        if dashFont == .rounded, activeScreen != DashboardScreen.hacker.rawValue {
+            let base = UIFont.systemFont(ofSize: size, weight: bold ? .bold : .medium)
+            return base.fontDescriptor.withDesign(.rounded).map { UIFont(descriptor: $0, size: size) } ?? base
+        }
         for name in bold ? ["Monocraft-Bold", "Monocraft Bold", "Monocraft"] : ["Monocraft"] {
             if let f = UIFont(name: name, size: size) { return f }
         }
