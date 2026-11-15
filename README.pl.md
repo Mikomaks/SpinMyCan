@@ -60,7 +60,8 @@ z czujnika motocykla.
   wynik ([jak to działa](docs/DIAGNOSTICS.md), po angielsku)
 - **Gra**: wąż 🐍 z rekordem (na postoju, proszę)
 - **Dynamic Island** i ekran blokady z prędkością i biegiem
-- Jasny i ciemny motyw (skrót ▲▼▲▼ na joysticku), ostra pikselowa czcionka 1:1 z wyświetlaczem
+- Jasny i ciemny motyw (skrót ▲▼▲▼ na joysticku); dwie czcionki deski: gładka zaokrąglona albo
+  ostra pikselowa 1:1 z wyświetlaczem
 
 ## 🖼️ Ekrany
 

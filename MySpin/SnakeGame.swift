@@ -49,6 +49,19 @@ enum DashboardScreen: Int, CaseIterable {
     }
 }
 
+/// Font of the dashboard screens.
+enum DashFont: String, CaseIterable {
+    case pixel      // Monocraft — sharp pixel font, 1:1 with the display
+    case rounded    // SF Rounded — smooth, heavy digits
+
+    var title: String {
+        switch self {
+        case .pixel:   return String(localized: "Pikselowa")
+        case .rounded: return String(localized: "Zaokrąglona")
+        }
+    }
+}
+
 // MARK: — Game state snapshot (read by the renderer on another thread)
 
 struct SnakeSnapshot {

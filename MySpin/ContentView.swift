@@ -87,6 +87,7 @@ struct ContentView: View {
 
     // Motyw: true = ciemny (domyślny), false = jasny
     @AppStorage("dashboardDark") private var isDark: Bool = true
+    @AppStorage("dashFont") private var dashFontRaw: String = DashFont.rounded.rawValue
 
     /// Gdy ON — sensory (GPS + IMU) i zapis wyników tylko gdy BT jest aktywne.
     /// Domyślnie włączone. Wyłącz jeśli używasz apki bez motocykla.
@@ -986,6 +987,18 @@ struct ContentView: View {
                 }
             }
             .tint(AppStyle.accent)
+
+            HStack {
+                Text("Czcionka deski").font(.subheadline)
+                Spacer()
+                Picker("Czcionka deski", selection: Binding(
+                    get: { DashFont(rawValue: dashFontRaw) ?? .rounded },
+                    set: { dashFontRaw = $0.rawValue; renderer.dashFont = $0; renderDashboardPreview() })) {
+                    ForEach(DashFont.allCases, id: \.self) { Text($0.title).tag($0) }
+                }
+                .pickerStyle(.segmented)
+                .frame(maxWidth: 220)
+            }
 
             Toggle(isOn: $ambientBG) {
                 VStack(alignment: .leading, spacing: 2) {
@@ -2611,6 +2624,7 @@ struct ContentView: View {
 
         // Ustaw motyw na starcie
         renderer.isDarkMode = isDark
+        renderer.dashFont = DashFont(rawValue: dashFontRaw) ?? .rounded
 
         // Powiadomienia — pytanie o zakończenie trasy po grace period
         #if DEBUG
